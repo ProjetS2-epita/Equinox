@@ -318,7 +318,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9088009327036904757}
-  m_LocalRotation: {x: 0.015391035, y: 0.000000017187588, z: -2.645661e-10, w: 0.99988157}
+  m_LocalRotation: {x: 0.015391034, y: -0.000000017197292, z: 2.6471544e-10, w: 0.99988157}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -523,7 +523,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9088009328106377998}
-  m_LocalRotation: {x: 0.03352781, y: 0.000000017330532, z: -5.813817e-10, w: 0.9994378}
+  m_LocalRotation: {x: 0.03352781, y: 0.000000017329258, z: -5.81339e-10, w: 0.9994378}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -601,7 +601,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9088009328191848148}
-  m_LocalRotation: {x: 0.051701535, y: 0.000000017451327, z: -9.0346863e-10, w: 0.9986626}
+  m_LocalRotation: {x: 0.05170154, y: -0.000000019886642, z: 0.0000000010295469, w: 0.9986626}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -665,7 +665,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9088009328268140640}
   - component: {fileID: 9088009328268140641}
-  - component: {fileID: 9088009328268140642}
   m_Layer: 0
   m_Name: 3rdP_Player
   m_TagString: Player
@@ -708,24 +707,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: -6.158783, y: 2.9104176, z: 3.8501282}
---- !u!114 &9088009328268140642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9088009328268140647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4367be4135b94374dbc02b23dd2c5ff3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 9088009328268140641}
-  cam: {fileID: 0}
-  speed: 25
-  gravity: -98.1
-  jumpHeight: 15
-  turnSmoothTime: 0.1
 --- !u!1 &9088009328289636516
 GameObject:
   m_ObjectHideFlags: 0
@@ -959,7 +940,7 @@ MonoBehaviour:
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
     m_InputAxisValue: 0
-    m_InvertInput: 1
+    m_InvertInput: 0
     m_MinValue: -180
     m_MaxValue: 180
     m_Wrap: 1

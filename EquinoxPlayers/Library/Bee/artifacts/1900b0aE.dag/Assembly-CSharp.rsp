@@ -333,7 +333,9 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.VSCode.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
-"Assets/Scripts/Player.cs"
+"Assets/Scripts/Controllers/EnemyController.cs"
+"Assets/Scripts/Controllers/PlayerController.cs"
+"Assets/Scripts/PlayerManager.cs"
 "Assets/Winter Zone Mini 1.0/Scripts/EmitterPositionController.cs"
 "Assets/Winter Zone Mini 1.0/Scripts/FXDemoController.cs"
 -langversion:9.0
