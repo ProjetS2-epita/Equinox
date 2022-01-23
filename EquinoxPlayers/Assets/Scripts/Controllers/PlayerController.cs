@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
         Move();
     }
 
-
+    public Vector3 getVelocity => controller.velocity;
 
     #region Déplacements
 
@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     Vector3 velocity;
     float turnSmoothVelocity;
     public float turnSmoothTime = 0.1f;
-    void Move()
+    private void Move()
     {
         //jump
         if (controller.isGrounded && velocity.y < 0)
