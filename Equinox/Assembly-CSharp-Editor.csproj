@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\Bin\Debug\</OutputPath>
-    <DefineConstants>UNITY_2020_3_27;UNITY_2020_3;UNITY_2020;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;USE_SEARCH_ENGINE_API;SCENE_TEMPLATE_MODULE;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_MANAGED_UNITYTLS;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;PLATFORM_STANDALONE;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP;GFXDEVICE_WAITFOREVENT_MESSAGEPUMP;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_INPUT_SYSTEM;UNITY_POST_PROCESSING_STACK_V2;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
+    <DefineConstants>UNITY_2020_3_27;UNITY_2020_3;UNITY_2020;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;USE_SEARCH_ENGINE_API;SCENE_TEMPLATE_MODULE;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_MANAGED_UNITYTLS;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;PLATFORM_STANDALONE;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP;GFXDEVICE_WAITFOREVENT_MESSAGEPUMP;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -47,125 +47,13 @@
   <PropertyGroup>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Package</UnityProjectGenerator>
-    <UnityProjectGeneratorVersion>2.0.14</UnityProjectGeneratorVersion>
+    <UnityProjectGeneratorVersion>2.0.12</UnityProjectGeneratorVersion>
     <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2020.3.27f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="D:\Programmes\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Devion Games\Graphs\Scripts\Editor\EditorExtensions.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\PropertyDrawers\RarityPickerDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Graphs\Scripts\Editor\GraphEditorWindow.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\CustomDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\Items\CurrencyInspector.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\UI\ItemContainerInspector.cs" />
-    <Compile Include="Assets\Devion Games\UI Widgets\Scripts\Editor\UIWidgetEditor.cs" />
-    <Compile Include="Assets\Devion Games\Stat System\Scripts\Editor\StatEffectInspector.cs" />
-    <Compile Include="Assets\Devion Games\Triggers\Scripts\Editor\BaseTriggerInspector.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\Settings\SavingLoadingInspector.cs" />
-    <Compile Include="Assets\Devion Games\Graphs\Scripts\Editor\FlowGraph\FlowGraphView.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Property Drawers\InspectorLabelDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Triggers\Scripts\Editor\ActionListDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Internal\InternalTestingTools.cs" />
-    <Compile Include="Assets\Devion Games\Module Manager\Editor\Changelog.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\ItemGroupGeneratorInspector.cs" />
-    <Compile Include="Assets\Devion Games\UI Widgets\Scripts\Editor\UIContainerInspector.cs" />
-    <Compile Include="Assets\Devion Games\Module Manager\Editor\ModuleItem.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Property Drawers\NamedVariableLayoutDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\InventorySystemEditor.cs" />
-    <Compile Include="Assets\Devion Games\Stat System\Scripts\Editor\StatPickerDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\UtilityWindow.cs" />
-    <Compile Include="Assets\Devion Games\Stat System\Scripts\Editor\SavingLoadingInspector.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Collection Editor\ICollectionEditor.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\InventorySystemMenu.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\PropertyDrawers\ItemPickerDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Third Person Controller\Scripts\Editor\ThirdPersonCameraEditor.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Inspectors\SelectionHandlerInspector.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\PropertyDrawers\CurrencyPickerDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Third Person Controller\Scripts\Editor\ThirdPersonControllerSetupWindow.cs" />
-    <Compile Include="Assets\Devion Games\Graphs\Scripts\Editor\ZoomableArea.cs" />
-    <Compile Include="Assets\Devion Games\Graphs\Scripts\Editor\FlowGraph\FlowGraphPropertyDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Graphs\Scripts\Editor\IGraphView.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Asset\AddObjectWindow.cs" />
-    <Compile Include="Assets\Devion Games\Stat System\Scripts\Editor\StatSystemInspector.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\Items\ItemInspector.cs" />
-    <Compile Include="Assets\Devion Games\Stat System\Scripts\Editor\ExecutionOrderValidator.cs" />
-    <Compile Include="Assets\Devion Games\Stat System\Scripts\Editor\StatInspector.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Property Drawers\VariablePropertyDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Module Manager\Editor\UpdateNotificationWindow.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\PropertyDrawers\EquipmentPickerDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Graphs\Scripts\Editor\ConnectionStyle.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Property Drawers\ArgumentVariableDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\ItemGeneratorInspector.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\EditorTools.cs" />
-    <Compile Include="Assets\Devion Games\Stat System\Scripts\Editor\StatsHandlerInspector.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Internal\TextToTextMeshPro.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\PropertyDrawers\HasItemDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Collection Editor\ScriptableObjectCollectionEditor.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\Items\UsableItemInspector.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\VisibleItemsEditor.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\PropertyDrawers\ItemGroupPickerDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\PropertyDrawers\PickerDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\EquipmentHandlerInspector.cs" />
-    <Compile Include="Assets\Devion Games\Third Person Controller\Scripts\Editor\WriteInputManager.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\Settings\DefaultInspector.cs" />
-    <Compile Include="Assets\Devion Games\Triggers\Scripts\Editor\BehaviorTriggerInspector.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Property Drawers\CompoundDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Property Drawers\HeaderLineDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\PropertyDrawers\HasCategoryItemDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Stat System\Scripts\Editor\StatCollectionEditor.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\Modifiers\RarityModifierInspector.cs" />
-    <Compile Include="Assets\Devion Games\UI Widgets\Scripts\Editor\UIWidgetInspector.cs" />
-    <Compile Include="Assets\Devion Games\Graphs\Scripts\Editor\GraphPropertyDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\PropertyDrawers\CategoryPickerDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\MergeDatabaseEditor.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\Modifiers\PropertyModifierInspector.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Collection Editor\CollectionEditor.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\ItemCollectionInspector.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Property Drawers\MinMaxSliderDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\AttachmentPropertyDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Collection Editor\ObjectCollectionEditor.cs" />
-    <Compile Include="Assets\Devion Games\Stat System\Scripts\Editor\StatSettingsEditor.cs" />
-    <Compile Include="Assets\Devion Games\Stat System\Scripts\Editor\StatSystemMenu.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\ItemContainerPopulatorInspector.cs" />
-    <Compile Include="Assets\Devion Games\Module Manager\Editor\ModuleManagerWindow.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\ItemCollectionEditor.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\ItemGroupInspector.cs" />
-    <Compile Include="Assets\Devion Games\Triggers\Scripts\Editor\ActionsDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Third Person Controller\Scripts\Editor\ThirdPersonControllerEditor.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Property Drawers\NamedVariableDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Internal\CopyComponentEditor.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Inspectors\BlackboardInspector.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\UI\SlotInspector.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\InventorySystemInspector.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Property Drawers\EnumFlagsDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Inspectors\AudioEventListenerInspector.cs" />
-    <Compile Include="Assets\Devion Games\Triggers\Scripts\Editor\ActionTemplateInspector.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Asset\ObjectPickerWindow.cs" />
-    <Compile Include="Assets\Devion Games\Stat System\Scripts\Editor\StatEffectPickerDrawer.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Inspectors\PropertyBindingInspector.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Internal\BuiltInResourcesWindow.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\EquipmentHandlerEditor.cs" />
-    <Compile Include="Assets\Devion Games\Stat System\Scripts\Editor\StatSystemEditor.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Inspectors\CallbackHandlerInspector.cs" />
-    <Compile Include="Assets\Devion Games\Graphs\Scripts\Editor\GraphView.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\ItemSettingsEditor.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\Items\EquipmentItemInspector.cs" />
-    <Compile Include="Assets\Devion Games\Triggers\Scripts\Editor\ActionInspector.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\CustomDrawerAttribute.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\UtilityInstanceWindow.cs" />
-    <Compile Include="Assets\Devion Games\Module Manager\Editor\JsonHelper.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\Inspectors\Items\SkillInspector.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Asset\AssetWindow.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Asset\ObjectWindow.cs" />
-    <Compile Include="Assets\Devion Games\Inventory System\Scripts\Editor\ItemReferenceEditor.cs" />
-    <Compile Include="Assets\Devion Games\Utilities\Scripts\Editor\Collection Editor\NamedVariableCollectionEditor.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Devion Games\Graphs\Scripts\Editor\Resources\GridLine.shader" />
+    <Compile Include="Assets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -396,23 +284,23 @@
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>D:\Programmes\UnityEditors\2020.3.27f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="GLTFSerialization">
-      <HintPath>Assets\Sketchfab For Unity\Dependencies\Libraries\GLTFSerialization.dll</HintPath>
+    <Reference Include="Unity.Plastic.Newtonsoft.Json">
+      <HintPath>Library\PackageCache\com.unity.collab-proxy@1.15.7\Lib\Editor\PlasticSCM\Unity.Plastic.Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zip.Unity">
-      <HintPath>Assets\Sketchfab For Unity\Dependencies\Libraries\Ionic.Zip.Unity.dll</HintPath>
+    <Reference Include="Unity.Plastic.Antlr3.Runtime">
+      <HintPath>Library\PackageCache\com.unity.collab-proxy@1.15.7\Lib\Editor\PlasticSCM\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Burst.Unsafe">
-      <HintPath>Library\PackageCache\com.unity.burst@1.3.4\Unity.Burst.Unsafe.dll</HintPath>
+    <Reference Include="unityplastic">
+      <HintPath>Library\PackageCache\com.unity.collab-proxy@1.15.7\Lib\Editor\PlasticSCM\unityplastic.dll</HintPath>
     </Reference>
-    <Reference Include="SketchfabPlugin">
-      <HintPath>Assets\Sketchfab For Unity\Dependencies\Libraries\SketchfabPlugin.dll</HintPath>
+    <Reference Include="log4netPlastic">
+      <HintPath>Library\PackageCache\com.unity.collab-proxy@1.15.7\Lib\Editor\PlasticSCM\log4netPlastic.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.NRefactory">
       <HintPath>Library\PackageCache\com.unity.render-pipelines.core@10.8.1\Editor\ShaderGenerator\ICSharpCode.NRefactory.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>Library\PackageCache\com.unity.nuget.mono-cecil@1.10.1\Mono.Cecil.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Library\PackageCache\com.unity.nuget.newtonsoft-json@2.0.0\Runtime\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>
@@ -771,14 +659,17 @@
     <Reference Include="UnityEditor.TestRunner">
       <HintPath>Library\ScriptAssemblies\UnityEditor.TestRunner.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.ShaderGraph.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Shaders">
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
     </Reference>
-    <Reference Include="com.unity.multiplayer-hlapi.Editor">
-      <HintPath>Library\ScriptAssemblies\com.unity.multiplayer-hlapi.Editor.dll</HintPath>
+    <Reference Include="Unity.RenderPipelines.Universal.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Runtime">
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
@@ -789,20 +680,23 @@
     <Reference Include="Unity.VisualStudio.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Performance.Profile-Analyzer.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Performance.Profile-Analyzer.Editor.dll</HintPath>
+    <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
+      <HintPath>Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.ProBuilder.AddOns.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.ProBuilder.AddOns.Editor.dll</HintPath>
+    <Reference Include="Unity.Timeline.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
+      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Burst.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
+    <Reference Include="Unity.Mathematics.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Searcher.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Searcher.Editor.dll</HintPath>
@@ -810,123 +704,32 @@
     <Reference Include="Unity.RenderPipelines.Core.Runtime">
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.ProBuilder">
-      <HintPath>Library\ScriptAssemblies\Unity.ProBuilder.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ProBuilder.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.ProBuilder.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.InputSystem">
-      <HintPath>Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Postprocessing.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Postprocessing.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="com.unity.multiplayer-weaver.Editor">
-      <HintPath>Library\ScriptAssemblies\com.unity.multiplayer-weaver.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Polybrush.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Polybrush.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Polybrush">
-      <HintPath>Library\ScriptAssemblies\Unity.Polybrush.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Animation.Rigging">
-      <HintPath>Library\ScriptAssemblies\Unity.Animation.Rigging.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Mathematics">
-      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
-    </Reference>
-    <Reference Include="com.unity.multiplayer-hlapi.Runtime">
-      <HintPath>Library\ScriptAssemblies\com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ShaderGraph.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Cinemachine">
-      <HintPath>Library\ScriptAssemblies\Cinemachine.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Burst">
-      <HintPath>Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Postprocessing.Runtime">
-      <HintPath>Library\ScriptAssemblies\Unity.Postprocessing.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="com.unity.cinemachine.editor">
-      <HintPath>Library\ScriptAssemblies\com.unity.cinemachine.editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ProBuilder.AssetIdRemapUtility">
-      <HintPath>Library\ScriptAssemblies\Unity.ProBuilder.AssetIdRemapUtility.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Timeline.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Mathematics.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Animation.Rigging.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Animation.Rigging.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Core.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.dll</HintPath>
+    <Reference Include="Unity.PlasticSCM.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.CollabProxy.Editor.dll</HintPath>
+    <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
+      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{4F48F480-8C24-ADB7-C6DE-FDA41E284352}</Project>
       <Name>Assembly-CSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="DevionGames.Triggers.csproj">
-      <Project>{C180F0FA-E28D-6183-CCDE-C0E76AA956EF}</Project>
-      <Name>DevionGames.Triggers</Name>
-    </ProjectReference>
-    <ProjectReference Include="DevionGames.StatSystem.csproj">
-      <Project>{BECDEA94-0178-F471-81B6-D901BC42FBFA}</Project>
-      <Name>DevionGames.StatSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="DevionGames.Utilities.csproj">
-      <Project>{5AA39EDE-DD09-4880-7649-A7EB0FE219BA}</Project>
-      <Name>DevionGames.Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="DevionGames.ThirdPersonController.csproj">
-      <Project>{14FEF622-9768-0E80-F538-63E9B6832B86}</Project>
-      <Name>DevionGames.ThirdPersonController</Name>
-    </ProjectReference>
-    <ProjectReference Include="DevionGames.InventorySystem.csproj">
-      <Project>{6C8AEA5F-EBE3-EE97-AFC0-DE60E26F1855}</Project>
-      <Name>DevionGames.InventorySystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="DevionGames.UIWidgets.csproj">
-      <Project>{EDEFF2FC-DE00-840C-8311-B1F0E0D4B236}</Project>
-      <Name>DevionGames.UIWidgets</Name>
-    </ProjectReference>
-    <ProjectReference Include="DevionGames.Graphs.csproj">
-      <Project>{B58FA04A-C3B8-C137-43D9-557FA2576C27}</Project>
-      <Name>DevionGames.Graphs</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
