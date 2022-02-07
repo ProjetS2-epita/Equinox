@@ -20,7 +20,6 @@ public class ThirdPerson_ShooterController : MonoBehaviour
     public float walkEnemyPerceptionRadius = 1.5f;
     public float sprintEnemyPerceptionRadius = 4f;
     //public GameObject impactEffect;
-    
 
     private AudioSource audioSource;
     private SphereCollider sphereCollider;
@@ -34,7 +33,7 @@ public class ThirdPerson_ShooterController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         sphereCollider = GetComponent<SphereCollider>();
     }
-
+    
     private void Update()
     {
         Vector3 mouseWorldPosition = Vector3.zero;
@@ -48,12 +47,13 @@ public class ThirdPerson_ShooterController : MonoBehaviour
         }
 
         Aim(mouseWorldPosition);
+        
         Shoot(hitTransform, raycastHit);
 
         //walk & sprint noise radius
         sphereCollider.radius = thirdPersonController.GetPlayerStealthProfile() == 0 ? walkEnemyPerceptionRadius : sprintEnemyPerceptionRadius;
     }
-
+    
     void Aim(Vector3 mouseWorldPosition)
     {
         if (starterAssetsInputs.aim)
