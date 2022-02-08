@@ -16,7 +16,7 @@ public class EnemyAI : MonoBehaviour
     public float viewDistance = 10f;
     public float wanderRadius = 7f;
     public float losePlayerSightThreshold = 50f;
-    [SerializeField] private bool isAware = false;
+    public bool isAware = false;
 
     private bool isDetecting = false;
     private Vector3 wanderPoint;
@@ -26,29 +26,25 @@ public class EnemyAI : MonoBehaviour
     private Animator animator;
     private float loseTimer = 0;
     private HealthSystem healthSystem;
+    private bool IsDead = false;
 
-    private Collider[] ragdollColliders;
-    private Rigidbody[] ragdollRigidBodies;
-    private bool IsRagdoll;
 
     void Start()
     {
-        IsRagdoll = false;
         player = PlayerManager.instance.player.transform;
         healthSystem = GetComponent<HealthSystem>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         wanderPoint = RandomWanderPoint();
-        ragdollColliders = GetComponentsInChildren<Collider>();
-        ragdollRigidBodies = GetComponentsInChildren<Rigidbody>();
-        foreach (Collider collider in ragdollColliders) collider.enabled = collider.CompareTag("Enemy");
-        foreach (Rigidbody body in ragdollRigidBodies) body.isKinematic = true;
     }
 
     void Update()
     {
         if (healthSystem.IsDead) {
-            if (!IsRagdoll) Die();
+            if (!IsDead) {
+                IsDead = true;
+                Die();
+            }
             return;
         }
 
@@ -151,8 +147,8 @@ public class EnemyAI : MonoBehaviour
     {
         agent.speed = 0;
         animator.enabled = false;
-        foreach (Collider collider in ragdollColliders) collider.enabled = !collider.CompareTag("Enemy"); ;
-        foreach (Rigidbody body in ragdollRigidBodies) body.isKinematic = false;
+        //GetComponent<Collider>().enabled = false;
+        Destroy(gameObject);
     }
 
     public Vector3 RandomWanderPoint()

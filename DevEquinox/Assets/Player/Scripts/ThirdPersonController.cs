@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using Cinemachine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
+//using StarterAssets;
 #endif
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
@@ -9,6 +11,8 @@ using UnityEngine.InputSystem;
 namespace StarterAssets
 {
 	[RequireComponent(typeof(CharacterController))]
+	[RequireComponent(typeof(AudioSource))]
+	[RequireComponent(typeof(SphereCollider))]
 #if ENABLE_INPUT_SYSTEM
 	[RequireComponent(typeof(PlayerInput))]
 #endif
@@ -60,6 +64,25 @@ namespace StarterAssets
 		[Tooltip("For locking the camera position on all axis")]
 		public bool LockCameraPosition = false;
 
+		// Shooter Controller
+		[Header("Shooter Controller")]
+		[SerializeField] private CinemachineVirtualCamera aimVirtualCamera;
+		[SerializeField] private float normalSensitivity = 1f;
+		[SerializeField] private float aimSensitivity = 0.3f;
+		[SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
+		[SerializeField] private LayerMask ennemiesLayer;
+		[SerializeField] private Transform aimTrackerTransform;
+		[SerializeField] private float shootDamage;
+		public AudioClip shootSound;
+		Transform lastHitTransform;
+		RaycastHit lastRaycastHit;
+		Vector3 mouseWorldPosition;
+		public float soundIntensity = 100f;
+		public float walkEnemyPerceptionRadius = 1.5f;
+		public float sprintEnemyPerceptionRadius = 4f;
+		private AudioSource audioSource;
+		private SphereCollider sphereCollider;
+
 		// cinemachine
 		private float _cinemachineTargetYaw;
 		private float _cinemachineTargetPitch;
@@ -85,34 +108,66 @@ namespace StarterAssets
 
 		private Animator _animator;
 		private CharacterController _controller;
-		private StarterAssetsInputs _input;
+
+		//Inputs
+		private PlayerInput _playerInput;
+		private InputAction moveAction;
+		private InputAction lookAction;
+		private InputAction jumpAction;
+		private InputAction sprintAction;
+		public InputAction aimAction;
+		public InputAction shootAction;
+		private InputAction droneAction;
+
 		private GameObject _mainCamera;
 		private bool _rotateOnMove = true;
-
 		private const float _threshold = 0.01f;
-
 		private bool _hasAnimator;
 
-		private void Awake()
+
+        private void Awake()
 		{
 			// get a reference to our main camera
 			if (_mainCamera == null)
 			{
 				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 			}
+			_controller = GetComponent<CharacterController>();
+			audioSource = GetComponent<AudioSource>();
+			sphereCollider = GetComponent<SphereCollider>();
+
+			_playerInput = GetComponent<PlayerInput>();
+			moveAction = _playerInput.actions["Move"];
+			lookAction = _playerInput.actions["Look"];
+			jumpAction = _playerInput.actions["Jump"];
+			sprintAction = _playerInput.actions["Sprint"];
+			aimAction = _playerInput.actions["Aim"];
+			shootAction = _playerInput.actions["Shoot"];
+			droneAction = _playerInput.actions["SwitchDrone"];
 		}
 
-		private void Start()
+		private void OnEnable()
+		{
+			shootAction.performed += Shoot;
+			aimAction.performed += Aim;
+			droneAction.performed += DroneSwitch;
+		}
+
+        private void OnDisable()
+        {
+			shootAction.performed -= Shoot;
+			aimAction.performed -= Aim;
+			droneAction.performed -= DroneSwitch;
+		}
+
+        private void Start()
 		{
 			_hasAnimator = TryGetComponent(out _animator);
-			_controller = GetComponent<CharacterController>();
-			_input = GetComponent<StarterAssetsInputs>();
-
 			AssignAnimationIDs();
-
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
+			mouseWorldPosition = Vector3.zero;
 		}
 
 		private void Update()
@@ -122,6 +177,19 @@ namespace StarterAssets
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
+
+			mouseWorldPosition = Vector3.zero;
+			Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+			Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+			lastHitTransform = null;
+			if (Physics.Raycast(ray, out lastRaycastHit, 999f, aimColliderLayerMask)) {
+				aimTrackerTransform.position = lastRaycastHit.point;
+				mouseWorldPosition = lastRaycastHit.point;
+				lastHitTransform = lastRaycastHit.transform;
+			}
+
+			//walk & sprint noise radius
+			sphereCollider.radius = GetPlayerStealthProfile() == 0 ? walkEnemyPerceptionRadius : sprintEnemyPerceptionRadius;
 		}
 
 		private void LateUpdate()
@@ -153,11 +221,13 @@ namespace StarterAssets
 
 		private void CameraRotation()
 		{
+			Vector2 look = lookAction.ReadValue<Vector2>();
+
 			// if there is an input and camera position is not fixed
-			if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
+			if (look.sqrMagnitude >= _threshold && !LockCameraPosition)
 			{
-				_cinemachineTargetYaw += _input.look.x * Time.deltaTime * Sensitivity;
-				_cinemachineTargetPitch += _input.look.y * Time.deltaTime * Sensitivity;
+				_cinemachineTargetYaw += look.x * Time.deltaTime * Sensitivity;
+				_cinemachineTargetPitch += look.y * Time.deltaTime * Sensitivity;
 			}
 
 			// clamp our rotations so our values are limited 360 degrees
@@ -170,20 +240,22 @@ namespace StarterAssets
 
 		private void Move()
 		{
+			Vector2 move = moveAction.ReadValue<Vector2>();
+
 			// set target speed based on move speed, sprint speed and if sprint is pressed
-			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+			float targetSpeed = sprintAction.IsPressed() ? SprintSpeed : MoveSpeed;
 
 			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
 			// note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
 			// if there is no input, set the target speed to 0
-			if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+			if (move == Vector2.zero) targetSpeed = 0.0f;
 
 			// a reference to the players current horizontal velocity
 			float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
 			float speedOffset = 0.1f;
-			float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+			float inputMagnitude = move.magnitude;// : 1f;
 
 			// accelerate or decelerate to target speed
 			if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
@@ -202,11 +274,11 @@ namespace StarterAssets
 			_animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
 
 			// normalise input direction
-			Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+			Vector3 inputDirection = new Vector3(move.x, 0.0f, move.y).normalized;
 
 			// note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
 			// if there is a move input rotate player when the player is moving
-			if (_input.move != Vector2.zero)
+			if (move != Vector2.zero)
 			{
 				_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
 				float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
@@ -252,7 +324,7 @@ namespace StarterAssets
 				}
 
 				// Jump
-				if (_input.jump && _jumpTimeoutDelta <= 0.0f)
+				if (jumpAction.triggered && _jumpTimeoutDelta <= 0.0f)
 				{
 					// the square root of H * -2 * G = how much velocity needed to reach desired height
 					_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
@@ -290,7 +362,7 @@ namespace StarterAssets
 				}
 
 				// if we are not grounded, do not jump
-				_input.jump = false;
+				//_input.jump = false;
 			}
 
 			// apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
@@ -299,6 +371,54 @@ namespace StarterAssets
 				_verticalVelocity += Gravity * Time.deltaTime;
 			}
 		}
+
+		private void Aim(InputAction.CallbackContext ctx)
+		{
+			if (aimAction.IsPressed()) {
+				aimVirtualCamera.gameObject.SetActive(true);
+				SetSensitivity(aimSensitivity);
+				SetRotateOnMove(false);
+				Vector3 worldAimTarget = mouseWorldPosition;
+				worldAimTarget.y = transform.position.y;
+				Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
+				transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
+			}
+			else {
+				aimVirtualCamera.gameObject.SetActive(false);
+				SetSensitivity(normalSensitivity);
+				SetRotateOnMove(true);
+			}
+		}
+
+		private void Shoot(InputAction.CallbackContext ctx)
+		{
+			if (shootAction.triggered) {
+				audioSource.PlayOneShot(shootSound);
+				if (lastHitTransform != null) {
+					HealthSystem health = lastHitTransform.GetComponent<HealthSystem>();
+					if (health != null) {
+						//hit target
+						Debug.Log("Target Hit :" + lastHitTransform.name);
+						health.TakeDamage(shootDamage);
+						//Instantiate(impactEffect, raycastHit.point, Quaternion.LookRotation(raycastHit.normal));
+						//hitTransform.gameObject.GetComponent<Rigidbody>().AddForceAtPosition(new Vector3(10, 10, 10), raycastHit.point);
+					}
+					else {
+						//hit something else
+						Debug.Log("Target Miss :" + lastHitTransform.name);
+					}
+				}
+				//gunshot sound propagation for enemies perception
+				Collider[] enemies = Physics.OverlapSphere(transform.position, soundIntensity, ennemiesLayer);
+				foreach (Collider enemy in enemies)
+					enemy.gameObject.GetComponent<EnemyAI>()?.OnAware();
+			}
+		}
+
+		private void DroneSwitch(InputAction.CallbackContext ctx)
+        {
+			_playerInput.SwitchCurrentActionMap("Drone");
+        }
 
 		private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
 		{
@@ -319,21 +439,34 @@ namespace StarterAssets
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
 		}
 
-		public void SetSensitivity(float newSensitivity)
+		private void SetSensitivity(float newSensitivity)
         {
 			Sensitivity = newSensitivity;
         }
 
-		public void SetRotateOnMove(bool newRotateOnMove)
+		private void SetRotateOnMove(bool newRotateOnMove)
         {
 			_rotateOnMove = newRotateOnMove;
         }
 
-		public int GetPlayerStealthProfile()
+        private void OnApplicationFocus(bool focus)
+        {
+			Cursor.lockState = focus ? CursorLockMode.Locked : CursorLockMode.None;
+        }
+
+        private int GetPlayerStealthProfile()
         {
 			return _speed <= MoveSpeed ? 0 : 1;
         }
 
+		private void OnTriggerEnter(Collider other)
+		{
+			Debug.Log("COLLIDED : " + other.gameObject.name);
+			if (other.gameObject.CompareTag("Enemy"))
+			{
+				other.gameObject.GetComponent<EnemyAI>().OnAware();
+			}
+		}
 
 	}
 }

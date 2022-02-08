@@ -56,6 +56,7 @@
     <Analyzer Include="D:\Programmes\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\StarterAssets.cs" />
     <Compile Include="Assets\Enemies\EnemyAI.cs" />
     <Compile Include="Assets\Player\Scripts\ThirdPersonController.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabLogger.cs" />
@@ -64,8 +65,6 @@
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabUI.cs" />
     <Compile Include="Assets\Winter Zone Mini 1.0\Scripts\FXDemoController.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabImporter.cs" />
-    <Compile Include="Assets\Player\Scripts\StarterAssetsInputs.cs" />
-    <Compile Include="Assets\Player\Scripts\ThirdPerson_ShooterController.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserManager.cs" />
     <Compile Include="Assets\Scripts\HealthSystem.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabImporterWindow.cs" />
