@@ -330,8 +330,136 @@ namespace StarterAssets
         {
             ""name"": ""Drone"",
             ""id"": ""2f6dc829-30a5-416d-acda-76afc54d8139"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""DroneMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""b485c11e-0d77-46b8-9820-b72c3d0873c8"",
+                    ""expectedControlType"": ""Vector3"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""DroneLook"",
+                    ""type"": ""Value"",
+                    ""id"": ""b8b8fac6-f531-4d73-8037-c741c16abf05"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SwitchAvatar"",
+                    ""type"": ""Button"",
+                    ""id"": ""cd05f640-1eb1-44ad-8881-36b23be2aa5c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""HBQDZS"",
+                    ""id"": ""f6850f57-c516-46f3-81e6-9bfc4f712d83"",
+                    ""path"": ""3DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DroneMove"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""2c8441e3-0764-4f0d-8208-528cec45542f"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""DroneMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""d3a9a4a3-0a35-45dc-9251-da4320c59666"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""DroneMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""75ddaab9-1aee-469e-94fc-3f7e735d8163"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""DroneMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""9a7d0694-7434-4c27-9392-056e5e95c547"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""DroneMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""forward"",
+                    ""id"": ""f3c83eeb-69ee-4e23-b5ae-ff9f19cb3e1d"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""DroneMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""backward"",
+                    ""id"": ""97eb95bf-c038-4353-ba99-57a0ded2b9b0"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""DroneMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2e0d653b-892b-4fb0-9829-3c5468ce6c5d"",
+                    ""path"": ""<Pointer>/delta"",
+                    ""interactions"": """",
+                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=15,y=15)"",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""DroneLook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""039fc75c-811b-423f-89ae-27d5add11608"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""SwitchAvatar"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -395,6 +523,9 @@ namespace StarterAssets
             m_Player_SwitchDrone = m_Player.FindAction("SwitchDrone", throwIfNotFound: true);
             // Drone
             m_Drone = asset.FindActionMap("Drone", throwIfNotFound: true);
+            m_Drone_DroneMove = m_Drone.FindAction("DroneMove", throwIfNotFound: true);
+            m_Drone_DroneLook = m_Drone.FindAction("DroneLook", throwIfNotFound: true);
+            m_Drone_SwitchAvatar = m_Drone.FindAction("SwitchAvatar", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -535,10 +666,16 @@ namespace StarterAssets
         // Drone
         private readonly InputActionMap m_Drone;
         private IDroneActions m_DroneActionsCallbackInterface;
+        private readonly InputAction m_Drone_DroneMove;
+        private readonly InputAction m_Drone_DroneLook;
+        private readonly InputAction m_Drone_SwitchAvatar;
         public struct DroneActions
         {
             private @StarterAssets m_Wrapper;
             public DroneActions(@StarterAssets wrapper) { m_Wrapper = wrapper; }
+            public InputAction @DroneMove => m_Wrapper.m_Drone_DroneMove;
+            public InputAction @DroneLook => m_Wrapper.m_Drone_DroneLook;
+            public InputAction @SwitchAvatar => m_Wrapper.m_Drone_SwitchAvatar;
             public InputActionMap Get() { return m_Wrapper.m_Drone; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -548,10 +685,28 @@ namespace StarterAssets
             {
                 if (m_Wrapper.m_DroneActionsCallbackInterface != null)
                 {
+                    @DroneMove.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnDroneMove;
+                    @DroneMove.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnDroneMove;
+                    @DroneMove.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnDroneMove;
+                    @DroneLook.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnDroneLook;
+                    @DroneLook.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnDroneLook;
+                    @DroneLook.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnDroneLook;
+                    @SwitchAvatar.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnSwitchAvatar;
+                    @SwitchAvatar.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnSwitchAvatar;
+                    @SwitchAvatar.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnSwitchAvatar;
                 }
                 m_Wrapper.m_DroneActionsCallbackInterface = instance;
                 if (instance != null)
                 {
+                    @DroneMove.started += instance.OnDroneMove;
+                    @DroneMove.performed += instance.OnDroneMove;
+                    @DroneMove.canceled += instance.OnDroneMove;
+                    @DroneLook.started += instance.OnDroneLook;
+                    @DroneLook.performed += instance.OnDroneLook;
+                    @DroneLook.canceled += instance.OnDroneLook;
+                    @SwitchAvatar.started += instance.OnSwitchAvatar;
+                    @SwitchAvatar.performed += instance.OnSwitchAvatar;
+                    @SwitchAvatar.canceled += instance.OnSwitchAvatar;
                 }
             }
         }
@@ -604,6 +759,9 @@ namespace StarterAssets
         }
         public interface IDroneActions
         {
+            void OnDroneMove(InputAction.CallbackContext context);
+            void OnDroneLook(InputAction.CallbackContext context);
+            void OnSwitchAvatar(InputAction.CallbackContext context);
         }
     }
 }

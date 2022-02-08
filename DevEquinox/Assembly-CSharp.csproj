@@ -62,6 +62,7 @@
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabLogger.cs" />
     <Compile Include="Assets\Winter Zone Mini 1.0\Scripts\EmitterPositionController.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabPlugin.cs" />
+    <Compile Include="Assets\Drone\DroneController.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabUI.cs" />
     <Compile Include="Assets\Winter Zone Mini 1.0\Scripts\FXDemoController.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabImporter.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Assets\Sketchfab For Unity\Scripts\Resizer.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabApi.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserWindow.cs" />
+    <Compile Include="Assets\Scripts\InputManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

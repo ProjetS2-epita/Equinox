@@ -78,3 +78,80 @@ C# parse time         : 364ms
 candidates check time : 91ms
 console write time    : 1ms
 
+[api-updater (non-obsolete-error-filter)] 08/02/2022 16:45:20 : Starting D:/Programmes/UnityEditors/2020.3.27f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 120,3359ms
+moved types parse time: 92ms
+candidates parse time : 2ms
+C# parse time         : 404ms
+candidates check time : 395ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 08/02/2022 16:49:52 : Starting D:/Programmes/UnityEditors/2020.3.27f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 115,3243ms
+moved types parse time: 110ms
+candidates parse time : 3ms
+C# parse time         : 355ms
+candidates check time : 303ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 08/02/2022 16:50:55 : Starting D:/Programmes/UnityEditors/2020.3.27f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 141,9382ms
+moved types parse time: 104ms
+candidates parse time : 2ms
+C# parse time         : 362ms
+candidates check time : 308ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 08/02/2022 16:53:24 : Starting D:/Programmes/UnityEditors/2020.3.27f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 110,2419ms
+moved types parse time: 95ms
+candidates parse time : 2ms
+C# parse time         : 393ms
+candidates check time : 284ms
+console write time    : 1ms
+
+[api-updater (non-obsolete-error-filter)] 08/02/2022 17:47:35 : Starting D:/Programmes/UnityEditors/2020.3.27f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] Exception caught while loading types from C:\Users\matco\Desktop\S2\DevEquinox\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll (some types may not be loaded)
+	Exception of type 'System.Reflection.ReflectionTypeLoadException' was thrown.
+	  at (wrapper managed-to-native) System.Reflection.Assembly.GetTypes(System.Reflection.Assembly,bool)
+  at System.Reflection.Assembly.GetTypes () [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at APIUpdater.NonObsoleteApiUpdaterDetector.ExtraInfoParser+<LoadTypesWithMovedFromAttributeAsync>d__3.MoveNext () [0x000c8] in <68bff7873e0e4aa69a14dfc30bebbe3e>:0 
+	Could not load file or assembly 'UnityEditor.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies.
+
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 149,8042ms
+moved types parse time: 80ms
+candidates parse time : 2ms
+C# parse time         : 407ms
+candidates check time : 270ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 08/02/2022 18:09:23 : Starting D:/Programmes/UnityEditors/2020.3.27f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 125,8577ms
+moved types parse time: 76ms
+candidates parse time : 2ms
+C# parse time         : 361ms
+candidates check time : 205ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 08/02/2022 18:11:20 : Starting D:/Programmes/UnityEditors/2020.3.27f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 157,4718ms
+moved types parse time: 89ms
+candidates parse time : 2ms
+C# parse time         : 376ms
+candidates check time : 203ms
+console write time    : 1ms
+
