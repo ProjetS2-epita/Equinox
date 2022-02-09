@@ -29,19 +29,10 @@ public class Inventory : MonoBehaviour
         itemsList.Add(item);
     }
 
-    public void UpdateItemsInventory()
-    {
-        foreach(Transform itemSlot in itemSlotContainerParent)
-        {
-            Destroy(itemSlot.gameObject);
-        }
-        
-        foreach(ItemsManager item in itemsList)
-        {
-            RectTransform itemSlot = Instantiate(itemSlotContainer, itemSlotContainerParent).GetComponent<RectTransform>();
-            Sprite itemImage = itemSlot.Find("Case Image").GetComponent<Sprite>();
-            itemImage = item.itemsImage;
-        }
+  
 
+    public List<ItemsManager> GetItemList()
+    {
+        return itemsList;
     }
 }

@@ -1,0 +1,2 @@
+D:\S2\Equinox\Equinox\obj\Debug\Unity.RenderPipelines.Core.Runtime.csproj.AssemblyReference.cache
+D:\S2\Equinox\Equinox\obj\Debug\Unity.RenderPipelines.Core.Runtime.csproj.CoreCompileInputs.cache

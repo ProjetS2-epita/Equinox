@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
-
+    public bool gameMenuOpened;
     [SerializeField] PlayerStats[] playerStats;
     // Start is called before the first frame update
     void Start()
@@ -28,5 +28,10 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public PlayerStats[] GetPlayerStats()
+    {
+        return playerStats;
     }
 }
