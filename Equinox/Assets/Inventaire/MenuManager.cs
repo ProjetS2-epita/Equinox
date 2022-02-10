@@ -8,7 +8,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject menu;
 
     private PlayerStats[] playerStats;
-    [SerializeField] Text[] nameText, hpTexts, faimTexts, soifTexts;
+    [SerializeField] Text[] nameText, hpTexts, faimTexts, soifTexts; 
     [SerializeField] Image[] characterImage;
     [SerializeField] GameObject[] characterPanel;
     public static MenuManager instance;
@@ -16,9 +16,17 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject itemSlotContainer;
     [SerializeField] Transform itemSlotContainerParent;
 
+    [SerializeField] Transform ItemDescMenu;
+    [SerializeField] public GameObject ItemNameText;
+    [SerializeField] public GameObject ItemDescText;
+
+    public Text itemName, itemDescription;
+
     void Start()
     {
         instance = this;
+        UpdateStats();
+        UpdateItemsInventory();
     }
 
     private void Update()
@@ -27,15 +35,18 @@ public class MenuManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.M))
         {
 
-
-            UpdateStats();
+            
+            
             if (menu.activeInHierarchy)
             {
+                Cursor.lockState = CursorLockMode.Locked;
                 menu.SetActive(false);
                 GameManager.instance.gameMenuOpened = false;
             }
             else
             {
+                UpdateStats();
+                Cursor.lockState = CursorLockMode.None;
                 UpdateItemsInventory();
                 menu.SetActive(true);
                 GameManager.instance.gameMenuOpened = true;
@@ -79,12 +90,28 @@ public class MenuManager : MonoBehaviour
 
         foreach (ItemsManager item in Inventory.instance.GetItemList())
         {
-            RectTransform itemSlotNew = Instantiate(itemSlotContainer, itemSlotContainerParent).GetComponent<RectTransform>();
-    Sprite itemImage = itemSlotNew.Find("Item Image").GetComponent<Sprite>();
-    itemImage = item.itemsImage;
+                RectTransform itemSlot = Instantiate(itemSlotContainer, itemSlotContainerParent).GetComponent<RectTransform>();
+                Sprite itemImage = itemSlot.Find("Item Image").GetComponent<Sprite>();
+                itemImage = item.itemsImage;
+                Text itemsAmountText = itemSlot.Find("Amount Text").GetComponent<Text>();
+                
+                
+
+
+            if (item.amount > 1)
+            {
+                itemsAmountText.text = item.amount.ToString();
+            }
+
+            else
+            {
+                itemsAmountText.text = "";
+            }
+            
         }
 
  }
+
 
 
 public void QuitGame()

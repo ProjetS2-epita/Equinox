@@ -9,8 +9,6 @@ public class Inventory : MonoBehaviour
     private List<ItemsManager> itemsList;
 
 
-    [SerializeField] GameObject itemSlotContainer;
-    [SerializeField] Transform itemSlotContainerParent;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +24,32 @@ public class Inventory : MonoBehaviour
     }
     public void AddItems(ItemsManager item)
     {
-        itemsList.Add(item);
+        if (item.isStackable)
+        {
+
+            bool itemAlreadyInInventory = false;
+
+            foreach(ItemsManager itemInInventory in itemsList)
+            {
+                if(itemInInventory.itemName == item.itemName)
+                {
+                    itemInInventory.amount += item.amount;
+                    itemAlreadyInInventory = true;
+                }
+            }
+
+            if (!itemAlreadyInInventory)
+            {
+                itemsList.Add(item);
+            }
+        }
+        else 
+        {
+            itemsList.Add(item);
+        }
+        
+
+
     }
 
   

@@ -10,12 +10,13 @@ public class ItemsManager : MonoBehaviour
     public string itemName, itemDescription;
     public Sprite itemsImage;
 
+
     public enum AffectType { HP, Soif, Faim }
     public int amountOfAffect;
     public GameObject Model;
 
-
-
+    public bool isStackable;
+    public int amount;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +35,7 @@ public class ItemsManager : MonoBehaviour
         {
             Inventory.instance.AddItems(this);
             SelfDestroy();
+            MenuManager.instance.UpdateItemsInventory();
         }
     }
     public void SelfDestroy()
