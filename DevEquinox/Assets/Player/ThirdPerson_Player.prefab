@@ -2383,7 +2383,7 @@ MonoBehaviour:
     m_ActionName: Drone/SwitchAvatar[/Keyboard/backquote]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: KeyboardMouse
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: f62a4b92-ef5e-4175-8f4c-c9075429d32c
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!1 &6032165842257002022

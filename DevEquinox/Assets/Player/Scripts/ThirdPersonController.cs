@@ -176,6 +176,8 @@ public class ThirdPersonController : MonoBehaviour
 
 	private void Update()
 	{
+		if (!playerMap.enabled) return;
+
 		_hasAnimator = TryGetComponent(out _animator);
 			
 		JumpAndGravity();
@@ -247,6 +249,7 @@ public class ThirdPersonController : MonoBehaviour
 		Vector2 move = moveAction.ReadValue<Vector2>();
 
 		// set target speed based on move speed, sprint speed and if sprint is pressed
+
 		float targetSpeed = sprintAction.IsPressed() ? SprintSpeed : MoveSpeed;
 
 		// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
@@ -421,15 +424,7 @@ public class ThirdPersonController : MonoBehaviour
 
 	private void DroneSwitch(InputAction.CallbackContext ctx)
     {
-		Debug.Log("Current Action Map : " + _playerInput.currentActionMap);
 		_playerInput.SwitchCurrentActionMap("Drone");
-		Debug.Log("Current Action Map : " + _playerInput.currentActionMap);
-		/*
-		//Debug.Log("Checkpoint 2");
-		//droneController.focusCam(true);
-		_playerInput.SwitchCurrentActionMap("Player");
-		Debug.Log("Current Action Map : " + _playerInput.currentActionMap);
-		*/
 	}
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
