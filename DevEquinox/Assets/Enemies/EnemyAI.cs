@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-
 [RequireComponent(typeof(HealthSystem))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : MonoBehaviour
@@ -29,7 +28,6 @@ public class EnemyAI : MonoBehaviour
     private HealthSystem healthSystem;
     private bool IsDead = false;
 
-
     void Start()
     {
         attackable = null;
@@ -50,7 +48,7 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
-        if (isAware && attackable)
+        if (isAware && attackable != null)
         {
             agent.SetDestination(attackable.position);
             agent.speed = chaseSpeed;

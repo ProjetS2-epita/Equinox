@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LureSystem : MonoBehaviour
@@ -7,8 +5,8 @@ public class LureSystem : MonoBehaviour
     private SphereCollider noiseSystem;
     private AudioSource lureSource;
     public AudioClip lurer;
-    public float noiseRadius = 500f;
-    public float lifeSpan = 5f;
+    private float noiseRadius = 50f;
+    private float lifeSpan = 20f;
 
     private void Awake()
     {
@@ -16,6 +14,9 @@ public class LureSystem : MonoBehaviour
         lureSource = GetComponent<AudioSource>();
         lureSource.clip = lurer;
         lureSource.loop = true;
+        lureSource.minDistance = 1f;
+        lureSource.maxDistance = noiseRadius;
+        lureSource.spread = 360f;
     }
 
     void Start()
@@ -30,7 +31,6 @@ public class LureSystem : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("collided");
             other.gameObject.GetComponent<EnemyAI>().OnAware(this.gameObject.transform);
         }
     }

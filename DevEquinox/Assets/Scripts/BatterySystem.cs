@@ -1,15 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BatterySystem : TimeChangingQ
 {
+    public float ElectricityPercent { get { return currentQuantity; } set { currentQuantity = value; } }
+    public float ElectricityDecrease { get { return decreaseOverTime; } set { decreaseOverTime = value; } }
+    public float ElectricityIncrease { get { return increaseOverTime; } set { increaseOverTime = value; } }
+
     protected override void Start()
     {
-        initQuantity = 100f;
-        decreaseOverTime = 2;
-        increaseOverTime = 1;
         base.Start();
+        ElectricityDecrease = 2f;
+        ElectricityIncrease = 1f;
     }
 
     protected override void Update()

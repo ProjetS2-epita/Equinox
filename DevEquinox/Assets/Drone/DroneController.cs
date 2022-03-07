@@ -171,7 +171,7 @@ public class DroneController : MonoBehaviour
 
 	public void LureDrop(InputAction.CallbackContext ctx)
     {
-		Instantiate(lure, gameObject.transform.position, transform.rotation);
+		if(ctx.started) Instantiate(lure, gameObject.transform.position, transform.rotation);
 	}
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -190,7 +190,6 @@ public class DroneController : MonoBehaviour
 	{
 		if (other.gameObject.CompareTag("Enemy"))
 		{
-			Debug.Log("collided");
 			other.gameObject.GetComponent<EnemyAI>().OnAware(this.gameObject.transform);
 		}
 	}

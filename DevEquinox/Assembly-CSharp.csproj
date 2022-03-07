@@ -59,6 +59,8 @@
     <Compile Include="Assets\Scripts\StarterAssets.cs" />
     <Compile Include="Assets\Enemies\EnemyAI.cs" />
     <Compile Include="Assets\Player\Scripts\ThirdPersonController.cs" />
+    <Compile Include="Assets\Scripts\BatterySystem.cs" />
+    <Compile Include="Assets\Scripts\TimeChangingQ.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabLogger.cs" />
     <Compile Include="Assets\Winter Zone Mini 1.0\Scripts\EmitterPositionController.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabPlugin.cs" />
@@ -66,6 +68,7 @@
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabUI.cs" />
     <Compile Include="Assets\Winter Zone Mini 1.0\Scripts\FXDemoController.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabImporter.cs" />
+    <Compile Include="Assets\Lure\LureSystem.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserManager.cs" />
     <Compile Include="Assets\Scripts\HealthSystem.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabImporterWindow.cs" />
@@ -77,9 +80,8 @@
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabApi.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserWindow.cs" />
-    <Compile Include="Assets\Scripts\BatterySystem.cs" />
-    <Compile Include="Assets\Scripts\TimeChangingQ.cs" />
-    <Compile Include="Assets\Lure\LureSystem.cs" />
+    <Compile Include="Assets\Scripts\StarveSystem.cs" />
+    <Compile Include="Assets\Scripts\ThurstSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

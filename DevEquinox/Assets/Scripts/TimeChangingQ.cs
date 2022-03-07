@@ -19,6 +19,7 @@ public class TimeChangingQ : MonoBehaviour
 
     protected virtual void Start()
     {
+        initQuantity = 100f;
         currentQuantity = initQuantity;
         isActive = true;
     }
