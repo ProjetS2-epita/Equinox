@@ -9,34 +9,33 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(SphereCollider))]
 public class DroneController : MonoBehaviour
 {
-
+	private Transform owner = null;
+	public Transform Owner {get; set;}
+	public GameObject lure;
+	public float maxDistance = 100f;
     private CinemachineVirtualCamera droneCam;
 	private CharacterController _controller;
-	private SphereCollider sphereCollider;
     [SerializeField] private float droneSensitivity;
     [SerializeField] private AudioClip bladeSound;
-    [SerializeField] private bool LockCameraPosition = false;
 	[SerializeField] private float MoveSpeed = 2.0f;
-	[SerializeField] private bool _rotateOnMove = false;
 	public float Gravity = -15.0f;
 	private float _targetRotation = 0.0f;
 	private float _rotationVelocity;
-	private float _verticalVelocity;
-	private AudioSource audioSource;
+    private AudioSource audioSource;
+	private SphereCollider noisePropagation;
+	public float baseNoiseDistance = 20f;
 	private float _speed;
-	Vector3 _velocity;
-	public float dampingCoefficient = 5;
+    public float dampingCoefficient = 5f;
 
 	//Inputs
 	private PlayerInput _playerInput;
 	private InputActionMap droneMap;
 	private InputAction moveAction;
 	private InputAction lookAction;
-	private InputAction avatarAction;
 	private bool activeCam;
 
 	private const float _threshold = 0.01f;
-	private GameObject _mainCamera;
+	private Transform _mainCamera;
 	private float _cinemachineTargetYaw;
 	private float _cinemachineTargetPitch;
 	private Transform DroneCamTransform;
@@ -52,11 +51,12 @@ public class DroneController : MonoBehaviour
 	{
 		if (_mainCamera == null)
 		{
-			_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+			_mainCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
 		}
 		_controller = GetComponent<CharacterController>();
 		audioSource = GetComponent<AudioSource>();
-		sphereCollider = GetComponent<SphereCollider>();
+		noisePropagation = GetComponent<SphereCollider>();
+		noisePropagation.radius = baseNoiseDistance;
 
 		_playerInput = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerInput>();
 		DroneCamTransform = GameObject.FindGameObjectWithTag("DroneCamera").transform;
@@ -64,7 +64,6 @@ public class DroneController : MonoBehaviour
 		droneMap = _playerInput.actions.FindActionMap("Drone", true);
 		moveAction = droneMap.FindAction("DroneMove");
 		lookAction = droneMap.FindAction("DroneLook");
-		avatarAction = droneMap.FindAction("SwitchAvatar");
 		activeCam = droneMap.enabled;
 	}
 
@@ -122,7 +121,7 @@ public class DroneController : MonoBehaviour
     {
 		Vector2 look = lookAction.ReadValue<Vector2>();
 
-        if (look.sqrMagnitude >= _threshold && !LockCameraPosition) {
+        if (look.sqrMagnitude >= _threshold) {
             _cinemachineTargetYaw += look.x * Time.deltaTime * droneSensitivity;
             _cinemachineTargetPitch += look.y * Time.deltaTime * droneSensitivity;
         }
@@ -136,7 +135,6 @@ public class DroneController : MonoBehaviour
 	private void Move()
 	{
 		Vector3 move = moveAction.ReadValue<Vector3>();
-
 		float targetSpeed = MoveSpeed;
 		if (move == Vector3.zero) targetSpeed = 0.0f;
 		float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
@@ -147,14 +145,23 @@ public class DroneController : MonoBehaviour
 		else _speed = targetSpeed;
 		Vector3 inputDirection = new Vector3(move.x, 0.0f, move.z).normalized;
 		if (move != Vector3.zero) {
-			_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+			_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.eulerAngles.y;
 			float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
 			transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
 		}
-
 		Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * new Vector3(0.0f, move.y, 1f);
-		Vector3 moveVector = targetDirection * (_speed * Time.deltaTime);
-		_controller.Move(moveVector);
+		if (move.x == 0 && move.z == 0) {
+			targetDirection.x = 0;
+			targetDirection.y *= 10;
+			targetDirection.z = 0;
+        }
+		targetDirection *= (_speed * Time.deltaTime);
+
+		// Distance Control (signal strength)
+		if (owner != null && Vector3.Distance(owner.position, this.gameObject.transform.position + targetDirection) > maxDistance) return;
+
+		_controller.Move(targetDirection);
+		noisePropagation.radius = baseNoiseDistance + baseNoiseDistance * _controller.velocity.magnitude / 10f;
 	}
 
 	public void AvatarSwitch(InputAction.CallbackContext ctx)
@@ -162,9 +169,9 @@ public class DroneController : MonoBehaviour
 		_playerInput.SwitchCurrentActionMap("Player");
 	}
 
-	private void SetRotateOnMove(bool newRotateOnMove)
-	{
-		_rotateOnMove = newRotateOnMove;
+	public void LureDrop(InputAction.CallbackContext ctx)
+    {
+		Instantiate(lure, gameObject.transform.position, transform.rotation);
 	}
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -178,5 +185,14 @@ public class DroneController : MonoBehaviour
     {
 		droneCam.enabled = focus;
     }
+
+	private void OnTriggerStay(Collider other)
+	{
+		if (other.gameObject.CompareTag("Enemy"))
+		{
+			Debug.Log("collided");
+			other.gameObject.GetComponent<EnemyAI>().OnAware(this.gameObject.transform);
+		}
+	}
 
 }

@@ -973,6 +973,7 @@ GameObject:
   - component: {fileID: 417683427}
   - component: {fileID: 417683426}
   - component: {fileID: 417683428}
+  - component: {fileID: 473850466562457461}
   m_Layer: 0
   m_Name: drone
   m_TagString: Untagged
@@ -1153,11 +1154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c05341f5804aa448ff079a675e166b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxDistance: 100
   droneSensitivity: 2
   bladeSound: {fileID: 0}
-  LockCameraPosition: 0
   MoveSpeed: 8
-  _rotateOnMove: 0
   Gravity: -15
   dampingCoefficient: 3
   TopClamp: 180
@@ -1165,6 +1165,18 @@ MonoBehaviour:
   CameraAngleOverride: 0
   SpeedChangeRate: 10
   RotationSmoothTime: 0.12
+--- !u!114 &473850466562457461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2189415001218884694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4a0fb8e9a026ee4993805a57bf5ef87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2261088216373631827
 GameObject:
   m_ObjectHideFlags: 0

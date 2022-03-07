@@ -357,6 +357,15 @@ namespace StarterAssets
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LureDrop"",
+                    ""type"": ""Button"",
+                    ""id"": ""62721e6c-3727-4397-be73-b38e372978c6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -458,6 +467,17 @@ namespace StarterAssets
                     ""action"": ""SwitchAvatar"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""137f67bb-641a-4f32-987b-11b9c655edf8"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""LureDrop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -526,6 +546,7 @@ namespace StarterAssets
             m_Drone_DroneMove = m_Drone.FindAction("DroneMove", throwIfNotFound: true);
             m_Drone_DroneLook = m_Drone.FindAction("DroneLook", throwIfNotFound: true);
             m_Drone_SwitchAvatar = m_Drone.FindAction("SwitchAvatar", throwIfNotFound: true);
+            m_Drone_LureDrop = m_Drone.FindAction("LureDrop", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -669,6 +690,7 @@ namespace StarterAssets
         private readonly InputAction m_Drone_DroneMove;
         private readonly InputAction m_Drone_DroneLook;
         private readonly InputAction m_Drone_SwitchAvatar;
+        private readonly InputAction m_Drone_LureDrop;
         public struct DroneActions
         {
             private @StarterAssets m_Wrapper;
@@ -676,6 +698,7 @@ namespace StarterAssets
             public InputAction @DroneMove => m_Wrapper.m_Drone_DroneMove;
             public InputAction @DroneLook => m_Wrapper.m_Drone_DroneLook;
             public InputAction @SwitchAvatar => m_Wrapper.m_Drone_SwitchAvatar;
+            public InputAction @LureDrop => m_Wrapper.m_Drone_LureDrop;
             public InputActionMap Get() { return m_Wrapper.m_Drone; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -694,6 +717,9 @@ namespace StarterAssets
                     @SwitchAvatar.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnSwitchAvatar;
                     @SwitchAvatar.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnSwitchAvatar;
                     @SwitchAvatar.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnSwitchAvatar;
+                    @LureDrop.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnLureDrop;
+                    @LureDrop.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnLureDrop;
+                    @LureDrop.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnLureDrop;
                 }
                 m_Wrapper.m_DroneActionsCallbackInterface = instance;
                 if (instance != null)
@@ -707,6 +733,9 @@ namespace StarterAssets
                     @SwitchAvatar.started += instance.OnSwitchAvatar;
                     @SwitchAvatar.performed += instance.OnSwitchAvatar;
                     @SwitchAvatar.canceled += instance.OnSwitchAvatar;
+                    @LureDrop.started += instance.OnLureDrop;
+                    @LureDrop.performed += instance.OnLureDrop;
+                    @LureDrop.canceled += instance.OnLureDrop;
                 }
             }
         }
@@ -762,6 +791,7 @@ namespace StarterAssets
             void OnDroneMove(InputAction.CallbackContext context);
             void OnDroneLook(InputAction.CallbackContext context);
             void OnSwitchAvatar(InputAction.CallbackContext context);
+            void OnLureDrop(InputAction.CallbackContext context);
         }
     }
 }

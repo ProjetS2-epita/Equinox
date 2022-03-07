@@ -417,8 +417,12 @@ public class ThirdPersonController : MonoBehaviour
 			}
 			//gunshot sound propagation for enemies perception
 			Collider[] enemies = Physics.OverlapSphere(transform.position, soundIntensity, ennemiesLayer);
-			foreach (Collider enemy in enemies)
-				enemy.gameObject.GetComponent<EnemyAI>()?.OnAware();
+			foreach (Collider enemy in enemies) {
+				EnemyAI e = enemy.gameObject.GetComponent<EnemyAI>();
+				if (e != null) {
+					e.OnAware(this.gameObject.transform);
+				}
+			}
 		}
 	}
 
@@ -466,12 +470,12 @@ public class ThirdPersonController : MonoBehaviour
 		return _speed <= MoveSpeed ? 0 : 1;
     }
 
-	private void OnTriggerEnter(Collider other)
+	private void OnTriggerStay(Collider other)
 	{
-		//Debug.Log("COLLIDED : " + other.gameObject.name);
 		if (other.gameObject.CompareTag("Enemy"))
 		{
-			other.gameObject.GetComponent<EnemyAI>().OnAware();
+			Debug.Log("collided");
+			other.gameObject.GetComponent<EnemyAI>().OnAware(this.gameObject.transform);
 		}
 	}
 }

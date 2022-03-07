@@ -6,9 +6,9 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : MonoBehaviour
 {
-    public enum WanderType { Random, Waypoint};
+    public enum WanderType {Random, Waypoint};
 
-    Transform player;
+    private Transform attackable;
     public WanderType wanderType = WanderType.Random;
     public float wanderSpeed = 1.5f, chaseSpeed = 3f;
     public Transform[] waypoints;
@@ -18,6 +18,7 @@ public class EnemyAI : MonoBehaviour
     public float losePlayerSightThreshold = 50f;
     public bool isAware = false;
 
+    [SerializeField] private LayerMask attackableLayer;
     private bool isDetecting = false;
     private Vector3 wanderPoint;
     private NavMeshAgent agent;
@@ -31,7 +32,7 @@ public class EnemyAI : MonoBehaviour
 
     void Start()
     {
-        player = PlayerManager.instance.player.transform;
+        attackable = null;
         healthSystem = GetComponent<HealthSystem>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
@@ -41,6 +42,7 @@ public class EnemyAI : MonoBehaviour
     void Update()
     {
         if (healthSystem.IsDead) {
+            Debug.Log("zombie dead");
             if (!IsDead) {
                 IsDead = true;
                 Die();
@@ -48,9 +50,9 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
-        if (isAware)
+        if (isAware && attackable)
         {
-            agent.SetDestination(player.position);
+            agent.SetDestination(attackable.position);
             agent.speed = chaseSpeed;
             animator.speed = chaseSpeed;
             if (!isDetecting)
@@ -58,11 +60,13 @@ public class EnemyAI : MonoBehaviour
                 loseTimer += Time.deltaTime;
                 if (loseTimer >= losePlayerSightThreshold)
                 {
+                    Debug.Log("Lost prey sight");
+                    attackable = null;
                     isAware = false;
                     loseTimer = 0;
                 }
             }
-        } 
+        }
         else
         {
             Wander();
@@ -74,40 +78,36 @@ public class EnemyAI : MonoBehaviour
 
     public void SearchForPlayer()
     {
-        if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(player.position)) < fov / 2f)
-        {
-            if (Vector3.Distance(player.position, transform.position) < viewDistance)
-            {
-                RaycastHit hit;
-                if (Physics.Linecast(transform.position, player.position, out hit, -1))
-                {
-                    Debug.DrawLine(transform.position, hit.point);
-                    if (hit.collider.CompareTag("Player"))
-                    {
-                        OnAware();
-                    } else
-                    {
-                        isDetecting = false;
-                    }
-                } else
-                {
-                    isDetecting = false;
-                }
-            } else
-            {
-                isDetecting = false;
-            }
-        } else
-        {
+        Transform result = NearestToChase();
+        if ((isDetecting || !isAware) && result != null) attackable = result;
+        if (result == null) {
             isDetecting = false;
+            return;
         }
+
+        if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(attackable.position)) < fov / 2f) {
+            Debug.DrawLine(transform.position, attackable.position);
+            if (Physics.Linecast(transform.position, attackable.position, out RaycastHit hit, -1))
+            {
+                Debug.DrawLine(transform.position, hit.point);
+                if (hit.collider.CompareTag("Player"))
+                {
+                    OnAware(hit.collider.gameObject.transform);
+                    return;
+                }
+            }
+        }
+
+        isDetecting = false;
     }
 
-    public void OnAware()
+    public void OnAware(Transform target)
     {
+        attackable = target;
         isAware = true;
         isDetecting = true;
         loseTimer = 0;
+        Debug.Log("aware of : " + target.name);
     }
 
     public void Wander()
@@ -157,6 +157,21 @@ public class EnemyAI : MonoBehaviour
         NavMeshHit navHit;
         NavMesh.SamplePosition(randomPoint, out navHit, wanderRadius, -1);
         return new Vector3(navHit.position.x, transform.position.y, navHit.position.z);
+    }
+
+    private Transform NearestToChase()
+    {
+        Transform nearestTransform = null;
+        float nearestDistance = viewDistance;
+        Collider[] attackables = Physics.OverlapSphere(transform.position, viewDistance, attackableLayer);
+        foreach (Collider attackable in attackables) {
+            float distance = Vector3.Distance(transform.position, attackable.gameObject.transform.position);
+            if (distance < nearestDistance) {
+                nearestDistance = distance;
+                nearestTransform = attackable.gameObject.transform;
+            }
+        }
+        return nearestTransform;
     }
 
     private void OnDrawGizmosSelected()

@@ -333,6 +333,15 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "LureDrop",
+                    "type": "Button",
+                    "id": "62721e6c-3727-4397-be73-b38e372978c6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -432,6 +441,17 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "SwitchAvatar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "137f67bb-641a-4f32-987b-11b9c655edf8",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "LureDrop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
