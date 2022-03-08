@@ -63,9 +63,11 @@
     <Compile Include="Assets\GameManager.cs" />
     <Compile Include="Assets\Winter Zone Mini 1.0\Scripts\EmitterPositionController.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabPlugin.cs" />
+    <Compile Include="Assets\NameManager.cs" />
     <Compile Include="Assets\ItemUpdate.cs" />
     <Compile Include="Assets\PlayerStats.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabUI.cs" />
+    <Compile Include="Assets\DescManager.cs" />
     <Compile Include="Assets\Inventaire\Inventory.cs" />
     <Compile Include="Assets\Winter Zone Mini 1.0\Scripts\FXDemoController.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabImporter.cs" />
@@ -75,6 +77,7 @@
     <Compile Include="Assets\Scripts\HealthSystem.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabImporterWindow.cs" />
     <Compile Include="Assets\Scripts\PlayerManager.cs" />
+    <Compile Include="Assets\ImageManager.cs" />
     <Compile Include="Assets\Player\Scripts\BasicRigidBodyPush.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabExporter.cs" />
     <Compile Include="Assets\Inventaire\MenuManager.cs" />
@@ -83,9 +86,6 @@
     <Compile Include="Assets\ButtonManager.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabApi.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserWindow.cs" />
-    <Compile Include="Assets\DescManager.cs" />
-    <Compile Include="Assets\NameManager.cs" />
-    <Compile Include="Assets\ImageManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -106,6 +106,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
+    <None Include="Assets\Supermarket_Gluttony_Pack\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\Sketchfab For Unity\Dependencies\Libraries\SketchfabPlugin.dll" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
