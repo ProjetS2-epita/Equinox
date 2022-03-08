@@ -100,8 +100,8 @@ public class MenuManager : MonoBehaviour
             itemSlot.GetComponentInChildren<ItemsManager>().itemDescription = item.itemDescription;
             itemSlot.GetComponentInChildren<ItemsManager>().itemsImage = item.itemsImage;
             itemSlot.GetComponentInChildren<ItemsManager>().Model = item.Model;
-            DescManager.instance.Apply(item.itemName);
-            NameManager.instance.Apply(item.itemDescription);
+            
+
 
             //ImageManager.instance.Apply(item.itemsImage);
 
