@@ -12,11 +12,9 @@ public class ButtonManager : MonoBehaviour
     public void Send_Data(){
         Debug.Log("click");
         // On va chercher le modèle 3D du jeu
-        GameObject obj = GameObject.Find("3D");
-        
-        // On cherche le nom et la description de l'item
-        string name = obj.GetComponent<ItemsManager>().itemName;
-        string desc = obj.GetComponent<ItemsManager>().itemDescription;
-        ItemUpdate.instance.Display(name,desc);
+        string name = gameObject.GetComponentInChildren<ItemsManager>().itemName;
+        string desc = gameObject.GetComponentInChildren<ItemsManager>().itemDescription;
+        DescManager.instance.Apply(desc);
+        NameManager.instance.Apply(name);
     }
 }

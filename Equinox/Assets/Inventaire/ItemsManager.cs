@@ -34,7 +34,8 @@ public class ItemsManager : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Inventory.instance.AddItems(this);
-            SelfDestroy();
+            gameObject.SetActive(false);
+            //SelfDestroy();
             MenuManager.instance.UpdateItemsInventory();
         }
     }

@@ -91,11 +91,19 @@ public class MenuManager : MonoBehaviour
         foreach (ItemsManager item in Inventory.instance.GetItemList())
         {
                 RectTransform itemSlot = Instantiate(itemSlotContainer, itemSlotContainerParent).GetComponent<RectTransform>();
-                Sprite itemImage = itemSlot.Find("Item Image").GetComponent<Sprite>();
-                itemImage = item.itemsImage;
-                Text itemsAmountText = itemSlot.Find("Amount Text").GetComponent<Text>();
-                
-                
+
+            itemSlot.name = item.itemName+"Conteneur";
+            itemSlot.GetComponentInChildren<ImageManager>().Apply(item.itemsImage);
+            Text itemsAmountText = itemSlot.Find("Amount Text").GetComponent<Text>();
+            itemSlot.GetComponentInChildren<ItemsManager>().itemName = item.itemName;
+            itemSlot.GetComponentInChildren<ItemsManager>().itemtype = item.itemtype;
+            itemSlot.GetComponentInChildren<ItemsManager>().itemDescription = item.itemDescription;
+            itemSlot.GetComponentInChildren<ItemsManager>().itemsImage = item.itemsImage;
+            itemSlot.GetComponentInChildren<ItemsManager>().Model = item.Model;
+            DescManager.instance.Apply(item.itemName);
+            NameManager.instance.Apply(item.itemDescription);
+
+            //ImageManager.instance.Apply(item.itemsImage);
 
 
             if (item.amount > 1)
