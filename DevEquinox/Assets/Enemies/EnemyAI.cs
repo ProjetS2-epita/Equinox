@@ -7,7 +7,7 @@ public class EnemyAI : MonoBehaviour
 {
     public enum WanderType {Random, Waypoint};
 
-    private Transform attackable;
+    private Transform target;
     public WanderType wanderType = WanderType.Random;
     public float wanderSpeed = 1.5f, chaseSpeed = 3f;
     public Transform[] waypoints;
@@ -30,7 +30,7 @@ public class EnemyAI : MonoBehaviour
 
     void Start()
     {
-        attackable = null;
+        target = null;
         healthSystem = GetComponent<HealthSystem>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
@@ -48,9 +48,9 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
-        if (isAware && attackable != null)
+        if (isAware && target != null)
         {
-            agent.SetDestination(attackable.position);
+            agent.SetDestination(target.position);
             agent.speed = chaseSpeed;
             animator.speed = chaseSpeed;
             if (!isDetecting)
@@ -58,15 +58,14 @@ public class EnemyAI : MonoBehaviour
                 loseTimer += Time.deltaTime;
                 if (loseTimer >= losePlayerSightThreshold)
                 {
+                    ResetAttention();
                     Debug.Log("Lost prey sight");
-                    attackable = null;
-                    isAware = false;
-                    loseTimer = 0;
                 }
             }
         }
         else
         {
+            ResetAttention();
             Wander();
             agent.speed = wanderSpeed;
             animator.speed = wanderSpeed;
@@ -77,15 +76,15 @@ public class EnemyAI : MonoBehaviour
     public void SearchForPlayer()
     {
         Transform result = NearestToChase();
-        if ((isDetecting || !isAware) && result != null) attackable = result;
+        if ((isDetecting || !isAware) && result != null) target = result;
         if (result == null) {
             isDetecting = false;
             return;
         }
 
-        if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(attackable.position)) < fov / 2f) {
-            Debug.DrawLine(transform.position, attackable.position);
-            if (Physics.Linecast(transform.position, attackable.position, out RaycastHit hit, -1))
+        if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(target.position)) < fov / 2f) {
+            Debug.DrawLine(transform.position, target.position);
+            if (Physics.Linecast(transform.position, target.position, out RaycastHit hit, -1))
             {
                 Debug.DrawLine(transform.position, hit.point);
                 if (hit.collider.CompareTag("Player"))
@@ -95,17 +94,23 @@ public class EnemyAI : MonoBehaviour
                 }
             }
         }
-
         isDetecting = false;
     }
 
     public void OnAware(Transform target)
     {
-        attackable = target;
+        this.target = target;
         isAware = true;
         isDetecting = true;
         loseTimer = 0;
-        Debug.Log("aware of : " + target.name);
+        Debug.Log($"aware of : {target.name}");
+    }
+
+    private void ResetAttention()
+    {
+        target = null;
+        isAware = false;
+        loseTimer = 0;
     }
 
     public void Wander()

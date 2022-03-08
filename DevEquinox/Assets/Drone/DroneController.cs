@@ -67,22 +67,14 @@ public class DroneController : MonoBehaviour
 		activeCam = droneMap.enabled;
 	}
 
-	private void OnEnable()
-	{
-
-	}
-
-	private void OnDisable()
-	{
-
-	}
-
 	void Start()
     {
 		/*
 		_hasAnimator = TryGetComponent(out _animator);
 		AssignAnimationIDs();
 		*/
+		audioSource.loop = true;
+		audioSource.Play();
 	}
 
     void Update()

@@ -31,7 +31,7 @@ public class LureSystem : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            other.gameObject.GetComponent<EnemyAI>().OnAware(this.gameObject.transform);
+            other.gameObject.GetComponent<EnemyAI>().OnAware(gameObject.transform);
         }
     }
 }

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Pearl Electron
+* source:	https://sketchfab.com/3d-models/pearl-electron-da2773c61e6748748f5f5828d52a706e
+* author:	Tycho Magnetic Anomaly (https://sketchfab.com/Tycho_Magnetic_Anomaly)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Pearl Electron" (https://sketchfab.com/3d-models/pearl-electron-da2773c61e6748748f5f5828d52a706e) by Tycho Magnetic Anomaly (https://sketchfab.com/Tycho_Magnetic_Anomaly) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

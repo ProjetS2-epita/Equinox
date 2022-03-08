@@ -1,0 +1,11 @@
+Model Information:
+* title:	Geodesic Tiling Mesh colored
+* source:	https://sketchfab.com/3d-models/geodesic-tiling-mesh-colored-2d18efdfbdcb4cc581af9b560b994015
+* author:	Aiekick (https://sketchfab.com/Aiekick)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Geodesic Tiling Mesh colored" (https://sketchfab.com/3d-models/geodesic-tiling-mesh-colored-2d18efdfbdcb4cc581af9b560b994015) by Aiekick (https://sketchfab.com/Aiekick) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

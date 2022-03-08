@@ -77,7 +77,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.8
-  m_BaseOffset: 1
+  m_BaseOffset: 0.95
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &457786519012944083
@@ -99,8 +99,11 @@ MonoBehaviour:
   fov: 120
   viewDistance: 20
   wanderRadius: 5
-  losePlayerSightThreshold: 50
+  losePlayerSightThreshold: 5
   isAware: 0
+  attackableLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &1381932337
 MonoBehaviour:
   m_ObjectHideFlags: 0
