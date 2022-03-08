@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class LureSystem : MonoBehaviour
 {
+    [SerializeField] private Transform owner;
+    public void SetOwner(Transform parent) => owner = parent;
     private SphereCollider noiseSystem;
     private AudioSource lureSource;
     public AudioClip lurer;
@@ -25,6 +27,12 @@ public class LureSystem : MonoBehaviour
         noiseSystem.radius = noiseRadius;
         lureSource.Play();
         Destroy(transform.parent.gameObject, lifeSpan);
+    }
+
+    void Update()
+    {
+        float dist = Vector3.Distance(transform.position, owner.position);
+        lureSource.volume = dist >= noiseRadius ? 0 : -dist / noiseRadius + 1;
     }
 
     private void OnTriggerStay(Collider other)

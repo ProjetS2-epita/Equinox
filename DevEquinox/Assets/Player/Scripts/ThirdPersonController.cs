@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Cinemachine;
 using UnityEngine.InputSystem;
+using UnityEngine.AI;
 
 
 [RequireComponent(typeof(CharacterController))]
@@ -84,6 +85,9 @@ public class ThirdPersonController : MonoBehaviour
 	public float sprintEnemyPerceptionRadius = 4f;
 	private AudioSource audioSource;
 	private SphereCollider sphereCollider;
+	public GameObject DroneOriginal;
+	private GameObject DroneInstance = null;
+	public float rapatriationRange = 2f;
 
 	// cinemachine
 	private float _cinemachineTargetYaw;
@@ -414,6 +418,17 @@ public class ThirdPersonController : MonoBehaviour
 
 	private void DroneSwitch(InputAction.CallbackContext ctx)
     {
+		if (DroneInstance == null) {
+			NavMeshHit navHit;
+			if (!NavMesh.SamplePosition(transform.position + Vector3.forward, out navHit, rapatriationRange, -1))
+			{
+				Debug.Log("Unable to launch the drone at this location.");
+				return;
+			}
+
+			DroneInstance = Instantiate(DroneOriginal, navHit.position, transform.rotation);
+			DroneInstance.GetComponent<DroneController>().SetOwner(gameObject.transform);
+		}
 		_playerInput.SwitchCurrentActionMap("Drone");
 	}
 

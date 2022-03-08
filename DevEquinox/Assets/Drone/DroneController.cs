@@ -9,8 +9,9 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(SphereCollider))]
 public class DroneController : MonoBehaviour
 {
-	private Transform owner = null;
-	public Transform Owner {get; set;}
+	[SerializeField] private Transform owner;
+	public void SetOwner(Transform parent) => owner = parent;
+	private float rapatriationRange = 10f;
 	public GameObject lure;
 	public float maxDistance = 100f;
     private CinemachineVirtualCamera droneCam;
@@ -32,6 +33,8 @@ public class DroneController : MonoBehaviour
 	private InputActionMap droneMap;
 	private InputAction moveAction;
 	private InputAction lookAction;
+	private InputAction lureDrop;
+	private InputAction switchAvatar;
 	private bool activeCam;
 
 	private const float _threshold = 0.01f;
@@ -45,8 +48,6 @@ public class DroneController : MonoBehaviour
 	public float SpeedChangeRate = 10.0f;
 	public float RotationSmoothTime = 0.12f;
 
-
-
 	private void Awake()
 	{
 		if (_mainCamera == null)
@@ -57,6 +58,7 @@ public class DroneController : MonoBehaviour
 		audioSource = GetComponent<AudioSource>();
 		noisePropagation = GetComponent<SphereCollider>();
 		noisePropagation.radius = baseNoiseDistance;
+		owner = null;
 
 		_playerInput = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerInput>();
 		DroneCamTransform = GameObject.FindGameObjectWithTag("DroneCamera").transform;
@@ -64,17 +66,30 @@ public class DroneController : MonoBehaviour
 		droneMap = _playerInput.actions.FindActionMap("Drone", true);
 		moveAction = droneMap.FindAction("DroneMove");
 		lookAction = droneMap.FindAction("DroneLook");
+		lureDrop = droneMap.FindAction("LureDrop");
+		switchAvatar = droneMap.FindAction("SwitchAvatar");
+
 		activeCam = droneMap.enabled;
+	}
+
+	private void OnEnable()
+	{
+		lureDrop.started += LureDrop;
+		switchAvatar.performed += SwitchAvatar;
+	}
+
+	private void OnDisable()
+	{
+		lureDrop.started -= LureDrop;
+		switchAvatar.performed -= SwitchAvatar;
 	}
 
 	void Start()
     {
-		/*
-		_hasAnimator = TryGetComponent(out _animator);
-		AssignAnimationIDs();
-		*/
 		audioSource.loop = true;
-		audioSource.Play();
+		audioSource.clip = bladeSound;
+		StartCoroutine(FadeIn(audioSource, 5));
+		//audioSource.Play();
 	}
 
     void Update()
@@ -85,7 +100,12 @@ public class DroneController : MonoBehaviour
 			activeCam = droneMap.enabled;
 		}
 
-		if (!droneMap.enabled) return;
+		if (!droneMap.enabled)
+        {
+			float dist = Vector3.Distance(transform.position, owner.position);
+			audioSource.volume = dist >= baseNoiseDistance ? 0 : - dist / baseNoiseDistance + 1;
+			return;
+        }
 		Move();
 
 		//walk & sprint noise radius
@@ -96,18 +116,6 @@ public class DroneController : MonoBehaviour
 		if (!droneMap.enabled) return;
 		CameraRotation();
 	}
-
-	/*
-	private void AssignAnimationIDs()
-	{
-		_animIDSpeed = Animator.StringToHash("Speed");
-		_animIDGrounded = Animator.StringToHash("Grounded");
-		_animIDJump = Animator.StringToHash("Jump");
-		_animIDFreeFall = Animator.StringToHash("FreeFall");
-		_animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
-	}
-	*/
-
 
 	private void CameraRotation()
     {
@@ -150,20 +158,22 @@ public class DroneController : MonoBehaviour
 		targetDirection *= (_speed * Time.deltaTime);
 
 		// Distance Control (signal strength)
-		if (owner != null && Vector3.Distance(owner.position, this.gameObject.transform.position + targetDirection) > maxDistance) return;
+		if (owner == null || Vector3.Distance(owner.position, gameObject.transform.position + targetDirection) > maxDistance) return;
 
 		_controller.Move(targetDirection);
 		noisePropagation.radius = baseNoiseDistance + baseNoiseDistance * _controller.velocity.magnitude / 10f;
 	}
 
-	public void AvatarSwitch(InputAction.CallbackContext ctx)
+	public void SwitchAvatar(InputAction.CallbackContext ctx)
     {
 		_playerInput.SwitchCurrentActionMap("Player");
+		if (Vector3.Distance(transform.position, owner.position) < rapatriationRange)
+			Destroy(gameObject);
 	}
 
 	public void LureDrop(InputAction.CallbackContext ctx)
     {
-		if(ctx.started) Instantiate(lure, gameObject.transform.position, transform.rotation);
+		Instantiate(lure, gameObject.transform.position, transform.rotation).GetComponentInChildren<LureSystem>().SetOwner(owner);
 	}
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -183,6 +193,17 @@ public class DroneController : MonoBehaviour
 		if (other.gameObject.CompareTag("Enemy"))
 		{
 			other.gameObject.GetComponent<EnemyAI>().OnAware(this.gameObject.transform);
+		}
+	}
+
+	public static IEnumerator FadeIn(AudioSource audioSource, float FadeTime)
+	{
+		audioSource.Play();
+		audioSource.volume = 0f;
+		while (audioSource.volume < 1)
+		{
+			audioSource.volume += Time.deltaTime / FadeTime;
+			yield return null;
 		}
 	}
 

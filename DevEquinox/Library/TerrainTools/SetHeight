@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEditor.CoreModule:UnityEditor.Experimental.TerrainAPI:SetHeightTool
   m_HeightSpace: 0
-  m_TargetHeight: 18.9
+  m_TargetHeight: 85
