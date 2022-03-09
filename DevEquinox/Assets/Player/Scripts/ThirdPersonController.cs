@@ -134,6 +134,7 @@ public class ThirdPersonController : MonoBehaviour
 	private bool _rotateOnMove = true;
 	private const float _threshold = 0.01f;
 	private bool _hasAnimator;
+	[SerializeField] private Vector3 impactDamage = new Vector3(0,0,50);
 
     private void Awake()
 	{
@@ -405,6 +406,7 @@ public class ThirdPersonController : MonoBehaviour
 					//hit target
 					Debug.Log("Target Hit :" + lastHitTransform.name);
 					health.TakeDamage(shootDamage);
+					if (health.IsDead) lastRaycastHit.transform.gameObject.GetComponent<EnemyAI>().Die(lastRaycastHit.point, impactDamage);
 					//Instantiate(impactEffect, raycastHit.point, Quaternion.LookRotation(raycastHit.normal));
 					//hitTransform.gameObject.GetComponent<Rigidbody>().AddForceAtPosition(new Vector3(10, 10, 10), raycastHit.point);
 				}
@@ -418,7 +420,7 @@ public class ThirdPersonController : MonoBehaviour
 			foreach (Collider enemy in enemies) {
 				EnemyAI e = enemy.gameObject.GetComponent<EnemyAI>();
 				if (e != null) {
-					e.OnAware(this.gameObject.transform);
+					e.OnAware(gameObject.transform);
 				}
 			}
 		}

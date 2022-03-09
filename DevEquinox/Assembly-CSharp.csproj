@@ -80,6 +80,7 @@
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabApi.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserWindow.cs" />
+    <Compile Include="Assets\Enemies\Ragdoller.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

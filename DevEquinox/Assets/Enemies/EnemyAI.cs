@@ -27,6 +27,7 @@ public class EnemyAI : MonoBehaviour
     private float loseTimer = 0;
     private HealthSystem healthSystem;
     private bool IsDead = false;
+    public GameObject ragdollVersion;
 
     void Start()
     {
@@ -43,7 +44,6 @@ public class EnemyAI : MonoBehaviour
             Debug.Log("zombie dead");
             if (!IsDead) {
                 IsDead = true;
-                Die();
             }
             return;
         }
@@ -146,11 +146,11 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void Die()
+    public void Die(Vector3 point, Vector3 impactForce)
     {
         agent.speed = 0;
         animator.enabled = false;
-        //GetComponent<Collider>().enabled = false;
+        Instantiate(ragdollVersion, transform.position, transform.rotation).GetComponent<Ragdoller>().ApplyForce(point, impactForce);
         Destroy(gameObject);
     }
 

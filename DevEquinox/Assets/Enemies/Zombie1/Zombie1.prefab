@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf589093bb237e45a6b1d4dcd431feb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
   wanderType: 0
   wanderSpeed: 1.2
   chaseSpeed: 2.5
@@ -104,6 +105,7 @@ MonoBehaviour:
   attackableLayer:
     serializedVersion: 2
     m_Bits: 128
+  ragdollVersion: {fileID: 5713603554282918827, guid: 04f5a81828c03fa43bd91974aa9662de, type: 3}
 --- !u!114 &1381932337
 MonoBehaviour:
   m_ObjectHideFlags: 0
