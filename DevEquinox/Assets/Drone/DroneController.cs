@@ -58,6 +58,8 @@ public class DroneController : MonoBehaviour
 		audioSource = GetComponent<AudioSource>();
 		noisePropagation = GetComponent<SphereCollider>();
 		noisePropagation.radius = baseNoiseDistance;
+		audioSource.maxDistance = baseNoiseDistance;
+		audioSource.minDistance = 1f;
 		owner = null;
 
 		_playerInput = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerInput>();
@@ -89,7 +91,6 @@ public class DroneController : MonoBehaviour
 		audioSource.loop = true;
 		audioSource.clip = bladeSound;
 		StartCoroutine(FadeIn(audioSource, 5));
-		//audioSource.Play();
 	}
 
     void Update()
@@ -100,12 +101,7 @@ public class DroneController : MonoBehaviour
 			activeCam = droneMap.enabled;
 		}
 
-		if (!droneMap.enabled)
-        {
-			float dist = Vector3.Distance(transform.position, owner.position);
-			audioSource.volume = dist >= baseNoiseDistance ? 0 : - dist / baseNoiseDistance + 1;
-			return;
-        }
+		if (!droneMap.enabled) return;
 		Move();
 
 		//walk & sprint noise radius
@@ -173,7 +169,7 @@ public class DroneController : MonoBehaviour
 
 	public void LureDrop(InputAction.CallbackContext ctx)
     {
-		Instantiate(lure, gameObject.transform.position, transform.rotation).GetComponentInChildren<LureSystem>().SetOwner(owner);
+		Instantiate(lure, gameObject.transform.position, transform.rotation).GetComponentInChildren<LureSystem>();
 	}
 
 	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

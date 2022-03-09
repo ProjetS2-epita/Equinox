@@ -36,13 +36,17 @@ public class ThirdPersonController : MonoBehaviour
 
 	[Header("Player Grounded")]
 	[Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
-	public bool Grounded = true;
+	[SerializeField] private bool Grounded = true;
+	[SerializeField] private bool canJump = true;
+	
 	[Tooltip("Useful for rough ground")]
 	public float GroundedOffset = -0.14f;
 	[Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
 	public float GroundedRadius = 0.28f;
 	[Tooltip("What layers the character uses as ground")]
 	public LayerMask GroundLayers;
+	[SerializeField] private float GroundSlopeAngle = 0f;
+	public float angleRayLength = 0.75f;
 
 	[Header("Cinemachine")]
 	[Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
@@ -183,7 +187,7 @@ public class ThirdPersonController : MonoBehaviour
 		if (!playerMap.enabled) return;
 
 		_hasAnimator = TryGetComponent(out _animator);
-			
+
 		JumpAndGravity();
 		GroundedCheck();
 		Move();
@@ -221,6 +225,11 @@ public class ThirdPersonController : MonoBehaviour
 		// set sphere position, with offset
 		Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
 		Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
+		RaycastHit hit;
+		Physics.Raycast(spherePosition, Vector3.down, out hit, angleRayLength);
+		GroundSlopeAngle = Vector3.Angle(hit.normal, Vector3.up);
+		Debug.DrawLine(spherePosition, hit.point, Color.red);
+		canJump = GroundSlopeAngle < _controller.slopeLimit;
 
 		// update animator if using character
 		if (_hasAnimator)
@@ -250,7 +259,7 @@ public class ThirdPersonController : MonoBehaviour
 
 	private void Move()
 	{
-		Vector2 move = moveAction.ReadValue<Vector2>();
+		Vector2 move = moveAction.ReadValue<Vector2>().normalized;
 
 		float targetSpeed = sprintAction.IsPressed() ? SprintSpeed : MoveSpeed;
 
@@ -288,7 +297,6 @@ public class ThirdPersonController : MonoBehaviour
 			}
 		}
 
-
 		Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
 		_controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
@@ -321,7 +329,7 @@ public class ThirdPersonController : MonoBehaviour
 			}
 
 			// Jump
-			if (jumpAction.triggered && _jumpTimeoutDelta <= 0.0f)
+			if (canJump && jumpAction.triggered && _jumpTimeoutDelta <= 0.0f)
 			{
 				// the square root of H * -2 * G = how much velocity needed to reach desired height
 				_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
@@ -475,7 +483,7 @@ public class ThirdPersonController : MonoBehaviour
 	{
 		if (other.gameObject.CompareTag("Enemy"))
 		{
-			other.gameObject.GetComponent<EnemyAI>().OnAware(this.gameObject.transform);
+			other.gameObject.GetComponent<EnemyAI>()?.OnAware(this.gameObject.transform);
 		}
 	}
 }

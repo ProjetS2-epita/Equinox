@@ -7,7 +7,7 @@ public class EnemyAI : MonoBehaviour
 {
     public enum WanderType {Random, Waypoint};
 
-    private Transform target;
+    [SerializeField] private Transform target;
     public WanderType wanderType = WanderType.Random;
     public float wanderSpeed = 1.5f, chaseSpeed = 3f;
     public Transform[] waypoints;
