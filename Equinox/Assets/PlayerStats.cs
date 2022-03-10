@@ -4,14 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 public class PlayerStats : MonoBehaviour
 {
+    public static PlayerStats instance;
+
     [SerializeField] public string playerName;
 
     [SerializeField] public Sprite characterImage;
 
     [SerializeField] public int maxHP = 100;
     [SerializeField] public int currentHP;
-    [SerializeField] public int maxSoif = 100;
-    [SerializeField] public int currentSoif = 100;
+    [SerializeField] public int maxFroid = 100;
+    [SerializeField] public int currentFroid = 100;
     [SerializeField] public int MaxFaim = 100;
     [SerializeField] public int currentFaim = 100;
     [SerializeField] public int defense = 0;
@@ -19,12 +21,8 @@ public class PlayerStats : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
