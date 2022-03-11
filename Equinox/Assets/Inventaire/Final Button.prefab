@@ -17,7 +17,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3848528782023221400, guid: 5595edba079c24b4ba047b10fad86f2b, type: 3}
       propertyPath: m_Pivot.x
-      value: 0.5
+      value: -6.0412493
       objectReference: {fileID: 0}
     - target: {fileID: 3848528782023221400, guid: 5595edba079c24b4ba047b10fad86f2b, type: 3}
       propertyPath: m_Pivot.y
@@ -81,11 +81,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3848528782023221400, guid: 5595edba079c24b4ba047b10fad86f2b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 204.17984
+      value: -116
       objectReference: {fileID: 0}
     - target: {fileID: 3848528782023221400, guid: 5595edba079c24b4ba047b10fad86f2b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: -52.33
       objectReference: {fileID: 0}
     - target: {fileID: 3848528782023221400, guid: 5595edba079c24b4ba047b10fad86f2b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -222,7 +222,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2090013969491110719, guid: 9426e6c23cc3c5047b16a4224b013bd1, type: 3}
       propertyPath: m_Name
-      value: Button
+      value: Final Button
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9426e6c23cc3c5047b16a4224b013bd1, type: 3}
