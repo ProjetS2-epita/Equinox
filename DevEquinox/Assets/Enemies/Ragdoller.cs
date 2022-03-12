@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Ragdoller : MonoBehaviour
 {
+
     public void ApplyForce(Vector3 point, Vector3 impactForce)
     {
         Rigidbody[] RBs = GetComponentsInChildren<Rigidbody>();
@@ -17,5 +18,6 @@ public class Ragdoller : MonoBehaviour
             }
         }
         impactPoint.AddExplosionForce(impactForce.x, point, 1f, impactForce.y, ForceMode.Impulse);
+        enabled = false;
     }
 }

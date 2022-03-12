@@ -91,15 +91,6 @@ namespace StarterAssets
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Movement"",
-                    ""type"": ""Value"",
-                    ""id"": ""f24c2b3e-2b04-48ab-bf60-0d12b0e520d1"",
-                    ""expectedControlType"": ""Vector3"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -333,83 +324,6 @@ namespace StarterAssets
                     ""action"": ""SwitchDrone"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""ZQSDSpaceShift"",
-                    ""id"": ""d0e810bb-57bf-48dd-95d6-a421fe69c9fc"",
-                    ""path"": ""3DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""d7e68017-0e0b-4f7e-9d9c-3e7fec5f38d0"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""478852ba-aab7-40d8-9493-ac075dc4c99d"",
-                    ""path"": ""<Keyboard>/leftShift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""7d6c8edc-29e6-41bc-ad55-4132f14ed5fd"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""b51a9a61-dd6e-4acf-85f6-3ddd231497e7"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""forward"",
-                    ""id"": ""32cf08ff-f578-4041-8cc0-cfc7f70d0b72"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""backward"",
-                    ""id"": ""f5b0f6f4-0b23-4051-aa8c-26652ee7e4a4"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -627,7 +541,6 @@ namespace StarterAssets
             m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
             m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
             m_Player_SwitchDrone = m_Player.FindAction("SwitchDrone", throwIfNotFound: true);
-            m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
             // Drone
             m_Drone = asset.FindActionMap("Drone", throwIfNotFound: true);
             m_Drone_DroneMove = m_Drone.FindAction("DroneMove", throwIfNotFound: true);
@@ -700,7 +613,6 @@ namespace StarterAssets
         private readonly InputAction m_Player_Aim;
         private readonly InputAction m_Player_Shoot;
         private readonly InputAction m_Player_SwitchDrone;
-        private readonly InputAction m_Player_Movement;
         public struct PlayerActions
         {
             private @StarterAssets m_Wrapper;
@@ -712,7 +624,6 @@ namespace StarterAssets
             public InputAction @Aim => m_Wrapper.m_Player_Aim;
             public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
             public InputAction @SwitchDrone => m_Wrapper.m_Player_SwitchDrone;
-            public InputAction @Movement => m_Wrapper.m_Player_Movement;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -743,9 +654,6 @@ namespace StarterAssets
                     @SwitchDrone.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchDrone;
                     @SwitchDrone.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchDrone;
                     @SwitchDrone.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchDrone;
-                    @Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
-                    @Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
-                    @Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -771,9 +679,6 @@ namespace StarterAssets
                     @SwitchDrone.started += instance.OnSwitchDrone;
                     @SwitchDrone.performed += instance.OnSwitchDrone;
                     @SwitchDrone.canceled += instance.OnSwitchDrone;
-                    @Movement.started += instance.OnMovement;
-                    @Movement.performed += instance.OnMovement;
-                    @Movement.canceled += instance.OnMovement;
                 }
             }
         }
@@ -880,7 +785,6 @@ namespace StarterAssets
             void OnAim(InputAction.CallbackContext context);
             void OnShoot(InputAction.CallbackContext context);
             void OnSwitchDrone(InputAction.CallbackContext context);
-            void OnMovement(InputAction.CallbackContext context);
         }
         public interface IDroneActions
         {

@@ -67,15 +67,6 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Movement",
-                    "type": "Value",
-                    "id": "f24c2b3e-2b04-48ab-bf60-0d12b0e520d1",
-                    "expectedControlType": "Vector3",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -309,83 +300,6 @@
                     "action": "SwitchDrone",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "ZQSDSpaceShift",
-                    "id": "d0e810bb-57bf-48dd-95d6-a421fe69c9fc",
-                    "path": "3DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "d7e68017-0e0b-4f7e-9d9c-3e7fec5f38d0",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "478852ba-aab7-40d8-9493-ac075dc4c99d",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "7d6c8edc-29e6-41bc-ad55-4132f14ed5fd",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "b51a9a61-dd6e-4acf-85f6-3ddd231497e7",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "forward",
-                    "id": "32cf08ff-f578-4041-8cc0-cfc7f70d0b72",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "backward",
-                    "id": "f5b0f6f4-0b23-4051-aa8c-26652ee7e4a4",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 }
             ]
         },

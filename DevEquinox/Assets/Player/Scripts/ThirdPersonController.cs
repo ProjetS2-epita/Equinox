@@ -2,7 +2,7 @@
 using Cinemachine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
-
+using System.Collections;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(AudioSource))]
@@ -72,8 +72,6 @@ public class ThirdPersonController : MonoBehaviour
 	[SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
 	[Tooltip("Layer(s) where enemies belong")]
 	[SerializeField] private LayerMask ennemiesLayer;
-	[Tooltip("GameObject aim debugger")]
-	[SerializeField] private Transform aimTrackerTransform;
 	[Tooltip("Damage per shoot")]
 	[SerializeField] private float shootDamage;
 	[Tooltip("Sound played when shoot")]
@@ -133,22 +131,23 @@ public class ThirdPersonController : MonoBehaviour
 	private GameObject _mainCamera;
 	private bool _rotateOnMove = true;
 	private const float _threshold = 0.01f;
-	private bool _hasAnimator;
-	[SerializeField] private Vector3 impactDamage = new Vector3(0,0,50);
+	[SerializeField] private Vector3 impactDamage = new Vector3(400f,0.01f,0f);
+	float actualTime;
 
     private void Awake()
 	{
 		// get a reference to our main camera
 		if (_mainCamera == null)
 		{
-			_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+			_mainCamera = GameObject.FindGameObjectWithTag(TagsAccess._MainCamera);
 		}
 		_controller = GetComponent<CharacterController>();
 		audioSource = GetComponent<AudioSource>();
 		sphereCollider = GetComponent<SphereCollider>();
+		TryGetComponent(out _animator);
 
-		_playerInput = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerInput>();
-		playerMap = _playerInput.actions.FindActionMap("Player", true);
+		_playerInput = GameObject.FindGameObjectWithTag(TagsAccess._GameManager).GetComponent<PlayerInput>();
+		playerMap = _playerInput.actions.FindActionMap(TagsAccess._Player, true);
 		moveAction = playerMap.FindAction("Move");
 		lookAction = playerMap.FindAction("Look");
 		jumpAction = playerMap.FindAction("Jump");
@@ -156,7 +155,6 @@ public class ThirdPersonController : MonoBehaviour
 		aimAction = playerMap.FindAction("Aim");
 		shootAction = playerMap.FindAction("Shoot");
 		droneAction = playerMap.FindAction("SwitchDrone");
-
 	}
 
 	private void OnEnable()
@@ -175,9 +173,7 @@ public class ThirdPersonController : MonoBehaviour
 
     private void Start()
 	{
-		_hasAnimator = TryGetComponent(out _animator);
 		AssignAnimationIDs();
-		// reset our timeouts on start
 		_jumpTimeoutDelta = JumpTimeout;
 		_fallTimeoutDelta = FallTimeout;
 		mouseWorldPosition = Vector3.zero;
@@ -187,8 +183,7 @@ public class ThirdPersonController : MonoBehaviour
 	{
 		if (!playerMap.enabled) return;
 
-		_hasAnimator = TryGetComponent(out _animator);
-
+		actualTime = Time.deltaTime;
 		JumpAndGravity();
 		GroundedCheck();
 		Move();
@@ -197,8 +192,7 @@ public class ThirdPersonController : MonoBehaviour
 		Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
 		Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 		lastHitTransform = null;
-		if (Physics.Raycast(ray, out lastRaycastHit, 999f, aimColliderLayerMask)) {
-			aimTrackerTransform.position = lastRaycastHit.point;
+		if (Physics.Raycast(ray, out lastRaycastHit, 200f, aimColliderLayerMask)) {
 			mouseWorldPosition = lastRaycastHit.point;
 			lastHitTransform = lastRaycastHit.transform;
 		}
@@ -233,10 +227,7 @@ public class ThirdPersonController : MonoBehaviour
 		canJump = GroundSlopeAngle < _controller.slopeLimit;
 
 		// update animator if using character
-		if (_hasAnimator)
-		{
-			_animator.SetBool(_animIDGrounded, Grounded);
-		}
+		_animator.SetBool(_animIDGrounded, Grounded);
 	}
 
 	private void CameraRotation()
@@ -246,8 +237,8 @@ public class ThirdPersonController : MonoBehaviour
 		// if there is an input and camera position is not fixed
 		if (look.sqrMagnitude >= _threshold && !LockCameraPosition)
 		{
-			_cinemachineTargetYaw += look.x * Time.deltaTime * Sensitivity;
-			_cinemachineTargetPitch += look.y * Time.deltaTime * Sensitivity;
+			_cinemachineTargetYaw += look.x * actualTime * Sensitivity;
+			_cinemachineTargetPitch += look.y * actualTime * Sensitivity;
 		}
 
 		// clamp our rotations so our values are limited 360 degrees
@@ -276,14 +267,14 @@ public class ThirdPersonController : MonoBehaviour
 		{
 			// creates curved result rather than a linear one giving a more organic speed change
 			// note T in Lerp is clamped, so we don't need to clamp our speed
-			_speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime * SpeedChangeRate);
+			_speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, actualTime * SpeedChangeRate);
 			_speed = Mathf.Round(_speed * 1000f) / 1000f;
 		}
 		else
 		{
 			_speed = targetSpeed;
 		}
-		_animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
+		_animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, actualTime * SpeedChangeRate);
 
 		Vector3 inputDirection = new Vector3(move.x, 0.0f, move.y).normalized;
 
@@ -300,13 +291,10 @@ public class ThirdPersonController : MonoBehaviour
 
 		Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
-		_controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+		_controller.Move(targetDirection.normalized * (_speed * actualTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * actualTime);
 
-		if (_hasAnimator)
-		{
-			_animator.SetFloat(_animIDSpeed, _animationBlend);
-			_animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
-		}
+		_animator.SetFloat(_animIDSpeed, _animationBlend);
+		_animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
 	}
 
 	private void JumpAndGravity()
@@ -317,11 +305,8 @@ public class ThirdPersonController : MonoBehaviour
 			_fallTimeoutDelta = FallTimeout;
 
 			// update animator if using character
-			if (_hasAnimator)
-			{
-				_animator.SetBool(_animIDJump, false);
-				_animator.SetBool(_animIDFreeFall, false);
-			}
+			_animator.SetBool(_animIDJump, false);
+			_animator.SetBool(_animIDFreeFall, false);
 
 			// stop our velocity dropping infinitely when grounded
 			if (_verticalVelocity < 0.0f)
@@ -336,16 +321,13 @@ public class ThirdPersonController : MonoBehaviour
 				_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
 				// update animator if using character
-				if (_hasAnimator)
-				{
-					_animator.SetBool(_animIDJump, true);
-				}
+				_animator.SetBool(_animIDJump, true);
 			}
 
 			// jump timeout
 			if (_jumpTimeoutDelta >= 0.0f)
 			{
-				_jumpTimeoutDelta -= Time.deltaTime;
+				_jumpTimeoutDelta -= actualTime;
 			}
 		}
 		else
@@ -356,15 +338,12 @@ public class ThirdPersonController : MonoBehaviour
 			// fall timeout
 			if (_fallTimeoutDelta >= 0.0f)
 			{
-				_fallTimeoutDelta -= Time.deltaTime;
+				_fallTimeoutDelta -= actualTime;
 			}
 			else
 			{
 				// update animator if using character
-				if (_hasAnimator)
-				{
-					_animator.SetBool(_animIDFreeFall, true);
-				}
+				_animator.SetBool(_animIDFreeFall, true);
 			}
 
 			// if we are not grounded, do not jump
@@ -374,7 +353,7 @@ public class ThirdPersonController : MonoBehaviour
 		// apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
 		if (_verticalVelocity < _terminalVelocity)
 		{
-			_verticalVelocity += Gravity * Time.deltaTime;
+			_verticalVelocity += Gravity * actualTime;
 		}
 	}
 
@@ -387,7 +366,7 @@ public class ThirdPersonController : MonoBehaviour
 			Vector3 worldAimTarget = mouseWorldPosition;
 			worldAimTarget.y = transform.position.y;
 			Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
-			transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
+			transform.forward = Vector3.Lerp(transform.forward, aimDirection, actualTime * 20f);
 		}
 		else {
 			aimVirtualCamera.gameObject.SetActive(false);
@@ -407,22 +386,22 @@ public class ThirdPersonController : MonoBehaviour
 					Debug.Log("Target Hit :" + lastHitTransform.name);
 					health.TakeDamage(shootDamage);
 					if (health.IsDead) lastRaycastHit.transform.gameObject.GetComponent<EnemyAI>().Die(lastRaycastHit.point, impactDamage);
-					//Instantiate(impactEffect, raycastHit.point, Quaternion.LookRotation(raycastHit.normal));
-					//hitTransform.gameObject.GetComponent<Rigidbody>().AddForceAtPosition(new Vector3(10, 10, 10), raycastHit.point);
 				}
 				else {
 					//hit something else
 					Debug.Log("Target Miss :" + lastHitTransform.name);
 				}
 			}
-			//gunshot sound propagation for enemies perception
-			Collider[] enemies = Physics.OverlapSphere(transform.position, soundIntensity, ennemiesLayer);
-			foreach (Collider enemy in enemies) {
-				EnemyAI e = enemy.gameObject.GetComponent<EnemyAI>();
-				if (e != null) {
-					e.OnAware(gameObject.transform);
-				}
-			}
+			StartCoroutine(AlertEnemies(transform.position, transform));
+		}
+	}
+
+	IEnumerator AlertEnemies(Vector3 position, Transform transform)
+    {
+		Collider[] enemies = Physics.OverlapSphere(position, soundIntensity, ennemiesLayer);
+		for (uint i = 0; i < enemies.Length; i++) {
+			if (enemies[i] != null && enemies[i].TryGetComponent(out EnemyAI AI)) AI.OnAware(transform);
+			if(i % 25 == 0) yield return null;
 		}
 	}
 
@@ -483,9 +462,9 @@ public class ThirdPersonController : MonoBehaviour
 
 	private void OnTriggerStay(Collider other)
 	{
-		if (other.gameObject.CompareTag("Enemy"))
+		if (other.gameObject.CompareTag(TagsAccess._Enemy))
 		{
-			other.gameObject.GetComponent<EnemyAI>()?.OnAware(this.gameObject.transform);
+			other.gameObject.GetComponent<EnemyAI>()?.OnAware(gameObject.transform);
 		}
 	}
 }

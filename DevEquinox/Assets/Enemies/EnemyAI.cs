@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 [RequireComponent(typeof(HealthSystem))]
 [RequireComponent(typeof(NavMeshAgent))]
@@ -7,13 +8,15 @@ public class EnemyAI : MonoBehaviour
 {
     public enum WanderType {Random, Waypoint};
 
+    WaitForSeconds updateStateRate = new WaitForSeconds(0.2f);
+
     [SerializeField] private Transform target;
     public WanderType wanderType = WanderType.Random;
     public float wanderSpeed = 1.5f, chaseSpeed = 3f;
     public Transform[] waypoints;
     public float fov = 120f;
     public float viewDistance = 10f;
-    public float wanderRadius = 7f;
+    public float wanderRadius = 10f;
     public float losePlayerSightThreshold = 50f;
     public bool isAware = false;
 
@@ -22,55 +25,59 @@ public class EnemyAI : MonoBehaviour
     private Vector3 wanderPoint;
     private NavMeshAgent agent;
     private int waypointIndex = 0;
-    private int debugWanderMaxFrame = 200, debugWanderFrame = 0;
     private Animator animator;
     private float loseTimer = 0;
     private HealthSystem healthSystem;
-    private bool IsDead = false;
     public GameObject ragdollVersion;
 
-    void Start()
+    void Awake()
     {
-        target = null;
         healthSystem = GetComponent<HealthSystem>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
-        wanderPoint = RandomWanderPoint();
     }
 
-    void Update()
+    void OnEnable()
+    {
+        target = null;
+        wanderPoint = RandomWanderPoint();
+        StartCoroutine(StateUpdate());
+    }
+
+    void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
+    IEnumerator StateUpdate()
     {
         if (healthSystem.IsDead) {
-            Debug.Log("zombie dead");
-            if (!IsDead) {
-                IsDead = true;
-            }
-            return;
+            StopAllCoroutines();
+            yield return null;
         }
 
-        if (isAware && target != null)
-        {
+        if (isAware && target != null) {
             agent.SetDestination(target.position);
             agent.speed = chaseSpeed;
             animator.speed = chaseSpeed;
-            if (!isDetecting)
-            {
+            if (!isDetecting) {
                 loseTimer += Time.deltaTime;
-                if (loseTimer >= losePlayerSightThreshold)
-                {
+                if (loseTimer >= losePlayerSightThreshold) {
                     ResetAttention();
                     Debug.Log("Lost prey sight");
                 }
             }
         }
-        else
-        {
-            ResetAttention();
+        else {
+            if (isAware && target == null) ResetAttention();
             Wander();
             agent.speed = wanderSpeed;
             animator.speed = wanderSpeed;
         }
+        yield return null;
         SearchForPlayer();
+        yield return updateStateRate;
+        StartCoroutine(StateUpdate());
     }
 
     public void SearchForPlayer()
@@ -87,7 +94,7 @@ public class EnemyAI : MonoBehaviour
             if (Physics.Linecast(transform.position, target.position, out RaycastHit hit, -1))
             {
                 Debug.DrawLine(transform.position, hit.point);
-                if (hit.collider.CompareTag("Player"))
+                if (hit.collider.CompareTag(TagsAccess._Player))
                 {
                     OnAware(hit.collider.gameObject.transform);
                     return;
@@ -117,14 +124,12 @@ public class EnemyAI : MonoBehaviour
     {
         if (wanderType == WanderType.Random)
         {
-            if (Vector3.Distance(transform.position, wanderPoint) < 2f || debugWanderFrame >= debugWanderMaxFrame)
+            if (Vector3.Distance(transform.position, wanderPoint) < 2f)
             {
-                debugWanderFrame = 0;
                 wanderPoint = RandomWanderPoint();
             }
             else
             {
-                debugWanderFrame++;
                 agent.SetDestination(wanderPoint);
             }
         }
@@ -151,7 +156,8 @@ public class EnemyAI : MonoBehaviour
         agent.speed = 0;
         animator.enabled = false;
         Instantiate(ragdollVersion, transform.position, transform.rotation).GetComponent<Ragdoller>().ApplyForce(point, impactForce);
-        Destroy(gameObject);
+        StopAllCoroutines();
+        gameObject.SetActive(false);
     }
 
     public Vector3 RandomWanderPoint()
@@ -167,11 +173,11 @@ public class EnemyAI : MonoBehaviour
         Transform nearestTransform = null;
         float nearestDistance = viewDistance;
         Collider[] attackables = Physics.OverlapSphere(transform.position, viewDistance, attackableLayer);
-        foreach (Collider attackable in attackables) {
-            float distance = Vector3.Distance(transform.position, attackable.gameObject.transform.position);
+        for(uint i = 0; i < attackables.Length; i++) {
+            float distance = Vector3.Distance(transform.position, attackables[i].gameObject.transform.position);
             if (distance < nearestDistance) {
                 nearestDistance = distance;
-                nearestTransform = attackable.gameObject.transform;
+                nearestTransform = attackables[i].gameObject.transform;
             }
         }
         return nearestTransform;
@@ -179,11 +185,6 @@ public class EnemyAI : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        /*
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, viewDistance);
-        */
-
         Gizmos.color = Color.magenta;
         Quaternion leftRayRotation = Quaternion.AngleAxis(-fov / 2f, Vector3.up);
         Quaternion rightRayRotation = Quaternion.AngleAxis(fov / 2f, Vector3.up);

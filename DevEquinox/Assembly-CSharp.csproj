@@ -74,13 +74,16 @@
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabImporterWindow.cs" />
     <Compile Include="Assets\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabExporter.cs" />
+    <Compile Include="Assets\Scripts\FPSLimiter.cs" />
     <Compile Include="Assets\Struct\LabDoor\DoorMecanism.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabModelWindow.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\Resizer.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
+    <Compile Include="Assets\Enemies\Ragdoller.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabApi.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserWindow.cs" />
-    <Compile Include="Assets\Enemies\Ragdoller.cs" />
+    <Compile Include="Assets\Scripts\Pooler.cs" />
+    <Compile Include="Assets\Scripts\TagsAccess.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -339,6 +342,9 @@
     <Reference Include="UnityEditor.UnityConnectModule">
       <HintPath>D:\Programmes\UnityEditors\2020.3.27f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Collections.LowLevel.ILSupport">
+      <HintPath>Library\PackageCache\com.unity.collections@1.1.0\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
+    </Reference>
     <Reference Include="GLTFSerialization">
       <HintPath>Assets\Sketchfab For Unity\Dependencies\Libraries\GLTFSerialization.dll</HintPath>
     </Reference>
@@ -346,10 +352,22 @@
       <HintPath>Assets\Sketchfab For Unity\Dependencies\Libraries\Ionic.Zip.Unity.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Unsafe">
-      <HintPath>Library\PackageCache\com.unity.burst@1.3.4\Unity.Burst.Unsafe.dll</HintPath>
+      <HintPath>Library\PackageCache\com.unity.burst@1.5.4\Unity.Burst.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Cecil.Mdb">
+      <HintPath>Library\PackageCache\com.unity.burst@1.5.4\Unity.Burst.CodeGen\Unity.Burst.Cecil.Mdb.dll</HintPath>
     </Reference>
     <Reference Include="SketchfabPlugin">
       <HintPath>Assets\Sketchfab For Unity\Dependencies\Libraries\SketchfabPlugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Cecil.Pdb">
+      <HintPath>Library\PackageCache\com.unity.burst@1.5.4\Unity.Burst.CodeGen\Unity.Burst.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Cecil">
+      <HintPath>Library\PackageCache\com.unity.burst@1.5.4\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Cecil.Rocks">
+      <HintPath>Library\PackageCache\com.unity.burst@1.5.4\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>Library\PackageCache\com.unity.nuget.mono-cecil@1.10.1\Mono.Cecil.dll</HintPath>
@@ -774,11 +792,11 @@
     <Reference Include="Unity.Animation.Rigging">
       <HintPath>Library\ScriptAssemblies\Unity.Animation.Rigging.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Mathematics">
-      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
-    </Reference>
     <Reference Include="com.unity.multiplayer-hlapi.Runtime">
       <HintPath>Library\ScriptAssemblies\com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="Unity.ShaderGraph.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
@@ -812,6 +830,9 @@
     </Reference>
     <Reference Include="Unity.Mathematics.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Collections">
+      <HintPath>Library\ScriptAssemblies\Unity.Collections.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Animation.Rigging.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Animation.Rigging.Editor.dll</HintPath>

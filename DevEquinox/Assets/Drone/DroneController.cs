@@ -52,7 +52,7 @@ public class DroneController : MonoBehaviour
 	{
 		if (_mainCamera == null)
 		{
-			_mainCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
+			_mainCamera = GameObject.FindGameObjectWithTag(TagsAccess._MainCamera).transform;
 		}
 		_controller = GetComponent<CharacterController>();
 		audioSource = GetComponent<AudioSource>();
@@ -62,8 +62,8 @@ public class DroneController : MonoBehaviour
 		audioSource.minDistance = 1f;
 		owner = null;
 
-		_playerInput = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerInput>();
-		DroneCamTransform = GameObject.FindGameObjectWithTag("DroneCamera").transform;
+		_playerInput = GameObject.FindGameObjectWithTag(TagsAccess._GameManager).GetComponent<PlayerInput>();
+		DroneCamTransform = GameObject.FindGameObjectWithTag(TagsAccess._DroneCamera).transform;
 		droneCam = GetComponentInChildren<CinemachineVirtualCamera>();
 		droneMap = _playerInput.actions.FindActionMap("Drone", true);
 		moveAction = droneMap.FindAction("DroneMove");
@@ -107,6 +107,7 @@ public class DroneController : MonoBehaviour
 		//walk & sprint noise radius
 		//sphereCollider.radius = GetPlayerStealthProfile() == 0 ? walkEnemyPerceptionRadius : sprintEnemyPerceptionRadius;
 	}
+
 	private void LateUpdate()
 	{
 		if (!droneMap.enabled) return;
@@ -162,7 +163,7 @@ public class DroneController : MonoBehaviour
 
 	public void SwitchAvatar(InputAction.CallbackContext ctx)
     {
-		_playerInput.SwitchCurrentActionMap("Player");
+		_playerInput.SwitchCurrentActionMap(TagsAccess._Player);
 		if (Vector3.Distance(transform.position, owner.position) < rapatriationRange)
 			Destroy(gameObject);
 	}
@@ -186,7 +187,7 @@ public class DroneController : MonoBehaviour
 
 	private void OnTriggerStay(Collider other)
 	{
-		if (other.gameObject.CompareTag("Enemy"))
+		if (other.gameObject.CompareTag(TagsAccess._Enemy))
 		{
 			other.gameObject.GetComponent<EnemyAI>().OnAware(this.gameObject.transform);
 		}

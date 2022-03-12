@@ -78,8 +78,8 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 1.8
   m_BaseOffset: 0.95
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_WalkableMask: 1
+  m_ObstacleAvoidanceType: 2
 --- !u!114 &457786519012944083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14fb374043522a348a2500e85f4f20f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 2
+  maxHealth: 5
 --- !u!1001 &457786519444235539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -154,6 +154,30 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6817083463627463796, guid: a1b4b8144e2a4054199287da62cdd0da, type: 3}
+      propertyPath: m_Quality
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6817083463627463796, guid: a1b4b8144e2a4054199287da62cdd0da, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6817083463627463796, guid: a1b4b8144e2a4054199287da62cdd0da, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6817083463627463796, guid: a1b4b8144e2a4054199287da62cdd0da, type: 3}
+      propertyPath: m_UpdateWhenOffscreen
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6817083463627463796, guid: a1b4b8144e2a4054199287da62cdd0da, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6817083463627463796, guid: a1b4b8144e2a4054199287da62cdd0da, type: 3}
+      propertyPath: m_SkinnedMotionVectors
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -6490059280807527106, guid: a1b4b8144e2a4054199287da62cdd0da, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -162,6 +186,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 59974aae1766faf4fb03bc60acb101ea, type: 2}
+    - target: {fileID: -6057140222963153312, guid: a1b4b8144e2a4054199287da62cdd0da, type: 3}
+      propertyPath: m_CullingMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: -6057140222963153312, guid: a1b4b8144e2a4054199287da62cdd0da, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
