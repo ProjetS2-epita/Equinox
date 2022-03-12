@@ -67,6 +67,9 @@
      <Compile Include="Assets\Scripts\ButtonManager.cs" />
      <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabApi.cs" />
      <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserWindow.cs" />
+     <Compile Include="Assets\UnityFBXExporter\FBXUnityMeshGetter.cs" />
+     <Compile Include="Assets\UnityFBXExporter\FBXUnityMaterialGetter.cs" />
+     <Compile Include="Assets\UnityFBXExporter\FBXExporter.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\Sketchfab For Unity\Dependencies\Shaders\GLTFFlipTexture.shader" />
@@ -90,6 +93,7 @@
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
      <None Include="Assets\Winter Zone Mini 1.0\readme.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
+     <None Include="Assets\Prefab Item\Arme\Gun\license.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
      <None Include="Assets\Sketchfab For Unity\Dependencies\Shaders\GLTFBumpToNormal.shader" />
      <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />

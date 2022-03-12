@@ -1,0 +1,11 @@
+Model Information:
+* title:	Karabiner Modell 1931 (K. 31/Kar. 31/Mq. 31)
+* source:	https://sketchfab.com/3d-models/karabiner-modell-1931-k-31kar-31mq-31-1a6cfe6a241c4e97a3996364bcb33c98
+* author:	oxxxxxygen (https://sketchfab.com/oxxxxxygen)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Karabiner Modell 1931 (K. 31/Kar. 31/Mq. 31)" (https://sketchfab.com/3d-models/karabiner-modell-1931-k-31kar-31mq-31-1a6cfe6a241c4e97a3996364bcb33c98) by oxxxxxygen (https://sketchfab.com/oxxxxxygen) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
