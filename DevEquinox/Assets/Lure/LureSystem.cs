@@ -1,37 +1,65 @@
 using UnityEngine;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.AddressableAssets;
 
 public class LureSystem : MonoBehaviour
 {
-    private SphereCollider noiseSystem;
-    private AudioSource lureSource;
-    public AudioClip lurer;
-    private float noiseRadius = 50f;
-    private float lifeSpan = 20f;
+    private SphereCollider _noiseSystem;
+    private AudioSource _lureSource;
+    public AudioClip _lurer;
+    private List<Collider> _collided;
+    private float _noiseRadius = 50f;
+    private float _lifeSpan = 20f;
 
     private void Awake()
     {
-        noiseSystem = GetComponent<SphereCollider>();
-        lureSource = GetComponent<AudioSource>();
-        lureSource.clip = lurer;
-        lureSource.loop = true;
-        lureSource.minDistance = 1f;
-        lureSource.maxDistance = noiseRadius;
-        lureSource.spread = 360f;
+        _collided = new List<Collider>();
+        _noiseSystem = GetComponent<SphereCollider>();
+        _lureSource = GetComponent<AudioSource>();
+        _lureSource.loop = true;
+        _lureSource.minDistance = 1f;
+        _lureSource.maxDistance = _noiseRadius;
+        _lureSource.spread = 360f;
+        Addressables.LoadAssetAsync<AudioClip>(GlobalAccess._lureSound).Completed += (asyncOp) => {
+            _lurer = asyncOp.Result;
+            _lureSource.clip = _lurer;
+            _lureSource.Play();
+        };
     }
 
     void Start()
     {
-        noiseSystem.enabled = true;
-        noiseSystem.radius = noiseRadius;
-        lureSource.Play();
-        Destroy(transform.parent.gameObject, lifeSpan);
+        _noiseSystem.enabled = true;
+        _noiseSystem.radius = _noiseRadius;
+        StartCoroutine(ReleaseAfterDelay());
+    }
+
+    private IEnumerator ReleaseAfterDelay()
+    {
+        yield return new WaitForSeconds(_lifeSpan);
+        Addressables.Release(_lurer);
+        Addressables.ReleaseInstance(transform.parent.gameObject);
+    }
+
+    protected IEnumerator AlertEnemies(Transform transform)
+    {
+        Debug.Log($"AlertEnemies2 from {gameObject.name}");
+        foreach (Collider collider in _collided) {
+            if (collider != null) {
+                if (collider.TryGetComponent(out EnemyAI AI)) AI.OnAware(transform);
+                yield return null;
+            }
+            _collided.Remove(collider);
+        }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            other.gameObject.GetComponent<EnemyAI>().OnAware(gameObject.transform);
-        }
+        if (!other.CompareTag(GlobalAccess._Enemy)) return;
+        Debug.Log(other);
+        _collided.Append(other);
+        StartCoroutine(AlertEnemies(transform));
     }
 }

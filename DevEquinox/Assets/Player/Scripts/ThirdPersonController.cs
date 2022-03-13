@@ -2,208 +2,128 @@
 using Cinemachine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
-using System.Collections;
+using UnityEngine.AddressableAssets;
 
-[RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(SphereCollider))]
-public class ThirdPersonController : MonoBehaviour
+public class ThirdPersonController : Controllers
 {
 
-	[Header("Player")]
-	[Tooltip("Move speed of the character in m/s")]
-	public float MoveSpeed = 2.0f;
-	[Tooltip("Sprint speed of the character in m/s")]
-	public float SprintSpeed = 5.335f;
-	[Tooltip("How fast the character turns to face movement direction")]
-	[Range(0.0f, 0.3f)]
-	public float RotationSmoothTime = 0.12f;
-	[Tooltip("Acceleration and deceleration")]
-	public float SpeedChangeRate = 10.0f;
-	public float Sensitivity = 1f;
-
-	[Space(10)]
-	[Tooltip("The height the player can jump")]
-	public float JumpHeight = 1.2f;
-	[Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
-	public float Gravity = -15.0f;
-
-	[Space(10)]
-	[Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")]
-	public float JumpTimeout = 0.50f;
-	[Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
-	public float FallTimeout = 0.15f;
-
-	[Header("Player Grounded")]
-	[Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
-	[SerializeField] private bool Grounded = true;
-	[SerializeField] private bool canJump = true;
-	
-	[Tooltip("Useful for rough ground")]
-	public float GroundedOffset = -0.14f;
-	[Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
-	public float GroundedRadius = 0.28f;
-	[Tooltip("What layers the character uses as ground")]
-	public LayerMask GroundLayers;
-	[SerializeField] private float GroundSlopeAngle = 0f;
-	public float angleRayLength = 0.75f;
-
-	[Header("Cinemachine")]
-	[Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
-	public GameObject CinemachineCameraTarget;
-	[Tooltip("How far in degrees can you move the camera up")]
-	public float TopClamp = 70.0f;
-	[Tooltip("How far in degrees can you move the camera down")]
-	public float BottomClamp = -30.0f;
-	[Tooltip("Additional degress to override the camera. Useful for fine tuning camera position when locked")]
-	public float CameraAngleOverride = 0.0f;
-	[Tooltip("For locking the camera position on all axis")]
-	public bool LockCameraPosition = false;
-
-	// Shooter Controller
-	[Header("Shooter Controller")]
-	[Tooltip("Camera to switch when aiming")]
-	[SerializeField] private CinemachineVirtualCamera aimVirtualCamera;
-	[Tooltip("Normal camera sensitivity")]
-	[SerializeField] private float normalSensitivity = 1f;
-	[Tooltip("Aiming camera sensitivity")]
-	[SerializeField] private float aimSensitivity = 0.3f;
-	[Tooltip("Layer(s) to collide with cursor aim")]
-	[SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
-	[Tooltip("Layer(s) where enemies belong")]
-	[SerializeField] private LayerMask ennemiesLayer;
-	[Tooltip("Damage per shoot")]
-	[SerializeField] private float shootDamage;
-	[Tooltip("Sound played when shoot")]
-	public AudioClip shootSound;
-	Transform lastHitTransform;
-	RaycastHit lastRaycastHit;
-	Vector3 mouseWorldPosition;
-	[Tooltip("Gunshot sound propagation distance for enemies detection")]
-	public float soundIntensity = 100f;
-	[Tooltip("Detectable by enemies perimeter when walking")]
-	public float walkEnemyPerceptionRadius = 1.5f;
-	[Tooltip("Detectable by enemies perimeter when sprinting")]
-	public float sprintEnemyPerceptionRadius = 4f;
-	private AudioSource audioSource;
-	private SphereCollider sphereCollider;
-	public GameObject DroneOriginal;
-	private GameObject DroneInstance = null;
-	public float rapatriationRange = 2f;
-
-	// cinemachine
-	private float _cinemachineTargetYaw;
-	private float _cinemachineTargetPitch;
-
-	// player
-	private float _speed;
-	private float _animationBlend;
-	private float _targetRotation = 0.0f;
-	private float _rotationVelocity;
-	private float _verticalVelocity;
-	private float _terminalVelocity = 53.0f;
-
-	// timeout deltatime
+	public float _SprintSpeed = 7f;
+	public float _JumpHeight = 1.2f;
+	public float _JumpTimeout = 0.50f;
+	public float _FallTimeout = 0.20f;
 	private float _jumpTimeoutDelta;
 	private float _fallTimeoutDelta;
 
-	// animation IDs
+	[SerializeField] private bool _Grounded = true;
+	[SerializeField] private bool _canJump = true;
+	public float _GroundedOffset = -0.14f;
+	public float _GroundedRadius = 0.28f;
+	public LayerMask _GroundLayers;
+	public float _angleRayLength = 0.75f;
+	[SerializeField] private float _GroundSlopeAngle = 0f;
+
+	private bool _rotateOnMove = true;
+	public GameObject _CinemachineCameraTarget;
+	[SerializeField] private CinemachineVirtualCamera _aimVirtualCamera;
+	[SerializeField] private float _normalSensitivity = 1f;
+	[SerializeField] private float _aimSensitivity = 0.3f;
+	[SerializeField] private LayerMask _aimColliderLayerMask = new LayerMask();
+
+	[SerializeField] private float _shootDamage;
+	Transform _lastHitTransform;
+	RaycastHit _lastRaycastHit;
+	Vector3 _mouseWorldPosition;
+	[SerializeField] private Vector3 _impactDamage = new Vector3(400f, 0.01f, 0f);
+	public float _gunshotSoundPropagation = 100f;
+	public float _walkEnemyPerceptionRadius = 1.5f;
+	public float _sprintEnemyPerceptionRadius = 4f;
+	
+	private float _animationBlend;
+	private float _verticalVelocity;
+	private float _terminalVelocity = 53.0f;
+
 	private int _animIDSpeed;
 	private int _animIDGrounded;
 	private int _animIDJump;
 	private int _animIDFreeFall;
 	private int _animIDMotionSpeed;
 
-	private Animator _animator;
-	private CharacterController _controller;
+	private InputAction _jumpAction;
+	private InputAction _sprintAction;
+	private InputAction _aimAction;
+	private InputAction _shootAction;
 
-	//Inputs
-	private PlayerInput _playerInput;
-	private InputActionMap playerMap;
-	private InputAction moveAction;
-	private InputAction lookAction;
-	private InputAction jumpAction;
-	private InputAction sprintAction;
-	public InputAction aimAction;
-	public InputAction shootAction;
-	private InputAction droneAction;
+	private GameObject _droneInstance;
 
-	private GameObject _mainCamera;
-	private bool _rotateOnMove = true;
-	private const float _threshold = 0.01f;
-	[SerializeField] private Vector3 impactDamage = new Vector3(400f,0.01f,0f);
-	float actualTime;
-
-    private void Awake()
+	protected override void Awake()
 	{
-		// get a reference to our main camera
-		if (_mainCamera == null)
-		{
-			_mainCamera = GameObject.FindGameObjectWithTag(TagsAccess._MainCamera);
-		}
-		_controller = GetComponent<CharacterController>();
-		audioSource = GetComponent<AudioSource>();
-		sphereCollider = GetComponent<SphereCollider>();
-		TryGetComponent(out _animator);
-
-		_playerInput = GameObject.FindGameObjectWithTag(TagsAccess._GameManager).GetComponent<PlayerInput>();
-		playerMap = _playerInput.actions.FindActionMap(TagsAccess._Player, true);
-		moveAction = playerMap.FindAction("Move");
-		lookAction = playerMap.FindAction("Look");
-		jumpAction = playerMap.FindAction("Jump");
-		sprintAction = playerMap.FindAction("Sprint");
-		aimAction = playerMap.FindAction("Aim");
-		shootAction = playerMap.FindAction("Shoot");
-		droneAction = playerMap.FindAction("SwitchDrone");
+		_MapName = GlobalAccess._Player;
+		_TopClamp = 70.0f;
+		_BottomClamp = -30.0f;
+		_SpeedChangeRate = 8f;
+		_Sensitivity = 1f;
+		_MoveSpeed = 5f;
+		_rapatriationRange = 5f;
+		base.Awake();
+		_sphereCollider.radius = _walkEnemyPerceptionRadius;
+		_audioSource.maxDistance = _walkEnemyPerceptionRadius;
+		_audioSource.minDistance = 1f;
+		_droneInstance = null;
+		_jumpAction = _Map.FindAction("Jump");
+		_sprintAction = _Map.FindAction("Sprint");
+		_aimAction = _Map.FindAction("Aim");
+		_shootAction = _Map.FindAction("Shoot");
+		_switchAction = _Map.FindAction("SwitchDrone");
+		//sound for walk noise
 	}
 
 	private void OnEnable()
 	{
-		shootAction.performed += Shoot;
-		aimAction.performed += Aim;
-		droneAction.performed += DroneSwitch;
+		_shootAction.performed += Shoot;
+		_aimAction.performed += Aim;
+		_switchAction.performed += SwitchControl;
 	}
 
     private void OnDisable()
     {
-		shootAction.performed -= Shoot;
-		aimAction.performed -= Aim;
-		droneAction.performed -= DroneSwitch;
+		_shootAction.performed -= Shoot;
+		_aimAction.performed -= Aim;
+		_switchAction.performed -= SwitchControl;
 	}
 
     private void Start()
 	{
 		AssignAnimationIDs();
-		_jumpTimeoutDelta = JumpTimeout;
-		_fallTimeoutDelta = FallTimeout;
-		mouseWorldPosition = Vector3.zero;
+		_jumpTimeoutDelta = _JumpTimeout;
+		_fallTimeoutDelta = _FallTimeout;
+		_mouseWorldPosition = Vector3.zero;
 	}
 
-	private void Update()
+	protected override void Update()
 	{
-		if (!playerMap.enabled) return;
-
-		actualTime = Time.deltaTime;
+		if (!_Map.enabled) return;
+		base.Update();
 		JumpAndGravity();
 		GroundedCheck();
 		Move();
 
-		mouseWorldPosition = Vector3.zero;
+		_mouseWorldPosition = Vector3.zero;
 		Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
 		Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-		lastHitTransform = null;
-		if (Physics.Raycast(ray, out lastRaycastHit, 200f, aimColliderLayerMask)) {
-			mouseWorldPosition = lastRaycastHit.point;
-			lastHitTransform = lastRaycastHit.transform;
+		_lastHitTransform = null;
+		if (Physics.Raycast(ray, out _lastRaycastHit, 200f, _aimColliderLayerMask)) {
+			_mouseWorldPosition = _lastRaycastHit.point;
+			_lastHitTransform = _lastRaycastHit.transform;
 		}
 
 		//walk & sprint noise radius
-		sphereCollider.radius = GetPlayerStealthProfile() == 0 ? walkEnemyPerceptionRadius : sprintEnemyPerceptionRadius;
+		_sphereCollider.radius = GetPlayerStealthProfile() == 0 ? _walkEnemyPerceptionRadius : _sprintEnemyPerceptionRadius;
 	}
 
-	private void LateUpdate()
+	protected override void LateUpdate()
 	{
-		CameraRotation();
+		if (!_Map.enabled) return;
+		base.LateUpdate();
 	}
 
 	private void AssignAnimationIDs()
@@ -218,42 +138,29 @@ public class ThirdPersonController : MonoBehaviour
 	private void GroundedCheck()
 	{
 		// set sphere position, with offset
-		Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
-		Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
+		Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - _GroundedOffset, transform.position.z);
+		_Grounded = Physics.CheckSphere(spherePosition, _GroundedRadius, _GroundLayers, QueryTriggerInteraction.Ignore);
 		RaycastHit hit;
-		Physics.Raycast(spherePosition, Vector3.down, out hit, angleRayLength);
-		GroundSlopeAngle = Vector3.Angle(hit.normal, Vector3.up);
+		Physics.Raycast(spherePosition, Vector3.down, out hit, _angleRayLength);
+		_GroundSlopeAngle = Vector3.Angle(hit.normal, Vector3.up);
 		Debug.DrawLine(spherePosition, hit.point, Color.red);
-		canJump = GroundSlopeAngle < _controller.slopeLimit;
+		_canJump = _GroundSlopeAngle < _controller.slopeLimit;
 
 		// update animator if using character
-		_animator.SetBool(_animIDGrounded, Grounded);
+		_animator.SetBool(_animIDGrounded, _Grounded);
 	}
 
-	private void CameraRotation()
+	protected override void CameraRotation()
 	{
-		Vector2 look = lookAction.ReadValue<Vector2>();
-
-		// if there is an input and camera position is not fixed
-		if (look.sqrMagnitude >= _threshold && !LockCameraPosition)
-		{
-			_cinemachineTargetYaw += look.x * actualTime * Sensitivity;
-			_cinemachineTargetPitch += look.y * actualTime * Sensitivity;
-		}
-
-		// clamp our rotations so our values are limited 360 degrees
-		_cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
-		_cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
-
-		// Cinemachine will follow this target
-		CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
+		base.CameraRotation();
+		_CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + _CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
 	}
 
-	private void Move()
+	protected override void Move()
 	{
-		Vector2 move = moveAction.ReadValue<Vector2>().normalized;
+		Vector2 move = _moveAction.ReadValue<Vector2>().normalized;
 
-		float targetSpeed = sprintAction.IsPressed() ? SprintSpeed : MoveSpeed;
+		float targetSpeed = _sprintAction.IsPressed() ? _SprintSpeed : _MoveSpeed;
 
 		if (move == Vector2.zero) targetSpeed = 0.0f;
 
@@ -267,21 +174,21 @@ public class ThirdPersonController : MonoBehaviour
 		{
 			// creates curved result rather than a linear one giving a more organic speed change
 			// note T in Lerp is clamped, so we don't need to clamp our speed
-			_speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, actualTime * SpeedChangeRate);
+			_speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, _actualTime * _SpeedChangeRate);
 			_speed = Mathf.Round(_speed * 1000f) / 1000f;
 		}
 		else
 		{
 			_speed = targetSpeed;
 		}
-		_animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, actualTime * SpeedChangeRate);
+		_animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, _actualTime * _SpeedChangeRate);
 
 		Vector3 inputDirection = new Vector3(move.x, 0.0f, move.y).normalized;
 
 		if (move != Vector2.zero)
 		{
 			_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
-			float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
+			float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, _RotationSmoothTime);
 
 			// rotate to face input direction relative to camera position
 			if (_rotateOnMove) {
@@ -291,7 +198,7 @@ public class ThirdPersonController : MonoBehaviour
 
 		Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
-		_controller.Move(targetDirection.normalized * (_speed * actualTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * actualTime);
+		_controller.Move(targetDirection.normalized * (_speed * _actualTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * _actualTime);
 
 		_animator.SetFloat(_animIDSpeed, _animationBlend);
 		_animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
@@ -299,10 +206,10 @@ public class ThirdPersonController : MonoBehaviour
 
 	private void JumpAndGravity()
 	{
-		if (Grounded)
+		if (_Grounded)
 		{
 			// reset the fall timeout timer
-			_fallTimeoutDelta = FallTimeout;
+			_fallTimeoutDelta = _FallTimeout;
 
 			// update animator if using character
 			_animator.SetBool(_animIDJump, false);
@@ -315,10 +222,10 @@ public class ThirdPersonController : MonoBehaviour
 			}
 
 			// Jump
-			if (canJump && jumpAction.triggered && _jumpTimeoutDelta <= 0.0f)
+			if (_canJump && _jumpAction.triggered && _jumpTimeoutDelta <= 0.0f)
 			{
 				// the square root of H * -2 * G = how much velocity needed to reach desired height
-				_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+				_verticalVelocity = Mathf.Sqrt(_JumpHeight * -2f * _Gravity);
 
 				// update animator if using character
 				_animator.SetBool(_animIDJump, true);
@@ -327,18 +234,18 @@ public class ThirdPersonController : MonoBehaviour
 			// jump timeout
 			if (_jumpTimeoutDelta >= 0.0f)
 			{
-				_jumpTimeoutDelta -= actualTime;
+				_jumpTimeoutDelta -= _actualTime;
 			}
 		}
 		else
 		{
 			// reset the jump timeout timer
-			_jumpTimeoutDelta = JumpTimeout;
+			_jumpTimeoutDelta = _JumpTimeout;
 
 			// fall timeout
 			if (_fallTimeoutDelta >= 0.0f)
 			{
-				_fallTimeoutDelta -= actualTime;
+				_fallTimeoutDelta -= _actualTime;
 			}
 			else
 			{
@@ -353,79 +260,68 @@ public class ThirdPersonController : MonoBehaviour
 		// apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
 		if (_verticalVelocity < _terminalVelocity)
 		{
-			_verticalVelocity += Gravity * actualTime;
+			_verticalVelocity += _Gravity * _actualTime;
 		}
 	}
 
 	public void Aim(InputAction.CallbackContext ctx)
 	{
-		if (aimAction.IsPressed()) {
-			aimVirtualCamera.gameObject.SetActive(true);
-			SetSensitivity(aimSensitivity);
+		if (_aimAction.IsPressed()) {
+			_aimVirtualCamera.gameObject.SetActive(true);
+			SetSensitivity(_aimSensitivity);
 			SetRotateOnMove(false);
-			Vector3 worldAimTarget = mouseWorldPosition;
+			Vector3 worldAimTarget = _mouseWorldPosition;
 			worldAimTarget.y = transform.position.y;
 			Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
-			transform.forward = Vector3.Lerp(transform.forward, aimDirection, actualTime * 20f);
+			transform.forward = Vector3.Lerp(transform.forward, aimDirection, _actualTime * 20f);
 		}
 		else {
-			aimVirtualCamera.gameObject.SetActive(false);
-			SetSensitivity(normalSensitivity);
+			_aimVirtualCamera.gameObject.SetActive(false);
+			SetSensitivity(_normalSensitivity);
 			SetRotateOnMove(true);
 		}
 	}
 
 	public void Shoot(InputAction.CallbackContext ctx)
 	{
-		if (shootAction.triggered) {
-			audioSource.PlayOneShot(shootSound);
-			if (lastHitTransform != null) {
-				HealthSystem health = lastHitTransform.GetComponent<HealthSystem>();
+		if (_shootAction.triggered) {
+			Addressables.LoadAssetAsync<AudioClip>(GlobalAccess._gunshotSound).Completed += (asyncOp) => {
+				_audioSource.PlayOneShot(asyncOp.Result);
+				Addressables.Release(asyncOp);
+			};
+			if (_lastHitTransform != null) {
+				HealthSystem health = _lastHitTransform.GetComponent<HealthSystem>();
 				if (health != null) {
 					//hit target
-					Debug.Log("Target Hit :" + lastHitTransform.name);
-					health.TakeDamage(shootDamage);
-					if (health.IsDead) lastRaycastHit.transform.gameObject.GetComponent<EnemyAI>().Die(lastRaycastHit.point, impactDamage);
+					Debug.Log("Target Hit :" + _lastHitTransform.name);
+					health.TakeDamage(_shootDamage);
+					if (health.IsDead) _lastRaycastHit.transform.gameObject.GetComponent<EnemyAI>().Die(_lastRaycastHit.point, _impactDamage);
 				}
 				else {
 					//hit something else
-					Debug.Log("Target Miss :" + lastHitTransform.name);
+					Debug.Log("Target Miss :" + _lastHitTransform.name);
 				}
 			}
-			StartCoroutine(AlertEnemies(transform.position, transform));
+			StartCoroutine(AlertEnemies(_gunshotSoundPropagation));
 		}
 	}
 
-	IEnumerator AlertEnemies(Vector3 position, Transform transform)
+	public override void SwitchControl(InputAction.CallbackContext ctx)
     {
-		Collider[] enemies = Physics.OverlapSphere(position, soundIntensity, ennemiesLayer);
-		for (uint i = 0; i < enemies.Length; i++) {
-			if (enemies[i] != null && enemies[i].TryGetComponent(out EnemyAI AI)) AI.OnAware(transform);
-			if(i % 25 == 0) yield return null;
-		}
-	}
-
-	private void DroneSwitch(InputAction.CallbackContext ctx)
-    {
-		if (DroneInstance == null) {
+		if (_droneInstance == null) {
 			NavMeshHit navHit;
-			if (!NavMesh.SamplePosition(transform.position + Vector3.forward, out navHit, rapatriationRange, -1))
-			{
+			if (!NavMesh.SamplePosition(transform.position + Vector3.forward, out navHit, _rapatriationRange, -1)) {
 				Debug.Log("Unable to launch the drone at this location.");
 				return;
 			}
-
-			DroneInstance = Instantiate(DroneOriginal, navHit.position, transform.rotation);
-			DroneInstance.GetComponent<DroneController>().SetOwner(gameObject.transform);
+			Addressables.InstantiateAsync(GlobalAccess._dronePrefab, navHit.position, transform.rotation).Completed += (asyncOp) => {
+				DroneController dc = (_droneInstance = asyncOp.Result).GetComponent<DroneController>();
+				dc._owner = gameObject.transform;
+				dc._rapatriationRange = _rapatriationRange;
+				_playerInput.SwitchCurrentActionMap("Drone");
+			};
 		}
-		_playerInput.SwitchCurrentActionMap("Drone");
-	}
-
-	private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
-	{
-		if (lfAngle < -360f) lfAngle += 360f;
-		if (lfAngle > 360f) lfAngle -= 360f;
-		return Mathf.Clamp(lfAngle, lfMin, lfMax);
+		else _playerInput.SwitchCurrentActionMap("Drone");
 	}
 
 	private void OnDrawGizmosSelected()
@@ -433,16 +329,16 @@ public class ThirdPersonController : MonoBehaviour
 		Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
 		Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
 
-		if (Grounded) Gizmos.color = transparentGreen;
+		if (_Grounded) Gizmos.color = transparentGreen;
 		else Gizmos.color = transparentRed;
 			
 		// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
-		Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
+		Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - _GroundedOffset, transform.position.z), _GroundedRadius);
 	}
 
 	private void SetSensitivity(float newSensitivity)
     {
-		Sensitivity = newSensitivity;
+		_Sensitivity = newSensitivity;
     }
 
 	private void SetRotateOnMove(bool newRotateOnMove)
@@ -457,14 +353,7 @@ public class ThirdPersonController : MonoBehaviour
 
     private int GetPlayerStealthProfile()
     {
-		return _speed <= MoveSpeed ? 0 : 1;
+		return _speed <= _MoveSpeed ? 0 : 1;
     }
 
-	private void OnTriggerStay(Collider other)
-	{
-		if (other.gameObject.CompareTag(TagsAccess._Enemy))
-		{
-			other.gameObject.GetComponent<EnemyAI>()?.OnAware(gameObject.transform);
-		}
-	}
 }

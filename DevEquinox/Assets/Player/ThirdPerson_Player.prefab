@@ -101,7 +101,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!224 &1331715487
 RectTransform:
@@ -267,7 +267,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!224 &2035792544
 RectTransform:
@@ -1148,6 +1148,7 @@ GameObject:
   - component: {fileID: 204703807}
   - component: {fileID: 204703801}
   - component: {fileID: 204703802}
+  - component: {fileID: 5859005665463525818}
   m_Layer: 7
   m_Name: PlayerArmature
   m_TagString: Player
@@ -1221,65 +1222,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b03c424fb2e234478abc492918743ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 4
-  SprintSpeed: 9
-  RotationSmoothTime: 0.12
-  SpeedChangeRate: 10
-  Sensitivity: 1
-  JumpHeight: 1.5
-  Gravity: -15
-  JumpTimeout: 0.5
-  FallTimeout: 0.15
-  Grounded: 1
-  canJump: 1
-  GroundedOffset: -0.14
-  GroundedRadius: 0.28
-  GroundLayers:
+  _SpeedChangeRate: 0
+  _Sensitivity: 0
+  _MoveSpeed: 0
+  _rapatriationRange: 0
+  _SprintSpeed: 10
+  _JumpHeight: 2
+  _JumpTimeout: 0.5
+  _FallTimeout: 0.2
+  _Grounded: 1
+  _canJump: 1
+  _GroundedOffset: -0.14
+  _GroundedRadius: 0.28
+  _GroundLayers:
     serializedVersion: 2
-    m_Bits: 73
-  GroundSlopeAngle: 0
-  angleRayLength: 0.75
-  CinemachineCameraTarget: {fileID: 6979710302994864318}
-  TopClamp: 70
-  BottomClamp: -30
-  CameraAngleOverride: 0
-  LockCameraPosition: 0
-  aimVirtualCamera: {fileID: 1543173004}
-  normalSensitivity: 1
-  aimSensitivity: 0.2
-  aimColliderLayerMask:
+    m_Bits: 72
+  _angleRayLength: 0.75
+  _GroundSlopeAngle: 0
+  _CinemachineCameraTarget: {fileID: 6979710302994864318}
+  _aimVirtualCamera: {fileID: 1543173004}
+  _normalSensitivity: 1
+  _aimSensitivity: 0.3
+  _aimColliderLayerMask:
     serializedVersion: 2
-    m_Bits: 73
-  ennemiesLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  aimTrackerTransform: {fileID: 0}
-  shootDamage: 25
-  shootSound: {fileID: 8300000, guid: 6739c01659ad96d47987f4ddee226b36, type: 3}
-  soundIntensity: 100
-  walkEnemyPerceptionRadius: 3
-  sprintEnemyPerceptionRadius: 10
-  DroneOriginal: {fileID: 2189415001218884694, guid: be45a792bc3893d43b25b5992a6f8d7a, type: 3}
-  rapatriationRange: 2
-  aimAction:
-    m_Name: Aim
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: e0555331-c5ea-4a35-9e56-0819b8a0f712
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  shootAction:
-    m_Name: Shoot
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: af7c33ab-98c7-46ec-a20a-3b8cadfe0b30
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  impactDamage: {x: 400, y: 0.01, z: 0}
+    m_Bits: 88
+  _shootDamage: 100
+  _impactDamage: {x: 400, y: 0.01, z: 0}
+  _gunshotSoundPropagation: 100
+  _walkEnemyPerceptionRadius: 1.5
+  _sprintEnemyPerceptionRadius: 4
 --- !u!82 &815767321200977164
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1429,6 +1400,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475a6650f312afa48ba9a37454505918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!81 &5859005665463525818
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3326738179302711781}
+  m_Enabled: 1
 --- !u!1 &3397617112330304310
 GameObject:
   m_ObjectHideFlags: 0
@@ -2088,7 +2067,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5558546832783916272}
   m_LocalRotation: {x: -0, y: 0.9063079, z: -0, w: 0.42261827}
-  m_LocalPosition: {x: -3.7729187, y: 1.584, z: 0.42541504}
+  m_LocalPosition: {x: -3.7729187, y: 1.5839996, z: 0.42544556}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 614060875}
@@ -2172,6 +2151,7 @@ GameObject:
   - component: {fileID: 8354463952184326324}
   - component: {fileID: 8354463952184326325}
   - component: {fileID: 4251099836121227104}
+  - component: {fileID: 4577608718125822803}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -2295,6 +2275,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eb9dee9540afaf498947b8ccbeea006, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4577608718125822803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5620440305616667665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e25bb4877f3ce54eabaa0d63a7576e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools: []
 --- !u!1 &5812474340812655535
 GameObject:
   m_ObjectHideFlags: 0

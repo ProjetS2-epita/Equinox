@@ -94,7 +94,7 @@ public class EnemyAI : MonoBehaviour
             if (Physics.Linecast(transform.position, target.position, out RaycastHit hit, -1))
             {
                 Debug.DrawLine(transform.position, hit.point);
-                if (hit.collider.CompareTag(TagsAccess._Player))
+                if (hit.collider.CompareTag(GlobalAccess._Player))
                 {
                     OnAware(hit.collider.gameObject.transform);
                     return;

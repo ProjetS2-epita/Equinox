@@ -1155,20 +1155,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c05341f5804aa448ff079a675e166b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  owner: {fileID: 0}
-  lure: {fileID: 3617871908837719621, guid: 18dc3fce4c85c4e4b809ac4b1a91b07b, type: 3}
-  maxDistance: 100
-  droneSensitivity: 2
-  bladeSound: {fileID: 8300000, guid: 86a284c5b25940941a1724ce9c6c1a72, type: 3}
-  MoveSpeed: 8
-  Gravity: -15
-  baseNoiseDistance: 80
-  dampingCoefficient: 3
-  TopClamp: 180
-  BottomClamp: 90
-  CameraAngleOverride: 0
-  SpeedChangeRate: 10
-  RotationSmoothTime: 0.12
+  _SpeedChangeRate: 8
+  _Sensitivity: 4
+  _MoveSpeed: 15
+  _rapatriationRange: 0
+  _owner: {fileID: 0}
+  _lure: {fileID: 0}
+  _maxTravelDistance: 100
+  _baseNoiseDistance: 20
+  _dampingCoefficient: 5
 --- !u!114 &473850466562457461
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: ed8c9717aed8cb24d883c20325a5b761
+  m_SerializeEntries:
+  - m_GUID: 90f2e89afd4267343ad6a7154f63a684
+    m_Address: Assets/Enemies/Zombie1/Zombie1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 235dceb1753db8649873174381a267a8
+    m_Address: Assets/Player/ThirdPerson_Player.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: be45a792bc3893d43b25b5992a6f8d7a
+    m_Address: Assets/Drone/drone.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 86a284c5b25940941a1724ce9c6c1a72
+    m_Address: Assets/Drone/Sounds/helicopter-sound-effect.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 18dc3fce4c85c4e4b809ac4b1a91b07b
+    m_Address: Assets/Lure/Lure.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2e5d707df9ed00e48816298ed76c30b1
+    m_Address: Assets/Lure/Humming-Noise.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6739c01659ad96d47987f4ddee226b36
+    m_Address: Assets/Player/Sounds/Hand Gun 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 32056473a64d730478b39c2cdba45d24
+    m_Address: Assets/Enemies/Zombie1/Textures/Zombie1.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: f5cbf11f89219134a9c848b20e4871b0, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 871d01241661f0a49aa6797796c46a9e, type: 2}
+    - {fileID: 11400000, guid: 0c8dd48ecabf1aa49bebd50368ade43e, type: 2}
