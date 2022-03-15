@@ -80,11 +80,12 @@
     <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabModelWindow.cs" />
     <Compile Include="Assets\Scripts\GlobalAccess.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\Resizer.cs" />
-    <Compile Include="Assets\Scripts\SPooler.cs" />
+    <Compile Include="Assets\Scripts\Spooler.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Enemies\Ragdoller.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\SketchfabApi.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserWindow.cs" />
+    <Compile Include="Assets\Scripts\Pooler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

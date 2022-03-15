@@ -8,6 +8,8 @@ public static class GlobalAccess
     readonly public static uint _maxEnemiesInSight = 200;
     readonly public static float _triggerUpdateRate = 0.5f;
 
+    readonly public static string _E_zombie1 = "Zombie1";
+
     readonly public static string _Enemy = "Enemy";
     readonly public static string _Player = "Player";
     readonly public static string _Drone = "Drone";

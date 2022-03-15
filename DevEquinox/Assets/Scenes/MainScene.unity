@@ -253,6 +253,14 @@ PrefabInstance:
       value: Zombie1
       objectReference: {fileID: 0}
     - target: {fileID: 4577608718125822803, guid: 235dceb1753db8649873174381a267a8, type: 3}
+      propertyPath: pools.Array.data[0].amount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4577608718125822803, guid: 235dceb1753db8649873174381a267a8, type: 3}
+      propertyPath: pools.Array.data[0].expandable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4577608718125822803, guid: 235dceb1753db8649873174381a267a8, type: 3}
       propertyPath: pools.Array.data[0].poolAmount
       value: 15
       objectReference: {fileID: 0}
@@ -266,25 +274,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4577608718125822803, guid: 235dceb1753db8649873174381a267a8, type: 3}
       propertyPath: spawnPoints.Array.data[0].amount
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4577608718125822803, guid: 235dceb1753db8649873174381a267a8, type: 3}
       propertyPath: spawnPoints.Array.data[0].radius
-      value: 50
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4577608718125822803, guid: 235dceb1753db8649873174381a267a8, type: 3}
+      propertyPath: spawnPoints.Array.data[0].priority
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4577608718125822803, guid: 235dceb1753db8649873174381a267a8, type: 3}
       propertyPath: spawnPoints.Array.data[0].position.x
-      value: 280
+      value: 175
       objectReference: {fileID: 0}
     - target: {fileID: 4577608718125822803, guid: 235dceb1753db8649873174381a267a8, type: 3}
       propertyPath: spawnPoints.Array.data[0].position.y
-      value: 280
+      value: 68
+      objectReference: {fileID: 0}
+    - target: {fileID: 4577608718125822803, guid: 235dceb1753db8649873174381a267a8, type: 3}
+      propertyPath: spawnPoints.Array.data[0].position.z
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 8047161636021232021, guid: 235dceb1753db8649873174381a267a8, type: 3}
       propertyPath: m_Name
       value: ThirdPerson_Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4577608718125822803, guid: 235dceb1753db8649873174381a267a8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 235dceb1753db8649873174381a267a8, type: 3}
 --- !u!1001 &962577444
 PrefabInstance:
@@ -916,6 +933,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90f2e89afd4267343ad6a7154f63a684, type: 3}
+--- !u!1 &1777461611 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5620440305616667665, guid: 235dceb1753db8649873174381a267a8, type: 3}
+  m_PrefabInstance: {fileID: 884177363}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1777461613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777461611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 000e48c02e21b954d86c35ff9e279fe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools:
+  - type: Zombie1
+    poolObject: {fileID: 591991223}
+    amount: 300
+    expandable: 0
+  spawnPoints:
+  - position: {x: 175, y: 68, z: 200}
+    radius: 20
 --- !u!1001 &8250721106530069280
 PrefabInstance:
   m_ObjectHideFlags: 0
