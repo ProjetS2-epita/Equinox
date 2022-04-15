@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637826410975386977
-    m_Hash: 1517745775
+      ticks: 637846128717088882
+    m_Hash: 1789995198
   m_LockFileStatus:
     m_FilePath: C:/Users/matco/Desktop/S2/DevEquinox/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637826410975476970
-    m_Hash: 2309697712
+      ticks: 637846128717188891
+    m_Hash: 1395516261
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_PackageAssets:
@@ -606,6 +606,8 @@ m_PackageAssets:
         - 1.0.0-pre.5
         - 1.0.0-pre.6
         - 1.1.0
+        - 1.2.3-pre.1
+        - 1.2.3
         compatible:
         - 0.0.9-preview.1
         - 0.0.9-preview.2
@@ -650,6 +652,8 @@ m_PackageAssets:
         - 1.0.0-pre.5
         - 1.0.0-pre.6
         - 1.1.0
+        - 1.2.3-pre.1
+        - 1.2.3
         verified: 
       dependencies:
       - name: com.unity.burst
@@ -732,6 +736,7 @@ m_PackageAssets:
         - 2.0.11
         - 2.0.12
         - 2.0.14
+        - 2.0.15
         compatible:
         - 1.0.2
         - 1.0.3
@@ -750,7 +755,8 @@ m_PackageAssets:
         - 2.0.11
         - 2.0.12
         - 2.0.14
-        verified: 2.0.14
+        - 2.0.15
+        verified: 2.0.15
       dependencies:
       - name: com.unity.test-framework
         version: 1.1.9
@@ -1166,6 +1172,7 @@ m_PackageAssets:
         - 1.0.2
         - 1.1.0-pre.1
         - 1.1.2
+        - 1.1.3
         compatible:
         - 1.0.0-preview.13
         - 1.0.0-preview.16
@@ -1179,6 +1186,7 @@ m_PackageAssets:
         - 1.0.2
         - 1.1.0-pre.1
         - 1.1.2
+        - 1.1.3
         verified: 1.0.2
       dependencies:
       - name: com.unity.settings-manager
@@ -2042,6 +2050,57 @@ m_PackageAssets:
       - ugui
       - Unity UI
       - Canvas
+      registry:
+        id: 
+        name: 
+        url: 
+        scopes: []
+        isDefault: 0
+        capabilities: 0
+      hasRegistry: 0
+      hideInEditor: 1
+      entitlements:
+        isAllowed: 1
+      isAssetStorePackage: 0
+      datePublishedTicks: 0
+      documentationUrl: 
+      hasRepository: 0
+      repository:
+        type: 
+        url: 
+        revision: 
+        path: 
+    - packageId: com.veriorpies.parrelsync@https://github.com/VeriorPies/ParrelSync.git?path=/ParrelSync
+      testable: 0
+      isDirectDependency: 1
+      version: 1.5.0
+      source: 5
+      resolvedPath: C:\Users\matco\Desktop\S2\DevEquinox\Library\PackageCache\com.veriorpies.parrelsync@f454248221
+      assetPath: Packages/com.veriorpies.parrelsync
+      name: com.veriorpies.parrelsync
+      displayName: ParrelSync
+      author:
+        name: 
+        email: 
+        url: 
+      category: 
+      type: 
+      description: ParrelSync is a Unity editor extension that allows users to test
+        multiplayer gameplay without building the project by having another Unity
+        editor window opened and mirror the changes from the original project.
+      status: 4
+      errors: []
+      versions:
+        all: []
+        compatible: []
+        verified: 
+      dependencies: []
+      resolvedDependencies: []
+      keywords:
+      - Networking
+      - Utils
+      - Editor
+      - Extensions
       registry:
         id: 
         name: 
@@ -4446,6 +4505,7 @@ m_PackageAssets:
         - 1.6.2
         - 1.6.3
         - 1.6.4
+        - 1.6.5
         - 1.7.0-pre.1
         - 1.7.0
         compatible:
@@ -4526,6 +4586,7 @@ m_PackageAssets:
         - 1.6.2
         - 1.6.3
         - 1.6.4
+        - 1.6.5
         - 1.7.0-pre.1
         - 1.7.0
         verified: 1.4.11
@@ -4744,6 +4805,7 @@ m_PackageAssets:
         - 4.6.0-preview
         - 4.7.0-preview
         - 4.9.1
+        - 4.9.2
         compatible:
         - 4.0.0-preview
         - 4.0.0
@@ -4760,6 +4822,7 @@ m_PackageAssets:
         - 4.6.0-preview
         - 4.7.0-preview
         - 4.9.1
+        - 4.9.2
         verified: 4.3.2
       dependencies: []
       resolvedDependencies: []
@@ -4823,6 +4886,7 @@ m_PackageAssets:
         - 1.2.1
         - 1.2.4
         - 1.2.5
+        - 1.2.6
         compatible:
         - 0.0.12-preview.2
         - 0.0.12-preview.5
@@ -4840,7 +4904,8 @@ m_PackageAssets:
         - 1.2.1
         - 1.2.4
         - 1.2.5
-        verified: 1.2.5
+        - 1.2.6
+        verified: 1.2.6
       dependencies: []
       resolvedDependencies: []
       keywords:

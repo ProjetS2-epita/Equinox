@@ -7,6 +7,7 @@ using UnityEngine.AddressableAssets;
 public class ThirdPersonController : Controllers
 {
 
+	public float _scopeRange = 1000f;
 	public float _SprintSpeed = 7f;
 	public float _JumpHeight = 1.2f;
 	public float _JumpTimeout = 0.50f;
@@ -55,8 +56,30 @@ public class ThirdPersonController : Controllers
 
 	private GameObject _droneInstance;
 
-	protected override void Awake()
+
+	private void OnEnable()
 	{
+		if (!isLocalPlayer) return;
+		_shootAction.performed += Shoot;
+		_aimAction.performed += Aim;
+		_switchAction.performed += SwitchControl;
+	}
+
+    private void OnDisable()
+    {
+		if (!isLocalPlayer) return;
+		_shootAction.performed -= Shoot;
+		_aimAction.performed -= Aim;
+		_switchAction.performed -= SwitchControl;
+	}
+
+
+    public override void OnStartClient()
+    {
+		if (!isLocalPlayer) return;
+		gameObject.AddComponent<AudioListener>();
+		GetComponentInChildren<CinemachineVirtualCamera>().enabled = true;
+
 		_MapName = GlobalAccess._Player;
 		_TopClamp = 70.0f;
 		_BottomClamp = -30.0f;
@@ -64,7 +87,7 @@ public class ThirdPersonController : Controllers
 		_Sensitivity = 1f;
 		_MoveSpeed = 5f;
 		_rapatriationRange = 5f;
-		base.Awake();
+		base.OnStartClient();
 		_sphereCollider.radius = _walkEnemyPerceptionRadius;
 		_audioSource.maxDistance = _walkEnemyPerceptionRadius;
 		_audioSource.minDistance = 1f;
@@ -74,34 +97,17 @@ public class ThirdPersonController : Controllers
 		_aimAction = _Map.FindAction("Aim");
 		_shootAction = _Map.FindAction("Shoot");
 		_switchAction = _Map.FindAction("SwitchDrone");
-		//sound for walk noise
-	}
-
-	private void OnEnable()
-	{
-		_shootAction.performed += Shoot;
-		_aimAction.performed += Aim;
-		_switchAction.performed += SwitchControl;
-	}
-
-    private void OnDisable()
-    {
-		_shootAction.performed -= Shoot;
-		_aimAction.performed -= Aim;
-		_switchAction.performed -= SwitchControl;
-	}
-
-    private void Start()
-	{
+		OnEnable();
 		AssignAnimationIDs();
 		_jumpTimeoutDelta = _JumpTimeout;
 		_fallTimeoutDelta = _FallTimeout;
 		_mouseWorldPosition = Vector3.zero;
 	}
 
+
 	protected override void Update()
 	{
-		if (!_Map.enabled) return;
+		if (!isLocalPlayer || !_Map.enabled) return;
 		base.Update();
 		JumpAndGravity();
 		GroundedCheck();
@@ -111,7 +117,7 @@ public class ThirdPersonController : Controllers
 		Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
 		Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 		_lastHitTransform = null;
-		if (Physics.Raycast(ray, out _lastRaycastHit, 200f, _aimColliderLayerMask)) {
+		if (Physics.Raycast(ray, out _lastRaycastHit, _scopeRange, _aimColliderLayerMask)) {
 			_mouseWorldPosition = _lastRaycastHit.point;
 			_lastHitTransform = _lastRaycastHit.transform;
 		}
@@ -122,7 +128,7 @@ public class ThirdPersonController : Controllers
 
 	protected override void LateUpdate()
 	{
-		if (!_Map.enabled) return;
+		if (!isLocalPlayer || !_Map.enabled) return;
 		base.LateUpdate();
 	}
 
@@ -138,7 +144,7 @@ public class ThirdPersonController : Controllers
 	private void GroundedCheck()
 	{
 		// set sphere position, with offset
-		Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - _GroundedOffset, transform.position.z);
+		Vector3 spherePosition = new Vector3(selfTransform.position.x, selfTransform.position.y - _GroundedOffset, selfTransform.position.z);
 		_Grounded = Physics.CheckSphere(spherePosition, _GroundedRadius, _GroundLayers, QueryTriggerInteraction.Ignore);
 		RaycastHit hit;
 		Physics.Raycast(spherePosition, Vector3.down, out hit, _angleRayLength);
@@ -188,11 +194,11 @@ public class ThirdPersonController : Controllers
 		if (move != Vector2.zero)
 		{
 			_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
-			float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, _RotationSmoothTime);
+			float rotation = Mathf.SmoothDampAngle(selfTransform.eulerAngles.y, _targetRotation, ref _rotationVelocity, _RotationSmoothTime);
 
 			// rotate to face input direction relative to camera position
 			if (_rotateOnMove) {
-				transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+				selfTransform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
 			}
 		}
 
@@ -271,9 +277,9 @@ public class ThirdPersonController : Controllers
 			SetSensitivity(_aimSensitivity);
 			SetRotateOnMove(false);
 			Vector3 worldAimTarget = _mouseWorldPosition;
-			worldAimTarget.y = transform.position.y;
-			Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
-			transform.forward = Vector3.Lerp(transform.forward, aimDirection, _actualTime * 20f);
+			worldAimTarget.y = selfTransform.position.y;
+			Vector3 aimDirection = (worldAimTarget - selfTransform.position).normalized;
+			selfTransform.forward = Vector3.Lerp(selfTransform.forward, aimDirection, _actualTime * 20f);
 		}
 		else {
 			_aimVirtualCamera.gameObject.SetActive(false);
@@ -308,16 +314,18 @@ public class ThirdPersonController : Controllers
 
 	public override void SwitchControl(InputAction.CallbackContext ctx)
     {
+		_droneIcon.color = Color.red;
 		if (_droneInstance == null) {
 			NavMeshHit navHit;
-			if (!NavMesh.SamplePosition(transform.position + Vector3.forward, out navHit, _rapatriationRange, -1)) {
+			if (!NavMesh.SamplePosition(selfTransform.position + Vector3.forward, out navHit, _rapatriationRange, -1)) {
 				Debug.Log("Unable to launch the drone at this location.");
 				return;
 			}
-			Addressables.InstantiateAsync(GlobalAccess._dronePrefab, navHit.position, transform.rotation).Completed += (asyncOp) => {
+			Addressables.InstantiateAsync(GlobalAccess._dronePrefab, navHit.position, selfTransform.rotation).Completed += (asyncOp) => {
 				DroneController dc = (_droneInstance = asyncOp.Result).GetComponent<DroneController>();
-				dc._owner = gameObject.transform;
+				dc._owner = selfTransform;
 				dc._rapatriationRange = _rapatriationRange;
+				dc._droneIcon = _droneIcon;
 				_playerInput.SwitchCurrentActionMap("Drone");
 			};
 		}
@@ -333,7 +341,7 @@ public class ThirdPersonController : Controllers
 		else Gizmos.color = transparentRed;
 			
 		// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
-		Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - _GroundedOffset, transform.position.z), _GroundedRadius);
+		//Gizmos.DrawSphere(new Vector3(selfTransform.position.x, selfTransform.position.y - _GroundedOffset, selfTransform.position.z), _GroundedRadius);
 	}
 
 	private void SetSensitivity(float newSensitivity)

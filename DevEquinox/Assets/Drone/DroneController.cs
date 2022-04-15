@@ -19,23 +19,26 @@ public class DroneController : Controllers
 	private bool _activeCam;
 	private Transform _DroneCamTransform;
 
-	protected override void Awake()
-	{
+    public override void OnStartClient()
+    {
+		if (!isLocalPlayer) return;
 		_MapName = GlobalAccess._Drone;
-		_TopClamp = 270f;
+		_TopClamp = 180f;
 		_BottomClamp = 90f;
 		_SpeedChangeRate = 3f;
 		_Sensitivity = 1.5f;
 		_MoveSpeed = 14f;
-		base.Awake();
+		base.OnStartClient();
 		_sphereCollider.radius = _baseNoiseDistance;
 		_audioSource.maxDistance = _baseNoiseDistance;
 		_audioSource.minDistance = 1f;
 		_owner = null;
+		GetComponent<BatterySystem>().QuantityDisplay = _dronePower;
 		_DroneCamTransform = GameObject.FindGameObjectWithTag(GlobalAccess._DroneCamera).transform;
 		_Camera = GetComponentInChildren<CinemachineVirtualCamera>();
 		_lureDrop = _Map.FindAction("LureDrop");
 		_switchAction = _Map.FindAction("SwitchAvatar");
+		OnEnable();
 		_activeCam = _Map.enabled;
 		_audioSource.loop = true;
 		Addressables.LoadAssetAsync<AudioClip>(GlobalAccess._droneFlyingSound).Completed += (asyncOp) => {
@@ -43,22 +46,26 @@ public class DroneController : Controllers
 			_audioSource.clip = _Sound;
 			StartCoroutine(FadeIn(5));
 		};
-	}
+    }
+
 
 	private void OnEnable()
 	{
+		if (!isLocalPlayer) return;
 		_lureDrop.started += LureDrop;
 		_switchAction.performed += SwitchControl;
 	}
 
 	private void OnDisable()
 	{
+		if (!isLocalPlayer) return;
 		_lureDrop.started -= LureDrop;
 		_switchAction.performed -= SwitchControl;
 	}
 
     protected override void Update()
     {
+		if (!isLocalPlayer) return;
 		if (_Map.enabled != _activeCam) {
 			FocusCam(_Map.enabled);
 			_activeCam = _Map.enabled;
@@ -71,14 +78,14 @@ public class DroneController : Controllers
 
 	protected override void LateUpdate()
 	{
-		if (!_Map.enabled) return;
+		if (!isLocalPlayer || !_Map.enabled) return;
 		base.LateUpdate();
 	}
 
 	protected override void CameraRotation()
     {
 		base.CameraRotation();
-        transform.rotation = Quaternion.Euler(0, _cinemachineTargetYaw, 0.0f);
+		selfTransform.rotation = Quaternion.Euler(0, _cinemachineTargetYaw, 0.0f);
 		_DroneCamTransform.rotation = Quaternion.Euler(_cinemachineTargetPitch, _cinemachineTargetYaw, 0.0f);
 	}
 
@@ -97,15 +104,15 @@ public class DroneController : Controllers
 		Vector3 inputDirection = new Vector3(move.x, 0.0f, move.z).normalized;
 		if (move != Vector3.zero) {
 			_targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.eulerAngles.y;
-			float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, _RotationSmoothTime);
-			transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+			float rotation = Mathf.SmoothDampAngle(selfTransform.eulerAngles.y, _targetRotation, ref _rotationVelocity, _RotationSmoothTime);
+			selfTransform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
 		}
 		Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * new Vector3(0.0f, move.y, 1f);
 
 		targetDirection *= (_speed * _actualTime);
 
 		// Distance Control (signal strength)
-		if (_owner == null || Vector3.Distance(_owner.position, gameObject.transform.position + targetDirection) > _maxTravelDistance) return;
+		if (_owner == null || Vector3.Distance(_owner.position, selfTransform.position + targetDirection) > _maxTravelDistance) return;
 
 		_controller.Move(targetDirection);
 		_sphereCollider.radius = _baseNoiseDistance + _baseNoiseDistance * _controller.velocity.magnitude / 10f;
@@ -113,8 +120,9 @@ public class DroneController : Controllers
 
 	public override void SwitchControl(InputAction.CallbackContext ctx)
     {
+		_droneIcon.color = Color.white;
 		_playerInput.SwitchCurrentActionMap(GlobalAccess._Player);
-		if (Vector3.Distance(transform.position, _owner.position) < _rapatriationRange) {
+		if (Vector3.Distance(selfTransform.position, _owner.position) < _rapatriationRange) {
 			Addressables.Release(_Sound);
 			Addressables.ReleaseInstance(gameObject);
 		}
@@ -122,7 +130,7 @@ public class DroneController : Controllers
 
 	public void LureDrop(InputAction.CallbackContext ctx)
     {
-		Addressables.InstantiateAsync(GlobalAccess._lurePrefab, gameObject.transform.position, transform.rotation);
+		Addressables.InstantiateAsync(GlobalAccess._lurePrefab, selfTransform.position, selfTransform.rotation);
 	}
 
 	private void FocusCam(bool focus)

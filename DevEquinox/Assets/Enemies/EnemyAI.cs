@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 
+
 [RequireComponent(typeof(HealthSystem))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : MonoBehaviour
@@ -29,12 +30,14 @@ public class EnemyAI : MonoBehaviour
     private float loseTimer = 0;
     private HealthSystem healthSystem;
     public GameObject ragdollVersion;
+    private Transform selfTransform;
 
     void Awake()
     {
         healthSystem = GetComponent<HealthSystem>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
+        selfTransform = transform;
     }
 
     void OnEnable()
@@ -89,11 +92,11 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
-        if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(target.position)) < fov / 2f) {
-            Debug.DrawLine(transform.position, target.position);
-            if (Physics.Linecast(transform.position, target.position, out RaycastHit hit, -1))
+        if (Vector3.Angle(Vector3.forward, selfTransform.InverseTransformPoint(target.position)) < fov / 2f) {
+            Debug.DrawLine(selfTransform.position, target.position);
+            if (Physics.Linecast(selfTransform.position, target.position, out RaycastHit hit, -1))
             {
-                Debug.DrawLine(transform.position, hit.point);
+                Debug.DrawLine(selfTransform.position, hit.point);
                 if (hit.collider.CompareTag(GlobalAccess._Player))
                 {
                     OnAware(hit.collider.gameObject.transform);
@@ -124,7 +127,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (wanderType == WanderType.Random)
         {
-            if (Vector3.Distance(transform.position, wanderPoint) < 2f)
+            if (Vector3.Distance(selfTransform.position, wanderPoint) < 2f)
             {
                 wanderPoint = RandomWanderPoint();
             }
@@ -137,7 +140,7 @@ public class EnemyAI : MonoBehaviour
         {
             if (waypoints.Length > 1)
             {
-                if (Vector3.Distance(waypoints[waypointIndex].position, transform.position) < 2f)
+                if (Vector3.Distance(waypoints[waypointIndex].position, selfTransform.position) < 2f)
                 {
                     if (waypointIndex == waypoints.Length - 1) waypointIndex = 0;
                     else waypointIndex++;
@@ -153,28 +156,25 @@ public class EnemyAI : MonoBehaviour
 
     public void Die(Vector3 point, Vector3 impactForce)
     {
-        agent.speed = 0;
-        animator.enabled = false;
-        Instantiate(ragdollVersion, transform.position, transform.rotation).GetComponent<Ragdoller>().ApplyForce(point, impactForce);
-        StopAllCoroutines();
+        Instantiate(ragdollVersion, selfTransform.position, selfTransform.rotation).GetComponent<Ragdoller>().ApplyForce(point, impactForce);
         gameObject.SetActive(false);
     }
 
     public Vector3 RandomWanderPoint()
     {
-        Vector3 randomPoint = (Random.insideUnitSphere * wanderRadius) + transform.position;
+        Vector3 randomPoint = (Random.insideUnitSphere * wanderRadius) + selfTransform.position;
         NavMeshHit navHit;
         NavMesh.SamplePosition(randomPoint, out navHit, wanderRadius, -1);
-        return new Vector3(navHit.position.x, transform.position.y, navHit.position.z);
+        return new Vector3(navHit.position.x, selfTransform.position.y, navHit.position.z);
     }
 
     private Transform NearestToChase()
     {
         Transform nearestTransform = null;
         float nearestDistance = viewDistance;
-        Collider[] attackables = Physics.OverlapSphere(transform.position, viewDistance, attackableLayer);
+        Collider[] attackables = Physics.OverlapSphere(selfTransform.position, viewDistance, attackableLayer);
         for(uint i = 0; i < attackables.Length; i++) {
-            float distance = Vector3.Distance(transform.position, attackables[i].gameObject.transform.position);
+            float distance = Vector3.Distance(selfTransform.position, attackables[i].gameObject.transform.position);
             if (distance < nearestDistance) {
                 nearestDistance = distance;
                 nearestTransform = attackables[i].gameObject.transform;
@@ -188,9 +188,9 @@ public class EnemyAI : MonoBehaviour
         Gizmos.color = Color.magenta;
         Quaternion leftRayRotation = Quaternion.AngleAxis(-fov / 2f, Vector3.up);
         Quaternion rightRayRotation = Quaternion.AngleAxis(fov / 2f, Vector3.up);
-        Vector3 leftRayDirection = leftRayRotation * transform.forward;
-        Vector3 rightRayDirection = rightRayRotation * transform.forward;
-        Gizmos.DrawRay(transform.position, leftRayDirection * viewDistance);
-        Gizmos.DrawRay(transform.position, rightRayDirection * viewDistance);
+        Vector3 leftRayDirection = leftRayRotation * selfTransform.forward;
+        Vector3 rightRayDirection = rightRayRotation * selfTransform.forward;
+        Gizmos.DrawRay(selfTransform.position, leftRayDirection * viewDistance);
+        Gizmos.DrawRay(selfTransform.position, rightRayDirection * viewDistance);
     }
 }

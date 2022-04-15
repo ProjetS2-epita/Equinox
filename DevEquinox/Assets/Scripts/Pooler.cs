@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine.AI;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using Mirror;
 
 public class Pooler : MonoBehaviour
 {
@@ -19,8 +20,10 @@ public class Pooler : MonoBehaviour
     [System.Serializable]
     public class SpawnPoint
     {
-        public Vector3 position;
+        //public Vector3 position;
+        public Transform transform;
         public float radius;
+        public uint amount;
     }
 
     public static Pooler Instance;
@@ -48,36 +51,29 @@ public class Pooler : MonoBehaviour
         foreach (SpawnPoint point in spawnPoints) {
             SpawnAt(GlobalAccess._E_zombie1, point);
         }
-
     }
 
-    public void SpawnAt(string type, SpawnPoint point) 
+    public void SpawnAt(string type, SpawnPoint point, uint amount = 0) 
     {
         if (!poolDict.ContainsKey(type)) throw new KeyNotFoundException();
-
-        NavMeshHit hit;
-        bool spawnPositionFound;
+        if (amount == 0) amount = point.amount;
         List<GameObject> pool = poolDict[type], spawnables = new List<GameObject>();
-        bool search = true;
-        for (int i = 0; i < pool.Count && search; i++) {
+        for (int i = 0; i < pool.Count && amount > 0; i++) {
             if (!pool[i].activeInHierarchy) {
                 spawnables.Add(pool[i]);
-                //search = false;
+                amount--;
             }
         }
-        Debug.Log($"{spawnables.Count} zombie");
-
+        NavMeshHit hit;
+        bool spawnPositionFound;
         for (int i = 0; i < spawnables.Count; i++) {
-            Debug.Log($"spawnAt {i}");
             do {
-                spawnPositionFound = NavMesh.SamplePosition(Random.insideUnitSphere * point.radius + point.position, out hit, point.radius, -1);
+                spawnPositionFound = NavMesh.SamplePosition(Random.insideUnitSphere * point.radius + point.transform.position, out hit, point.radius, -1);
             } while (!spawnPositionFound);
             spawnables[i].transform.position = hit.position;
             spawnables[i].transform.Rotate(0f, Random.Range(0f, 360f), 0f);
             spawnables[i].SetActive(true);
         }
-
-
 
     }
 
@@ -85,7 +81,7 @@ public class Pooler : MonoBehaviour
     {
         Gizmos.color = new Color(1.0f, 0.0f, 0.0f, 0.35f);
         for (int i = 0; i < spawnPoints.Count; i++) {
-            Gizmos.DrawSphere(spawnPoints[i].position, spawnPoints[i].radius);
+            Gizmos.DrawSphere(spawnPoints[i].transform.position, spawnPoints[i].radius);
         }
     }
 
