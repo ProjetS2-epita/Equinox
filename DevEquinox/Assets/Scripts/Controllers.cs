@@ -106,11 +106,11 @@ public abstract class Controllers : NetworkBehaviour
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
     }
 
-    protected IEnumerator AlertEnemies(float radius)
+    protected IEnumerator AlertEnemies(Transform source, float radius)
     {
-        for (uint i = 0; i < Physics.OverlapSphereNonAlloc(selfTransform.position, radius, _colliders, _enemiesLayer); i++) {
+        for (uint i = 0; i < Physics.OverlapSphereNonAlloc(source.position, radius, _colliders, _enemiesLayer); i++) {
             if (_colliders[i] != null) {
-                if (_colliders[i].TryGetComponent(out EnemyAI AI)) AI.OnAware(selfTransform);
+                if (_colliders[i].TryGetComponent(out EnemyAI AI)) AI.OnAware(source);
                 if (i % 25 == 0) yield return null;
             }
         }

@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
-
+using Mirror;
 
 [RequireComponent(typeof(HealthSystem))]
 [RequireComponent(typeof(NavMeshAgent))]
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : NetworkBehaviour
 {
     public enum WanderType {Random, Waypoint};
 
@@ -32,23 +32,31 @@ public class EnemyAI : MonoBehaviour
     public GameObject ragdollVersion;
     private Transform selfTransform;
 
-    void Awake()
+
+    public override void OnStartServer()
     {
+        base.OnStartServer();
         healthSystem = GetComponent<HealthSystem>();
         agent = GetComponent<NavMeshAgent>();
-        animator = GetComponentInChildren<Animator>();
+        animator = GetComponent<Animator>();
         selfTransform = transform;
+        OnEnable();
     }
+
 
     void OnEnable()
     {
+        if (!isServer) return;
         target = null;
         wanderPoint = RandomWanderPoint();
         StartCoroutine(StateUpdate());
     }
+    
+
 
     void OnDisable()
     {
+        if (!isServer) return;
         StopAllCoroutines();
     }
 
@@ -67,7 +75,7 @@ public class EnemyAI : MonoBehaviour
                 loseTimer += Time.deltaTime;
                 if (loseTimer >= losePlayerSightThreshold) {
                     ResetAttention();
-                    Debug.Log("Lost prey sight");
+                    //Debug.Log("Lost prey sight");
                 }
             }
         }
@@ -93,10 +101,10 @@ public class EnemyAI : MonoBehaviour
         }
 
         if (Vector3.Angle(Vector3.forward, selfTransform.InverseTransformPoint(target.position)) < fov / 2f) {
-            Debug.DrawLine(selfTransform.position, target.position);
+            //Debug.DrawLine(selfTransform.position, target.position);
             if (Physics.Linecast(selfTransform.position, target.position, out RaycastHit hit, -1))
             {
-                Debug.DrawLine(selfTransform.position, hit.point);
+                //Debug.DrawLine(selfTransform.position, hit.point);
                 if (hit.collider.CompareTag(GlobalAccess._Player))
                 {
                     OnAware(hit.collider.gameObject.transform);
@@ -113,7 +121,7 @@ public class EnemyAI : MonoBehaviour
         isAware = true;
         isDetecting = true;
         loseTimer = 0;
-        Debug.Log($"aware of : {target.name}");
+        //Debug.Log($"aware of : {target.name}");
     }
 
     private void ResetAttention()
@@ -154,9 +162,13 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    //[Command]
     public void Die(Vector3 point, Vector3 impactForce)
     {
-        Instantiate(ragdollVersion, selfTransform.position, selfTransform.rotation).GetComponent<Ragdoller>().ApplyForce(point, impactForce);
+        GameObject ragdoll = Instantiate(ragdollVersion, selfTransform.position, selfTransform.rotation);
+        ragdoll.GetComponent<Ragdoller>().ApplyForce(point, impactForce);
+        NetworkServer.UnSpawn(gameObject);
+        NetworkServer.Spawn(ragdoll);
         gameObject.SetActive(false);
     }
 

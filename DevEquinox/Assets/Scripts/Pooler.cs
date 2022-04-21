@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using UnityEngine.AI;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using Mirror;
 
-public class Pooler : MonoBehaviour
+public class Pooler : NetworkBehaviour
 {
     [System.Serializable]
     public class ItemPool
@@ -33,25 +29,33 @@ public class Pooler : MonoBehaviour
 
     private void Awake() {
         Instance = this;
+        poolDict = new Dictionary<string, List<GameObject>>();
     }
 
-    private void Start()
+
+    public override void OnStartServer()
     {
-        poolDict = new Dictionary<string, List<GameObject>>();
-        for(int i = 0; i < pools.Count; i++) {
+        if (!isServer) return;
+        base.OnStartServer();
+        for (int i = 0; i < pools.Count; i++)
+        {
             List<GameObject> pooled = new List<GameObject>();
-            for(int j = 0; j < pools[i].amount; j++) {
+            for (int j = 0; j < pools[i].amount; j++)
+            {
                 GameObject obj = Instantiate(pools[i].poolObject);
+                //NetworkServer.Spawn(obj);
                 obj.SetActive(false);
                 pooled.Add(obj);
             }
             poolDict.Add(pools[i].type, pooled);
         }
 
-        foreach (SpawnPoint point in spawnPoints) {
+        foreach (SpawnPoint point in spawnPoints)
+        {
             SpawnAt(GlobalAccess._E_zombie1, point);
         }
     }
+
 
     public void SpawnAt(string type, SpawnPoint point, uint amount = 0) 
     {
@@ -73,9 +77,10 @@ public class Pooler : MonoBehaviour
             spawnables[i].transform.position = hit.position;
             spawnables[i].transform.Rotate(0f, Random.Range(0f, 360f), 0f);
             spawnables[i].SetActive(true);
+            NetworkServer.Spawn(spawnables[i].gameObject);
         }
-
     }
+
 
     private void OnDrawGizmos()
     {
@@ -84,5 +89,4 @@ public class Pooler : MonoBehaviour
             Gizmos.DrawSphere(spawnPoints[i].transform.position, spawnPoints[i].radius);
         }
     }
-
 }

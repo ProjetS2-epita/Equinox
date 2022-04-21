@@ -3,6 +3,7 @@ using Cinemachine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
 using UnityEngine.AddressableAssets;
+using Mirror;
 
 public class ThirdPersonController : Controllers
 {
@@ -295,7 +296,10 @@ public class ThirdPersonController : Controllers
 				_audioSource.PlayOneShot(asyncOp.Result);
 				Addressables.Release(asyncOp);
 			};
+
 			if (_lastHitTransform != null) {
+				CmdShoot(netIdentity, _lastHitTransform.gameObject.GetComponent<NetworkIdentity>(), _lastRaycastHit.point, _shootDamage, _impactDamage);
+				/*
 				HealthSystem health = _lastHitTransform.GetComponent<HealthSystem>();
 				if (health != null) {
 					//hit target
@@ -307,13 +311,39 @@ public class ThirdPersonController : Controllers
 					//hit something else
 					Debug.Log("Target Miss :" + _lastHitTransform.name);
 				}
+				*/
 			}
-			StartCoroutine(AlertEnemies(_gunshotSoundPropagation));
+			//StartCoroutine(AlertEnemies(_gunshotSoundPropagation));
 		}
 	}
 
+	
+	[Command]
+	private void CmdShoot(NetworkIdentity identity, NetworkIdentity lastHit, Vector3 hitPoint, float damage, Vector3 impactForce)
+    {
+		
+		if (lastHit != null) {
+			HealthSystem health = lastHit.gameObject.GetComponent<HealthSystem>();
+			if (health != null) {
+				//hit target
+				Debug.Log("Target Hit :" + lastHit.name);
+				health.TakeDamage(damage);
+				if (health.IsDead) lastHit.gameObject.GetComponent<EnemyAI>().Die(hitPoint, impactForce);
+			}
+			else {
+				//hit something else
+				Debug.Log("Target Miss :" + _lastHitTransform.name);
+			}
+		}
+		StartCoroutine(AlertEnemies(identity.gameObject.transform, _gunshotSoundPropagation));
+		
+	}
+	
+
+
 	public override void SwitchControl(InputAction.CallbackContext ctx)
     {
+		_droneIcon.color = Color.red;
 		_droneIcon.color = Color.red;
 		if (_droneInstance == null) {
 			NavMeshHit navHit;
