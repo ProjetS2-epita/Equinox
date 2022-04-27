@@ -977,6 +977,7 @@ GameObject:
   - component: {fileID: 449025314}
   - component: {fileID: 3504473734518283972}
   - component: {fileID: 6847019849637839877}
+  - component: {fileID: 8808462677422480854}
   m_Layer: 0
   m_Name: drone
   m_TagString: Untagged
@@ -1010,7 +1011,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: c8af69ee238f4b041a36964fa3ea82b3, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -1252,6 +1253,22 @@ MonoBehaviour:
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+--- !u!114 &8808462677422480854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2189415001218884694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 1
+  animator: {fileID: 8349473885985879287}
 --- !u!1 &2261088216373631827
 GameObject:
   m_ObjectHideFlags: 0

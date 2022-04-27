@@ -3,6 +3,7 @@ using UnityEngine;
 using Cinemachine;
 using UnityEngine.InputSystem;
 using UnityEngine.AddressableAssets;
+using Mirror;
 
 public class DroneController : Controllers
 {
@@ -21,7 +22,12 @@ public class DroneController : Controllers
 
     public override void OnStartClient()
     {
-		if (!isLocalPlayer) return;
+		Debug.Log($"start is local : {_owner.GetComponent<ThirdPersonController>().isLocalPlayer}");
+		if (!_owner.GetComponent<ThirdPersonController>().isLocalPlayer)
+		{
+			gameObject.SetActive(false);
+			return;
+		}
 		_MapName = GlobalAccess._Drone;
 		_TopClamp = 180f;
 		_BottomClamp = 90f;
@@ -65,7 +71,8 @@ public class DroneController : Controllers
 
     protected override void Update()
     {
-		if (!isLocalPlayer) return;
+		//Debug.Log($"update is local: {_owner.GetComponent<ThirdPersonController>().isLocalPlayer}");
+		//if (!_owner.GetComponent<ThirdPersonController>().isLocalPlayer) return;
 		if (_Map.enabled != _activeCam) {
 			FocusCam(_Map.enabled);
 			_activeCam = _Map.enabled;
@@ -85,8 +92,8 @@ public class DroneController : Controllers
 	protected override void CameraRotation()
     {
 		base.CameraRotation();
-		selfTransform.rotation = Quaternion.Euler(0, _cinemachineTargetYaw, 0.0f);
-		_DroneCamTransform.rotation = Quaternion.Euler(_cinemachineTargetPitch, _cinemachineTargetYaw, 0.0f);
+		selfTransform.rotation = Quaternion.Euler(0f, _cinemachineTargetYaw, 0f);
+		_DroneCamTransform.rotation = Quaternion.Euler(_cinemachineTargetPitch, _cinemachineTargetYaw, 0f);
 	}
 
 	protected override void Move()
@@ -123,6 +130,7 @@ public class DroneController : Controllers
 		_droneIcon.color = Color.white;
 		_playerInput.SwitchCurrentActionMap(GlobalAccess._Player);
 		if (Vector3.Distance(selfTransform.position, _owner.position) < _rapatriationRange) {
+			NetworkServer.UnSpawn(gameObject);
 			Addressables.Release(_Sound);
 			Addressables.ReleaseInstance(gameObject);
 		}

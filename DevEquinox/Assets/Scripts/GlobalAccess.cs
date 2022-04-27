@@ -18,7 +18,7 @@ public static class GlobalAccess
     readonly public static string _DroneCamera = "DroneCamera";
 
     readonly public static string _lureSound = "Assets/Lure/Humming-Noise.mp3";
-    readonly public static string _gunshotSound = "Assets/Player/Sounds/Hand Gun 1.wav";
+    readonly public static string _gunshotSound = "Assets/Player/Sounds/Gun 4_5.wav";
     readonly public static string _droneFlyingSound = "Assets/Drone/Sounds/helicopter-sound-effect.mp3";
 
     readonly public static string _playerPrefab = "Assets/Player/ThirdPerson_Player.prefab";

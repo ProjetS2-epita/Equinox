@@ -3,6 +3,7 @@ using UnityEngine.AI;
 using System.Collections;
 using Mirror;
 
+
 [RequireComponent(typeof(HealthSystem))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : NetworkBehaviour
@@ -10,6 +11,7 @@ public class EnemyAI : NetworkBehaviour
     public enum WanderType {Random, Waypoint};
 
     WaitForSeconds updateStateRate = new WaitForSeconds(0.2f);
+    public float damage = 10f;
 
     [SerializeField] private Transform target;
     public WanderType wanderType = WanderType.Random;
@@ -31,6 +33,9 @@ public class EnemyAI : NetworkBehaviour
     private HealthSystem healthSystem;
     public GameObject ragdollVersion;
     private Transform selfTransform;
+    private Collider[] detected = new Collider[8];
+
+    private int animAttack;
 
 
     public override void OnStartServer()
@@ -40,6 +45,7 @@ public class EnemyAI : NetworkBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         selfTransform = transform;
+        animAttack = Animator.StringToHash("Attack");
         OnEnable();
     }
 
@@ -69,15 +75,24 @@ public class EnemyAI : NetworkBehaviour
 
         if (isAware && target != null) {
             agent.SetDestination(target.position);
-            agent.speed = chaseSpeed;
-            animator.speed = chaseSpeed;
-            if (!isDetecting) {
-                loseTimer += Time.deltaTime;
-                if (loseTimer >= losePlayerSightThreshold) {
-                    ResetAttention();
-                    //Debug.Log("Lost prey sight");
+            if (Vector3.Distance(target.position, selfTransform.position) <= agent.stoppingDistance * 2f) {
+                agent.speed = 0;
+                animator.speed = 1.2f;
+                animator.SetBool(animAttack, true);
+            }
+            else {
+                animator.SetBool(animAttack, false);
+                agent.speed = chaseSpeed;
+                animator.speed = chaseSpeed;
+                if (!isDetecting) {
+                    loseTimer += Time.deltaTime;
+                    if (loseTimer >= losePlayerSightThreshold) {
+                        ResetAttention();
+                        //Debug.Log("Lost prey sight");
+                    }
                 }
             }
+            
         }
         else {
             if (isAware && target == null) ResetAttention();
@@ -124,6 +139,13 @@ public class EnemyAI : NetworkBehaviour
         //Debug.Log($"aware of : {target.name}");
     }
 
+    public void Attack() {
+        if (target == null) return;
+        if (target.TryGetComponent(out HealthSystem health)) {
+            health.TakeDamage(damage);
+        }
+    }
+
     private void ResetAttention()
     {
         target = null;
@@ -133,28 +155,21 @@ public class EnemyAI : NetworkBehaviour
 
     public void Wander()
     {
-        if (wanderType == WanderType.Random)
-        {
-            if (Vector3.Distance(selfTransform.position, wanderPoint) < 2f)
-            {
+        if (wanderType == WanderType.Random) {
+            if (Vector3.Distance(selfTransform.position, wanderPoint) < 2f) {
                 wanderPoint = RandomWanderPoint();
             }
-            else
-            {
+            else {
                 agent.SetDestination(wanderPoint);
             }
         }
-        else
-        {
-            if (waypoints.Length > 1)
-            {
-                if (Vector3.Distance(waypoints[waypointIndex].position, selfTransform.position) < 2f)
-                {
+        else {
+            if (waypoints.Length > 1) {
+                if (Vector3.Distance(waypoints[waypointIndex].position, selfTransform.position) < 2f) {
                     if (waypointIndex == waypoints.Length - 1) waypointIndex = 0;
                     else waypointIndex++;
                 }
-                else
-                {
+                else {
                     agent.SetDestination(waypoints[waypointIndex].position);
                 }
             }
@@ -162,7 +177,7 @@ public class EnemyAI : NetworkBehaviour
         }
     }
 
-    //[Command]
+
     public void Die(Vector3 point, Vector3 impactForce)
     {
         GameObject ragdoll = Instantiate(ragdollVersion, selfTransform.position, selfTransform.rotation);
@@ -184,12 +199,13 @@ public class EnemyAI : NetworkBehaviour
     {
         Transform nearestTransform = null;
         float nearestDistance = viewDistance;
-        Collider[] attackables = Physics.OverlapSphere(selfTransform.position, viewDistance, attackableLayer);
-        for(uint i = 0; i < attackables.Length; i++) {
-            float distance = Vector3.Distance(selfTransform.position, attackables[i].gameObject.transform.position);
+        Physics.OverlapSphereNonAlloc(selfTransform.position, viewDistance, detected, attackableLayer);
+        for(uint i = 0; i < detected.Length; i++) {
+            if (detected[i] == null) continue;
+            float distance = Vector3.Distance(selfTransform.position, detected[i].gameObject.transform.position);
             if (distance < nearestDistance) {
                 nearestDistance = distance;
-                nearestTransform = attackables[i].gameObject.transform;
+                nearestTransform = detected[i].gameObject.transform;
             }
         }
         return nearestTransform;

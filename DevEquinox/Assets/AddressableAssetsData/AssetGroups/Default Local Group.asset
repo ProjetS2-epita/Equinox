@@ -41,12 +41,12 @@ MonoBehaviour:
     m_Address: Assets/Lure/Humming-Noise.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 6739c01659ad96d47987f4ddee226b36
-    m_Address: Assets/Player/Sounds/Hand Gun 1.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 32056473a64d730478b39c2cdba45d24
     m_Address: Assets/Enemies/Zombie1/Textures/Zombie1.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 56da5c4e8e526cd428ac5666277e99cd
+    m_Address: Assets/Player/Sounds/Gun 4_5.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

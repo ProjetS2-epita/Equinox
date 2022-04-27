@@ -98,10 +98,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  damage: 1
   target: {fileID: 0}
   wanderType: 0
   wanderSpeed: 1.2
-  chaseSpeed: 2.5
+  chaseSpeed: 1.6
   waypoints: []
   fov: 120
   viewDistance: 20

@@ -32,9 +32,8 @@ public class ThirdPersonController : Controllers
 	[SerializeField] private LayerMask _aimColliderLayerMask = new LayerMask();
 
 	[SerializeField] private float _shootDamage;
-	Transform _lastHitTransform;
 	RaycastHit _lastRaycastHit;
-	Vector3 _mouseWorldPosition;
+	[SerializeField] private GameObject BloodTrace;
 	[SerializeField] private Vector3 _impactDamage = new Vector3(400f, 0.01f, 0f);
 	public float _gunshotSoundPropagation = 100f;
 	public float _walkEnemyPerceptionRadius = 1.5f;
@@ -102,7 +101,6 @@ public class ThirdPersonController : Controllers
 		AssignAnimationIDs();
 		_jumpTimeoutDelta = _JumpTimeout;
 		_fallTimeoutDelta = _FallTimeout;
-		_mouseWorldPosition = Vector3.zero;
 	}
 
 
@@ -114,14 +112,6 @@ public class ThirdPersonController : Controllers
 		GroundedCheck();
 		Move();
 
-		_mouseWorldPosition = Vector3.zero;
-		Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
-		Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-		_lastHitTransform = null;
-		if (Physics.Raycast(ray, out _lastRaycastHit, _scopeRange, _aimColliderLayerMask)) {
-			_mouseWorldPosition = _lastRaycastHit.point;
-			_lastHitTransform = _lastRaycastHit.transform;
-		}
 
 		//walk & sprint noise radius
 		_sphereCollider.radius = GetPlayerStealthProfile() == 0 ? _walkEnemyPerceptionRadius : _sprintEnemyPerceptionRadius;
@@ -277,10 +267,6 @@ public class ThirdPersonController : Controllers
 			_aimVirtualCamera.gameObject.SetActive(true);
 			SetSensitivity(_aimSensitivity);
 			SetRotateOnMove(false);
-			Vector3 worldAimTarget = _mouseWorldPosition;
-			worldAimTarget.y = selfTransform.position.y;
-			Vector3 aimDirection = (worldAimTarget - selfTransform.position).normalized;
-			selfTransform.forward = Vector3.Lerp(selfTransform.forward, aimDirection, _actualTime * 20f);
 		}
 		else {
 			_aimVirtualCamera.gameObject.SetActive(false);
@@ -297,23 +283,11 @@ public class ThirdPersonController : Controllers
 				Addressables.Release(asyncOp);
 			};
 
-			if (_lastHitTransform != null) {
-				CmdShoot(netIdentity, _lastHitTransform.gameObject.GetComponent<NetworkIdentity>(), _lastRaycastHit.point, _shootDamage, _impactDamage);
-				/*
-				HealthSystem health = _lastHitTransform.GetComponent<HealthSystem>();
-				if (health != null) {
-					//hit target
-					Debug.Log("Target Hit :" + _lastHitTransform.name);
-					health.TakeDamage(_shootDamage);
-					if (health.IsDead) _lastRaycastHit.transform.gameObject.GetComponent<EnemyAI>().Die(_lastRaycastHit.point, _impactDamage);
-				}
-				else {
-					//hit something else
-					Debug.Log("Target Miss :" + _lastHitTransform.name);
-				}
-				*/
+			Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+			Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+			if (Physics.Raycast(ray, out _lastRaycastHit, _scopeRange, _aimColliderLayerMask, QueryTriggerInteraction.Ignore)) {
+				CmdShoot(netIdentity, _lastRaycastHit.transform.gameObject.GetComponent<NetworkIdentity>(), _lastRaycastHit.point, _shootDamage, _impactDamage);
 			}
-			//StartCoroutine(AlertEnemies(_gunshotSoundPropagation));
 		}
 	}
 
@@ -321,18 +295,12 @@ public class ThirdPersonController : Controllers
 	[Command]
 	private void CmdShoot(NetworkIdentity identity, NetworkIdentity lastHit, Vector3 hitPoint, float damage, Vector3 impactForce)
     {
-		
 		if (lastHit != null) {
 			HealthSystem health = lastHit.gameObject.GetComponent<HealthSystem>();
 			if (health != null) {
-				//hit target
-				Debug.Log("Target Hit :" + lastHit.name);
+				NetworkServer.Spawn(Instantiate(BloodTrace, hitPoint, Quaternion.identity));
 				health.TakeDamage(damage);
 				if (health.IsDead) lastHit.gameObject.GetComponent<EnemyAI>().Die(hitPoint, impactForce);
-			}
-			else {
-				//hit something else
-				Debug.Log("Target Miss :" + _lastHitTransform.name);
 			}
 		}
 		StartCoroutine(AlertEnemies(identity.gameObject.transform, _gunshotSoundPropagation));
@@ -356,6 +324,7 @@ public class ThirdPersonController : Controllers
 				dc._owner = selfTransform;
 				dc._rapatriationRange = _rapatriationRange;
 				dc._droneIcon = _droneIcon;
+				NetworkServer.Spawn(dc.gameObject);
 				_playerInput.SwitchCurrentActionMap("Drone");
 			};
 		}
