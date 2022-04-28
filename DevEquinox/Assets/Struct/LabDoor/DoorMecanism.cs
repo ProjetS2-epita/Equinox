@@ -4,6 +4,7 @@ using UnityEngine;
 public class DoorMecanism : MonoBehaviour
 {
 
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))

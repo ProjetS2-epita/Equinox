@@ -30,7 +30,7 @@ public abstract class Controllers : NetworkBehaviour
 
     protected Transform _mainCamera;
     protected Transform selfTransform;
-    protected CinemachineVirtualCamera _Camera;
+    [SerializeField] protected CinemachineVirtualCamera _Camera;
     protected LayerMask _enemiesLayer;
     protected AudioClip _Sound;
     protected AudioSource _audioSource;
@@ -38,8 +38,6 @@ public abstract class Controllers : NetworkBehaviour
     protected Animator _animator;
     protected CharacterController _controller;
     protected Collider[] _colliders;
-    public Image _droneIcon;
-    public Image _dronePower;
 
     protected PlayerInput _playerInput;
     protected InputActionMap _Map;
@@ -62,6 +60,9 @@ public abstract class Controllers : NetworkBehaviour
         _mainCamera = GameObject.FindGameObjectWithTag(GlobalAccess._MainCamera).transform;
         _controller = GetComponent<CharacterController>();
         _audioSource = GetComponent<AudioSource>();
+        _audioSource.spread = 360f;
+        _audioSource.loop = false;
+        _audioSource.spatialBlend = 1f;
         _sphereCollider = GetComponent<SphereCollider>();
         _animator = GetComponent<Animator>();
 
@@ -123,7 +124,6 @@ public abstract class Controllers : NetworkBehaviour
 
         _triggetStayTimeout += _actualTime;
         if(_triggetStayTimeout > GlobalAccess._triggerUpdateRate) {
-            Debug.Log("Enemy alerted");
             if (other.TryGetComponent(out EnemyAI AI)) AI.OnAware(selfTransform);
             _triggetStayTimeout = 0;
         }

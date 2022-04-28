@@ -39,7 +39,7 @@ public class DroneController : Controllers
 		_audioSource.maxDistance = _baseNoiseDistance;
 		_audioSource.minDistance = 1f;
 		_owner = null;
-		GetComponent<BatterySystem>().QuantityDisplay = _dronePower;
+
 		_DroneCamTransform = GameObject.FindGameObjectWithTag(GlobalAccess._DroneCamera).transform;
 		_Camera = GetComponentInChildren<CinemachineVirtualCamera>();
 		_lureDrop = _Map.FindAction("LureDrop");
@@ -127,7 +127,6 @@ public class DroneController : Controllers
 
 	public override void SwitchControl(InputAction.CallbackContext ctx)
     {
-		_droneIcon.color = Color.white;
 		_playerInput.SwitchCurrentActionMap(GlobalAccess._Player);
 		if (Vector3.Distance(selfTransform.position, _owner.position) < _rapatriationRange) {
 			NetworkServer.UnSpawn(gameObject);

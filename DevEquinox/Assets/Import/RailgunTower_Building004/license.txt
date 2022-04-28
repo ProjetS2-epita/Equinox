@@ -1,0 +1,11 @@
+Model Information:
+* title:	RailgunTower_Building004
+* source:	https://sketchfab.com/3d-models/railguntower-building004-4f473647f4154c6e9250f178daaeaa7c
+* author:	Christian Rudorff (https://sketchfab.com/ChristianRudorff)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "RailgunTower_Building004" (https://sketchfab.com/3d-models/railguntower-building004-4f473647f4154c6e9250f178daaeaa7c) by Christian Rudorff (https://sketchfab.com/ChristianRudorff) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

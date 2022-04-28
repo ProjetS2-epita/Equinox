@@ -8,6 +8,7 @@ using Mirror;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : NetworkBehaviour
 {
+
     public enum WanderType {Random, Waypoint};
 
     WaitForSeconds updateStateRate = new WaitForSeconds(0.2f);
@@ -36,7 +37,23 @@ public class EnemyAI : NetworkBehaviour
     private Collider[] detected = new Collider[8];
 
     private int animAttack;
+    [SerializeField] private AudioClip[] _attackSounds;
+    [SerializeField] private AudioClip[] _wanderSounds;
+    private AudioSource _audioSource;
+    [SerializeField] private float _soundDistance = 50;
 
+    private void SetupSound() {
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.spread = 360f;
+        _audioSource.loop = false;
+        _audioSource.spatialBlend = 1f;
+        _audioSource.maxDistance = _soundDistance;
+        _audioSource.rolloffMode = AudioRolloffMode.Custom;
+    }
+
+    private void Awake() {
+        SetupSound();
+    }
 
     public override void OnStartServer()
     {
@@ -75,6 +92,7 @@ public class EnemyAI : NetworkBehaviour
 
         if (isAware && target != null) {
             agent.SetDestination(target.position);
+            RpcSendAttackSound(Random.Range(0, _attackSounds.Length));
             if (Vector3.Distance(target.position, selfTransform.position) <= agent.stoppingDistance * 2f) {
                 agent.speed = 0;
                 animator.speed = 1.2f;
@@ -97,6 +115,7 @@ public class EnemyAI : NetworkBehaviour
         else {
             if (isAware && target == null) ResetAttention();
             Wander();
+            RpcSendWanderSound(Random.Range(0, _wanderSounds.Length));
             agent.speed = wanderSpeed;
             animator.speed = wanderSpeed;
         }
@@ -104,6 +123,14 @@ public class EnemyAI : NetworkBehaviour
         SearchForPlayer();
         yield return updateStateRate;
         StartCoroutine(StateUpdate());
+    }
+
+    [ClientRpc] public void RpcSendAttackSound(int id) {
+        if (!_audioSource.isPlaying) _audioSource.PlayOneShot(_attackSounds[id]);
+    }
+
+    [ClientRpc] public void RpcSendWanderSound(int id) {
+        if (!_audioSource.isPlaying) _audioSource.PlayOneShot(_wanderSounds[id]);
     }
 
     public void SearchForPlayer()
@@ -140,7 +167,7 @@ public class EnemyAI : NetworkBehaviour
     }
 
     public void Attack() {
-        if (target == null) return;
+        if (target == null || Vector3.Distance(target.position, selfTransform.position) > agent.stoppingDistance * 2) return;
         if (target.TryGetComponent(out HealthSystem health)) {
             health.TakeDamage(damage);
         }
@@ -211,14 +238,16 @@ public class EnemyAI : NetworkBehaviour
         return nearestTransform;
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.magenta;
         Quaternion leftRayRotation = Quaternion.AngleAxis(-fov / 2f, Vector3.up);
         Quaternion rightRayRotation = Quaternion.AngleAxis(fov / 2f, Vector3.up);
-        Vector3 leftRayDirection = leftRayRotation * selfTransform.forward;
-        Vector3 rightRayDirection = rightRayRotation * selfTransform.forward;
-        Gizmos.DrawRay(selfTransform.position, leftRayDirection * viewDistance);
-        Gizmos.DrawRay(selfTransform.position, rightRayDirection * viewDistance);
+        Vector3 leftRayDirection = leftRayRotation * transform.forward;
+        Vector3 rightRayDirection = rightRayRotation * transform.forward;
+        Gizmos.DrawRay(transform.position, leftRayDirection * viewDistance);
+        Gizmos.DrawRay(transform.position, rightRayDirection * viewDistance);
     }
+#endif
 }
