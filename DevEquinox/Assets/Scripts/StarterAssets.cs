@@ -332,7 +332,7 @@ namespace StarterAssets
             ""id"": ""2f6dc829-30a5-416d-acda-76afc54d8139"",
             ""actions"": [
                 {
-                    ""name"": ""DroneMove"",
+                    ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""b485c11e-0d77-46b8-9820-b72c3d0873c8"",
                     ""expectedControlType"": ""Vector3"",
@@ -341,7 +341,7 @@ namespace StarterAssets
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""DroneLook"",
+                    ""name"": ""Look"",
                     ""type"": ""Value"",
                     ""id"": ""b8b8fac6-f531-4d73-8037-c741c16abf05"",
                     ""expectedControlType"": ""Vector2"",
@@ -376,7 +376,7 @@ namespace StarterAssets
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""DroneMove"",
+                    ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -387,7 +387,7 @@ namespace StarterAssets
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""DroneMove"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -398,7 +398,7 @@ namespace StarterAssets
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""DroneMove"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -409,7 +409,7 @@ namespace StarterAssets
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""DroneMove"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -420,7 +420,7 @@ namespace StarterAssets
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""DroneMove"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -431,7 +431,7 @@ namespace StarterAssets
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""DroneMove"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -442,7 +442,7 @@ namespace StarterAssets
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""DroneMove"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -453,7 +453,7 @@ namespace StarterAssets
                     ""interactions"": """",
                     ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=15,y=15)"",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""DroneLook"",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -543,8 +543,8 @@ namespace StarterAssets
             m_Player_SwitchDrone = m_Player.FindAction("SwitchDrone", throwIfNotFound: true);
             // Drone
             m_Drone = asset.FindActionMap("Drone", throwIfNotFound: true);
-            m_Drone_DroneMove = m_Drone.FindAction("DroneMove", throwIfNotFound: true);
-            m_Drone_DroneLook = m_Drone.FindAction("DroneLook", throwIfNotFound: true);
+            m_Drone_Move = m_Drone.FindAction("Move", throwIfNotFound: true);
+            m_Drone_Look = m_Drone.FindAction("Look", throwIfNotFound: true);
             m_Drone_SwitchAvatar = m_Drone.FindAction("SwitchAvatar", throwIfNotFound: true);
             m_Drone_LureDrop = m_Drone.FindAction("LureDrop", throwIfNotFound: true);
         }
@@ -687,16 +687,16 @@ namespace StarterAssets
         // Drone
         private readonly InputActionMap m_Drone;
         private IDroneActions m_DroneActionsCallbackInterface;
-        private readonly InputAction m_Drone_DroneMove;
-        private readonly InputAction m_Drone_DroneLook;
+        private readonly InputAction m_Drone_Move;
+        private readonly InputAction m_Drone_Look;
         private readonly InputAction m_Drone_SwitchAvatar;
         private readonly InputAction m_Drone_LureDrop;
         public struct DroneActions
         {
             private @StarterAssets m_Wrapper;
             public DroneActions(@StarterAssets wrapper) { m_Wrapper = wrapper; }
-            public InputAction @DroneMove => m_Wrapper.m_Drone_DroneMove;
-            public InputAction @DroneLook => m_Wrapper.m_Drone_DroneLook;
+            public InputAction @Move => m_Wrapper.m_Drone_Move;
+            public InputAction @Look => m_Wrapper.m_Drone_Look;
             public InputAction @SwitchAvatar => m_Wrapper.m_Drone_SwitchAvatar;
             public InputAction @LureDrop => m_Wrapper.m_Drone_LureDrop;
             public InputActionMap Get() { return m_Wrapper.m_Drone; }
@@ -708,12 +708,12 @@ namespace StarterAssets
             {
                 if (m_Wrapper.m_DroneActionsCallbackInterface != null)
                 {
-                    @DroneMove.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnDroneMove;
-                    @DroneMove.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnDroneMove;
-                    @DroneMove.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnDroneMove;
-                    @DroneLook.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnDroneLook;
-                    @DroneLook.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnDroneLook;
-                    @DroneLook.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnDroneLook;
+                    @Move.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnMove;
+                    @Move.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnMove;
+                    @Move.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnMove;
+                    @Look.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnLook;
+                    @Look.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnLook;
+                    @Look.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnLook;
                     @SwitchAvatar.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnSwitchAvatar;
                     @SwitchAvatar.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnSwitchAvatar;
                     @SwitchAvatar.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnSwitchAvatar;
@@ -724,12 +724,12 @@ namespace StarterAssets
                 m_Wrapper.m_DroneActionsCallbackInterface = instance;
                 if (instance != null)
                 {
-                    @DroneMove.started += instance.OnDroneMove;
-                    @DroneMove.performed += instance.OnDroneMove;
-                    @DroneMove.canceled += instance.OnDroneMove;
-                    @DroneLook.started += instance.OnDroneLook;
-                    @DroneLook.performed += instance.OnDroneLook;
-                    @DroneLook.canceled += instance.OnDroneLook;
+                    @Move.started += instance.OnMove;
+                    @Move.performed += instance.OnMove;
+                    @Move.canceled += instance.OnMove;
+                    @Look.started += instance.OnLook;
+                    @Look.performed += instance.OnLook;
+                    @Look.canceled += instance.OnLook;
                     @SwitchAvatar.started += instance.OnSwitchAvatar;
                     @SwitchAvatar.performed += instance.OnSwitchAvatar;
                     @SwitchAvatar.canceled += instance.OnSwitchAvatar;
@@ -788,8 +788,8 @@ namespace StarterAssets
         }
         public interface IDroneActions
         {
-            void OnDroneMove(InputAction.CallbackContext context);
-            void OnDroneLook(InputAction.CallbackContext context);
+            void OnMove(InputAction.CallbackContext context);
+            void OnLook(InputAction.CallbackContext context);
             void OnSwitchAvatar(InputAction.CallbackContext context);
             void OnLureDrop(InputAction.CallbackContext context);
         }

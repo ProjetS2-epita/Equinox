@@ -20,6 +20,6 @@ public class StarveSystem : TimeChangingQ
         if (Failed) return;
         //Debug.Log($"Satiety : {Mathf.Round(currentQuantity*1000)/1000}%");
         base.Update();
-        if (Failed) Debug.Log("System Failure: " + this.GetType().Name + " on " + gameObject.name);
+        //if (Failed) Debug.Log("System Failure: " + this.GetType().Name + " on " + gameObject.name);
     }
 }

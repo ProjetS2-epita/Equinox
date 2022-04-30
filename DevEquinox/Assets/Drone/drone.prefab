@@ -975,6 +975,9 @@ GameObject:
   - component: {fileID: 417683428}
   - component: {fileID: 473850466562457461}
   - component: {fileID: 449025314}
+  - component: {fileID: 3504473734518283972}
+  - component: {fileID: 6847019849637839877}
+  - component: {fileID: 8808462677422480854}
   m_Layer: 0
   m_Name: drone
   m_TagString: Untagged
@@ -1008,7 +1011,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: c8af69ee238f4b041a36964fa3ea82b3, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -1058,7 +1061,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 86a284c5b25940941a1724ce9c6c1a72, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1068,7 +1071,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 20
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -1103,7 +1106,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1155,19 +1158,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c05341f5804aa448ff079a675e166b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lure: {fileID: 3617871908837719621, guid: 18dc3fce4c85c4e4b809ac4b1a91b07b, type: 3}
-  maxDistance: 100
-  droneSensitivity: 2
-  bladeSound: {fileID: 0}
-  MoveSpeed: 8
-  Gravity: -15
-  baseNoiseDistance: 20
-  dampingCoefficient: 3
-  TopClamp: 180
-  BottomClamp: 90
-  CameraAngleOverride: 0
-  SpeedChangeRate: 10
-  RotationSmoothTime: 0.12
+  syncMode: 0
+  syncInterval: 0.1
+  _SpeedChangeRate: 8
+  _Sensitivity: 4
+  _MoveSpeed: 15
+  _rapatriationRange: 0
+  _Gravity: 0
+  _droneIcon: {fileID: 0}
+  _dronePower: {fileID: 0}
+  _owner: {fileID: 0}
+  _lure: {fileID: 0}
+  _maxTravelDistance: 100
+  _baseNoiseDistance: 20
+  _dampingCoefficient: 5
 --- !u!114 &473850466562457461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1180,6 +1184,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4a0fb8e9a026ee4993805a57bf5ef87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  barValue: {fileID: 0}
+  QuantityDisplay: {fileID: 0}
 --- !u!54 &449025314
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1196,6 +1202,73 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3504473734518283972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2189415001218884694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: be45a792bc3893d43b25b5992a6f8d7a
+  hasSpawned: 0
+--- !u!114 &6847019849637839877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2189415001218884694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 0
+  sendInterval: 0.05
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 0
+  bufferTimeMultiplier: 1
+  bufferSizeLimit: 64
+  catchupThreshold: 4
+  catchupMultiplier: 0.1
+  onlySyncOnChange: 1
+  bufferResetMultiplier: 5
+  positionSensitivity: 0.01
+  rotationSensitivity: 0.01
+  scaleSensitivity: 0.01
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+--- !u!114 &8808462677422480854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2189415001218884694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 1
+  animator: {fileID: 8349473885985879287}
 --- !u!1 &2261088216373631827
 GameObject:
   m_ObjectHideFlags: 0
