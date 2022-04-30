@@ -8,7 +8,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject menu;
 
     private PlayerStats[] playerStats;
-    [SerializeField] Text[] nameText, hpTexts, faimTexts, soifTexts; 
+    [SerializeField] Text[] nameText, hpTexts, faimTexts, froidTexts; 
     [SerializeField] Image[] characterImage;
     [SerializeField] GameObject[] characterPanel;
     public static MenuManager instance;
@@ -72,7 +72,7 @@ public class MenuManager : MonoBehaviour
             characterPanel[0].SetActive(true);
             nameText[0].text = playerStats[0].playerName;
             hpTexts[0].text = "HP : " + playerStats[0].currentHP + " / " + playerStats[0].maxHP;
-            soifTexts[0].text = "Soif : " + playerStats[0].currentSoif + " / " + playerStats[0].maxSoif;
+            froidTexts[0].text = "Froid : " + playerStats[0].currentFroid + " / " + playerStats[0].maxFroid;
             faimTexts[0].text = "Faim : " + playerStats[0].currentFaim + " / " + playerStats[0].MaxFaim;
 
 
@@ -100,7 +100,7 @@ public class MenuManager : MonoBehaviour
             itemSlot.GetComponentInChildren<ItemsManager>().itemDescription = item.itemDescription;
             itemSlot.GetComponentInChildren<ItemsManager>().itemsImage = item.itemsImage;
             itemSlot.GetComponentInChildren<ItemsManager>().Model = item.Model;
-            
+            //itemSlot.Find("3D").GetComponent<Image>().enabled = false;
 
 
             //ImageManager.instance.Apply(item.itemsImage);

@@ -288,19 +288,19 @@
  <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
  </Reference>
  <Reference Include="Mono.Cecil">
- <HintPath>D:/S2/Equinox/Equinox/Library/PackageCache/com.unity.nuget.mono-cecil@1.10.1/Mono.Cecil.dll</HintPath>
+ <HintPath>D:/S2/Equinox/Equinox/Equinox/Library/PackageCache/com.unity.nuget.mono-cecil@1.10.1/Mono.Cecil.dll</HintPath>
  </Reference>
  <Reference Include="Mono.Cecil.Mdb">
- <HintPath>D:/S2/Equinox/Equinox/Library/PackageCache/com.unity.nuget.mono-cecil@1.10.1/Mono.Cecil.Mdb.dll</HintPath>
+ <HintPath>D:/S2/Equinox/Equinox/Equinox/Library/PackageCache/com.unity.nuget.mono-cecil@1.10.1/Mono.Cecil.Mdb.dll</HintPath>
  </Reference>
  <Reference Include="Mono.Cecil.Pdb">
- <HintPath>D:/S2/Equinox/Equinox/Library/PackageCache/com.unity.nuget.mono-cecil@1.10.1/Mono.Cecil.Pdb.dll</HintPath>
+ <HintPath>D:/S2/Equinox/Equinox/Equinox/Library/PackageCache/com.unity.nuget.mono-cecil@1.10.1/Mono.Cecil.Pdb.dll</HintPath>
  </Reference>
  <Reference Include="Mono.Cecil.Rocks">
- <HintPath>D:/S2/Equinox/Equinox/Library/PackageCache/com.unity.nuget.mono-cecil@1.10.1/Mono.Cecil.Rocks.dll</HintPath>
+ <HintPath>D:/S2/Equinox/Equinox/Equinox/Library/PackageCache/com.unity.nuget.mono-cecil@1.10.1/Mono.Cecil.Rocks.dll</HintPath>
  </Reference>
  <Reference Include="nunit.framework">
- <HintPath>D:/S2/Equinox/Equinox/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll</HintPath>
+ <HintPath>D:/S2/Equinox/Equinox/Equinox/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>H:/2020.3.27f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -651,10 +651,10 @@
  <HintPath>H:/2020.3.27f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Xml.XPath.XDocument.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.UI">
- <HintPath>D:/S2/Equinox/Equinox/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+ <HintPath>D:/S2/Equinox/Equinox/Equinox/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
- <HintPath>D:/S2/Equinox/Equinox/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+ <HintPath>D:/S2/Equinox/Equinox/Equinox/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

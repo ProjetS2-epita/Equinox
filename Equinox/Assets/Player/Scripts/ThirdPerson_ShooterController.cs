@@ -1,10 +1,9 @@
 using UnityEngine;
 using Cinemachine;
 using StarterAssets;
-
+//[RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(ThirdPersonController))]
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(SphereCollider))]
 [RequireComponent(typeof(StarterAssetsInputs))]
 public class ThirdPerson_ShooterController : MonoBehaviour
 {
@@ -22,7 +21,7 @@ public class ThirdPerson_ShooterController : MonoBehaviour
     //public GameObject impactEffect;
 
     private AudioSource audioSource;
-    private SphereCollider sphereCollider;
+    private CapsuleCollider sphereCollider;
     private ThirdPersonController thirdPersonController;
     private StarterAssetsInputs starterAssetsInputs;
 
@@ -31,7 +30,7 @@ public class ThirdPerson_ShooterController : MonoBehaviour
         thirdPersonController = GetComponent<ThirdPersonController>();
         starterAssetsInputs = GetComponent<StarterAssetsInputs>();
         audioSource = GetComponent<AudioSource>();
-        sphereCollider = GetComponent<SphereCollider>();
+        sphereCollider = GetComponent<CapsuleCollider>();
     }
     
     private void Update()
@@ -51,7 +50,7 @@ public class ThirdPerson_ShooterController : MonoBehaviour
         Shoot(hitTransform, raycastHit);
 
         //walk & sprint noise radius
-        sphereCollider.radius = thirdPersonController.GetPlayerStealthProfile() == 0 ? walkEnemyPerceptionRadius : sprintEnemyPerceptionRadius;
+        //sphereCollider.radius = thirdPersonController.GetPlayerStealthProfile() == 0 ? walkEnemyPerceptionRadius : sprintEnemyPerceptionRadius;
     }
     
     void Aim(Vector3 mouseWorldPosition)

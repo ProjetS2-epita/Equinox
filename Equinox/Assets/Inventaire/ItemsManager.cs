@@ -10,8 +10,8 @@ public class ItemsManager : MonoBehaviour
     public string itemName, itemDescription;
     public Sprite itemsImage;
 
-
     public enum AffectType { HP, Soif, Faim }
+    public AffectType itemAffect;
     public int amountOfAffect;
     public GameObject Model;
 
@@ -19,8 +19,9 @@ public class ItemsManager : MonoBehaviour
     public int amount;
     // Start is called before the first frame update
     void Start()
-    {
-        
+    { // Gravity set
+        gameObject.GetComponent<Rigidbody>().useGravity = true;
+        gameObject.GetComponent<Rigidbody>().isKinematic = false;
     }
 
     // Update is called once per frame
@@ -28,7 +29,7 @@ public class ItemsManager : MonoBehaviour
     {
         
     }
-
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -38,7 +39,19 @@ public class ItemsManager : MonoBehaviour
             //SelfDestroy();
             MenuManager.instance.UpdateItemsInventory();
         }
+        else if (other.CompareTag("Ground"))  // Le terrain
+        {
+            Debug.Log("Stop");
+            gameObject.GetComponent<Rigidbody>().useGravity = false;
+            gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        } 
     }
+    
+
+  
+    
+
+
     public void SelfDestroy()
     {
         Destroy(gameObject);
